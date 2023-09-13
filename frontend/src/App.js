@@ -1,8 +1,7 @@
-import BlogSlider from "./components/BlogSlider";
 function App() {
   return (
     <>
-      <BlogSlider />
+      
     </>
   );
 }
