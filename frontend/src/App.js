@@ -1,10 +1,11 @@
+import Navbar from "./Pages/Navbar/Navbar";
+import Footer from "./Pages/Footer/Footer";
 
 function App() {
   return (
     <>
-
-        <h1 className="text-3xl font-bold underline">Hello wgcmgfhnorld!</h1>
-
+      <Navbar />
+      <Footer />
     </>
   );
 }
