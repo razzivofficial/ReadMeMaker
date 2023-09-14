@@ -14,14 +14,14 @@ import {
   PopoverCloseButton,
   PopoverBody,
 } from "@chakra-ui/react";
-// import { siteConfig } from "./site-config";
+
 import FooterSignup from "./SignUp";
 import {
   ExternalFooterLink,
   InternalFooterLink,
   ExternalSocialLink,
 } from "./Links";
-// Here we have used react-icons package for the icons
+
 import {
   FaGithub,
   FaDev,
@@ -69,7 +69,7 @@ const Footer = () => {
                       cursor="pointer"
                       _hover={{ color: "gray.600", textDecoration: "none" }}
                     >
-                      Social Accounts
+                      Click to connect
                     </Text>
                   </PopoverTrigger>
                   <Portal>
@@ -124,17 +124,20 @@ const Footer = () => {
                   </Portal>
                 </Popover>
               </Text>
-
               <Text as="span">
-                <ExternalFooterLink href="#" text="Sponsor" />
+                <ExternalFooterLink href="#" text="Get Me A Coffie" />
               </Text>
               <Text as="span">
-                <ExternalFooterLink href="#" isExternal={false} text="FAQs" />
+                <ExternalFooterLink
+                  href="#"
+                  isExternal={false}
+                  text="Documentation"
+                />
               </Text>
             </Stack>
           </SimpleGrid>
           <Text mt="20px" color="gray.500">
-            Made with 🧡 by{" "}
+            Made with 🧡 by {""}
             <ChakraLink
               _focus={{ boxShadow: "none", outline: "none" }}
               target="_blank"
