@@ -41,7 +41,7 @@ const Footer = () => {
         borderTopColor="gray.900"
         pt="20px"
       >
-        <Box d={["block", "block", "none", "none"]} mb="30px">
+        <Box d={["block", "block", "none", "none"]} mb="30px" mx={5}>
           <FooterSignup />
         </Box>
         <Box>
@@ -79,7 +79,6 @@ const Footer = () => {
                       <PopoverBody>
                         <Stack
                           as="footer"
-                          isInline
                           spacing={[1, 2]}
                           justifyContent="center"
                           alignItems="center"
@@ -149,13 +148,11 @@ const Footer = () => {
                 bgGradient: "linear(to-r, red.500, yellow.500)",
               }}
             >
-              Muhammad Ahmad
+              Razziv
             </ChakraLink>{" "}
           </Text>
         </Box>
-        <Box d={["none", "none", "block", "block"]}>
-          {/* <FooterSignup /> */}
-        </Box>
+        <Box d={["none", "none", "block", "block"]}></Box>
       </SimpleGrid>
     </Container>
   );

@@ -22,7 +22,7 @@ const InternalFooterLink = (props) => {
   const { href, text } = props;
 
   return (
-    <a>
+    <>
       <ChakraLink
         _focus={{ outline: "none", boxShadow: "none" }}
         as="span"
@@ -32,7 +32,7 @@ const InternalFooterLink = (props) => {
       >
         {text}
       </ChakraLink>
-    </a>
+    </>
   );
 };
 
