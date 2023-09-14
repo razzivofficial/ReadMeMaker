@@ -58,13 +58,14 @@ const Navbar = () => {
             alt="dev logo"
             w={"auto"}
             h={12}
-            src="https://dev-to-uploads.s3.amazonaws.com/uploads/logos/resized_logo_UQww2soKuUsjaOGNB38o.png"
+            src="https://t3.ftcdn.net/jpg/04/01/04/04/360_F_401040407_G0Oc6pezJWHDUMLrFEkcSJMXgi3fuIT0.jpg"
+            rounded={50}
           />
           <Button display={{ base: "block", md: "none" }} onClick={toggleMenu}>
             ☰
           </Button>
           <Input
-            maxW="26rem"
+            maxW="30rem"
             placeholder="Search..."
             borderColor={useColorModeValue("gray.300", "white")}
             borderRadius="5px"
@@ -73,18 +74,21 @@ const Navbar = () => {
           <Spacer />
           <HStack spacing={3}>
             <Button
+              w={20}
               color="#fff"
               rounded="md"
               bg="#3b49df"
-              _hover={{ bg: "#323ebe" }}
+              _hover={{ bg: "#1b28b3" }}
             >
-              Create a post
+              LogIn
             </Button>
             <Menu isLazy isOpen={isMenuOpen} onClose={toggleMenu}>
               <MenuButton as={Avatar} size="sm" onClick={toggleMenu}>
                 <Avatar
                   size="sm"
-                  src={"https://avatars2.githubusercontent.com/u/37842853?v=4"}
+                  src={
+                    "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
+                  }
                 />
               </MenuButton>
               <MenuList
