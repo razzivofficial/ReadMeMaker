@@ -117,7 +117,7 @@ const Navbar = () => {
                   <Text fontWeight="500">Create Post</Text>
                 </MenuItem>
                 <MenuItem>
-                  <Text fontWeight="500">Reading List</Text>
+                  <Text fontWeight="500">Book Maarks</Text>
                 </MenuItem>
                 <MenuItem>
                   <Text fontWeight="500">Settings</Text>
