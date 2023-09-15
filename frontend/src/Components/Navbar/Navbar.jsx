@@ -1,3 +1,4 @@
+import logoImg from "../../logo.png"
 import {
   Container,
   Box,
@@ -58,7 +59,7 @@ const Navbar = () => {
             alt="dev logo"
             w={"auto"}
             h={12}
-            src="https://t3.ftcdn.net/jpg/04/01/04/04/360_F_401040407_G0Oc6pezJWHDUMLrFEkcSJMXgi3fuIT0.jpg"
+            src={logoImg}
             rounded={50}
           />
           <Button display={{ base: "block", md: "none" }} onClick={toggleMenu}>
