@@ -1,17 +1,17 @@
-import { Divider } from "@chakra-ui/react";
-import { ClassNames } from "@emotion/react";
+import { Divider, Button } from "@chakra-ui/react";
 import React from "react";
-import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
+import { AiFillPlusCircle } from "react-icons/ai";
+import { GrPowerReset } from "react-icons/gr";
 
-export default function PreElementAdder() {
+export default function ElementAdder() {
   return (
     <>
       <div className="flex h-screen w-full flex-col items-center justify-center gap-y-2">
-        <div className="w-[80%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-md shadow-gray-100">
+        <div className="w-[60%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-md shadow-gray-100">
           <div className="flex items-center justify-between px-2 text-base font-medium text-gray-700">
-            <div>Add Elements From Here</div>
-            <div>
-              {/* <button className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-black">
+            <div>Add Elements</div>
+            {/* <div>
+              <button className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-black">
                 <svg
                   className="h-5 w-5"
                   aria-hidden="true"
@@ -26,11 +26,37 @@ export default function PreElementAdder() {
                     stroke-linejoin="round"
                   ></path>
                 </svg>
-              </button> */}
+              </button>
+            </div> */}
+            {/* {Search bar code starts} */}
+            <div class="pt-2 flex relative mx-auto text-gray-600 ">
+              <input
+                class="border-2 w-[100%] border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+                type="search"
+                name="search"
+                placeholder="Search Elements"
+              ></input>
+              <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+                <svg
+                  class="text-gray-600 h-4 w-4 fill-current"
+                  version="1.1"
+                  id="Capa_1"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 56.966 56.966"
+                  width="512px"
+                  height="512px"
+                >
+                  <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                </svg>
+              </button>
             </div>
+            <Button variant="gradient">
+              <GrPowerReset className="text-3xl mx-3" />
+            </Button>
+            {/* {Search bar code ends} */}
           </div>
-          <div className="mt-5  odd:bg-white even:bg-slate-50">
-            {/* working here */}
+          <div className="mt-5">
             <Divider />
             <div className="flex max-h-[400px] w-full flex-col overflow-y-scroll">
               <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
@@ -60,7 +86,6 @@ export default function PreElementAdder() {
                       stroke="currentColor"
                       stroke-width="2"
                       viewBox="0 0 24 24"
-                      //   xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"
@@ -146,7 +171,6 @@ export default function PreElementAdder() {
                       stroke="currentColor"
                       stroke-width="2"
                       viewBox="0 0 24 24"
-                      //   xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
@@ -204,7 +228,6 @@ export default function PreElementAdder() {
                       stroke="currentColor"
                       stroke-width="2"
                       viewBox="0 0 24 24"
-                      //   xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
@@ -229,15 +252,12 @@ export default function PreElementAdder() {
           </div>
         </div>
 
-        {/* <a
-          href="https://github.com/samansayar"
+        {/* <a   
           target="_blank"
           className="mx-auto flex w-[300px] items-center justify-start gap-x-3 rounded-lg border border-gray-700 bg-gray-700 px-4 py-2"
         >
           <button className="inline-flex items-center space-x-2 rounded-full bg-gray-700 font-semibold text-white">
             <svg
-            //   xmlns="http://www.w3.org/2000/svg"
-            //   xmlns:xlink="http://www.w3.org/1999/xlink"
               aria-hidden="true"
               role="img"
               className="w-6"
