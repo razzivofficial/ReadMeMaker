@@ -1,22 +1,24 @@
+import { Divider } from "@chakra-ui/react";
+import { ClassNames } from "@emotion/react";
 import React from "react";
+import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 
 export default function PreElementAdder() {
   return (
     <>
-      <div class="flex h-screen w-full flex-col items-center justify-center gap-y-2">
-        <div class="w-[80%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-md shadow-gray-100">
-          <div class="flex items-center justify-between px-2 text-base font-medium text-gray-700">
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-y-2">
+        <div className="w-[80%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-md shadow-gray-100">
+          <div className="flex items-center justify-between px-2 text-base font-medium text-gray-700">
             <div>Add Elements From Here</div>
             <div>
-              <button class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-black">
+              {/* <button className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-black">
                 <svg
-                  class="h-5 w-5"
+                  className="h-5 w-5"
                   aria-hidden="true"
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2.5"
                   viewBox="0 0 24 24"
-                //   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M6 18L18 6M6 6l12 12"
@@ -24,35 +26,41 @@ export default function PreElementAdder() {
                     stroke-linejoin="round"
                   ></path>
                 </svg>
-              </button>
+              </button> */}
             </div>
           </div>
-          <div class="mt-4">
-            <div class="flex max-h-[400px] w-full flex-col overflow-y-scroll">
-              <button class="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-green-100">
-                <div class="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-green-200">
-                  <span class="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-green-900">
+          <div className="mt-5  odd:bg-white even:bg-slate-50">
+            {/* working here */}
+            <Divider />
+            <div className="flex max-h-[400px] w-full flex-col overflow-y-scroll">
+              <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
+                <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
+                  <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
                     A
                   </span>
                 </div>
-                <div class="flex flex-col items-start justify-between font-light text-gray-600">
-                  <p class="text-[15px]">Text</p>
-                  <span class="text-xs font-light text-gray-400">
+                <div className="flex flex-col items-start justify-between font-light text-gray-600">
+                  <p className="text-[15px]">Text</p>
+                  <span className="text-xs font-light text-gray-400">
                     just start writing with plain text
                   </span>
                 </div>
-              </button>
-              <button class="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-green-100">
-                <div class="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-green-200">
-                  <span class="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-green-900">
+                <div className="flex-grow"></div>{" "}
+                <button>
+                  <AiFillPlusCircle className="text-3xl mx-3" />
+                </button>
+              </div>
+              <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
+                <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
+                  <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
                     <svg
-                      class="mx-auto h-6 w-6"
+                      className="mx-auto h-6 w-6"
                       aria-hidden="true"
                       fill="none"
                       stroke="currentColor"
                       stroke-width="2"
                       viewBox="0 0 24 24"
-                    //   xmlns="http://www.w3.org/2000/svg"
+                      //   xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"
@@ -62,67 +70,83 @@ export default function PreElementAdder() {
                     </svg>
                   </span>
                 </div>
-                <div class="flex flex-col items-start justify-between font-light text-gray-600">
-                  <p class="text-[15px]">Checklist</p>
-                  <span class="text-xs font-light text-gray-400">
+                <div className="flex flex-col items-start justify-between font-light text-gray-600">
+                  <p className="text-[15px]">Checklist</p>
+                  <span className="text-xs font-light text-gray-400">
                     create a to-do or checklist
                   </span>
                 </div>
-              </button>
-              <button class="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-green-100">
-                <div class="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-green-200">
-                  <span class="tag w-full text-center text-lg font-medium text-gray-700 group-hover:text-green-900">
+                <div className="flex-grow"></div>{" "}
+                <button>
+                  <AiFillPlusCircle className="text-3xl mx-3" />
+                </button>
+              </div>
+              <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
+                <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
+                  <span className="tag w-full text-center text-lg font-medium text-gray-700 group-hover:text-blue-900">
                     {" "}
                     H1{" "}
                   </span>
                 </div>
-                <div class="flex flex-col items-start justify-between font-light text-gray-600">
-                  <p class="text-[15px]">Heading 1</p>
-                  <span class="text-xs font-light text-gray-400">
+                <div className="flex flex-col items-start justify-between font-light text-gray-600">
+                  <p className="text-[15px]">Heading 1</p>
+                  <span className="text-xs font-light text-gray-400">
                     Big section heading
                   </span>
-                </div>
-              </button>
-              <button class="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-green-100">
-                <div class="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-green-200">
-                  <span class="tag w-full text-center text-lg font-medium text-gray-700 group-hover:text-green-900">
+                </div>{" "}
+                <div className="flex-grow"></div>{" "}
+                <button>
+                  <AiFillPlusCircle className="text-3xl mx-3" />
+                </button>
+              </div>
+              <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
+                <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
+                  <span className="tag w-full text-center text-lg font-medium text-gray-700 group-hover:text-blue-900">
                     {" "}
                     H2{" "}
                   </span>
                 </div>
-                <div class="flex flex-col items-start justify-between font-light text-gray-600">
-                  <p class="text-[15px]">Heading 2</p>
-                  <span class="text-xs font-light text-gray-400">
+                <div className="flex flex-col items-start justify-between font-light text-gray-600">
+                  <p className="text-[15px]">Heading 2</p>
+                  <span className="text-xs font-light text-gray-400">
                     Medium section heading
                   </span>
                 </div>
-              </button>
-              <button class="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-green-100">
-                <div class="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-green-200">
-                  <span class="tag w-full text-center text-lg font-medium text-gray-700 group-hover:text-green-900">
+                <div className="flex-grow"></div>{" "}
+                <button>
+                  <AiFillPlusCircle className="text-3xl mx-3" />
+                </button>
+              </div>
+              <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
+                <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
+                  <span className="tag w-full text-center text-lg font-medium text-gray-700 group-hover:text-blue-900">
                     {" "}
                     H3{" "}
                   </span>
                 </div>
-                <div class="flex flex-col items-start justify-between font-light text-gray-600">
-                  <p class="text-[15px]">Heading 3</p>
-                  <span class="text-xs font-light text-gray-400">
+                <div className="flex flex-col items-start justify-between font-light text-gray-600">
+                  <p className="text-[15px]">Heading 3</p>
+                  <span className="text-xs font-light text-gray-400">
                     small section heading
                   </span>
                 </div>
-              </button>
-              {/* <h3 class="my-2 px-4 text-[15px] text-gray-400">More</h3> */}
-              <button class="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-green-100">
-                <div class="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-green-200">
-                  <span class="tag w-full text-center text-xl font-medium text-gray-700 group-hover:text-green-900">
+                <div className="flex-grow"></div>{" "}
+                <button>
+                  <AiFillPlusCircle className="text-3xl mx-3" />
+                </button>
+              </div>
+              {/* <h3 className="my-2 px-4 text-[15px] text-gray-400">More</h3> */}
+              <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
+                <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
+                  <span className="tag w-full text-center text-xl font-medium text-gray-700 group-hover:text-blue-900">
                     <svg
-                      class="mx-auto h-6 w-6"
+                      className="mx-auto h-6 w-6"
                       aria-hidden="true"
                       fill="none"
                       stroke="currentColor"
                       stroke-width="2"
                       viewBox="0 0 24 24"
-                    //   xmlns="http://www.w3.org/2000/svg"
+                      //   xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
@@ -132,18 +156,22 @@ export default function PreElementAdder() {
                     </svg>
                   </span>
                 </div>
-                <div class="flex flex-col items-start justify-between font-light text-gray-600">
-                  <p class="text-[15px]">Bullet list</p>
-                  <span class="text-xs font-light text-gray-400">
+                <div className="flex flex-col items-start justify-between font-light text-gray-600">
+                  <p className="text-[15px]">Bullet list</p>
+                  <span className="text-xs font-light text-gray-400">
                     Create a simple bullet list
                   </span>
                 </div>
-              </button>
-              <button class="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-green-100">
-                <div class="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-green-200">
-                  <span class="tag w-full text-center text-xl font-medium text-gray-700 group-hover:text-green-900">
+                <div className="flex-grow"></div>{" "}
+                <button>
+                  <AiFillPlusCircle className="text-3xl mx-3" />
+                </button>
+              </div>
+              <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
+                <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
+                  <span className="tag w-full text-center text-xl font-medium text-gray-700 group-hover:text-blue-900">
                     <svg
-                      class="mx-auto h-6 w-6"
+                      className="mx-auto h-6 w-6"
                       width="100%"
                       height="100%"
                       viewBox="0 0 24 24"
@@ -155,24 +183,28 @@ export default function PreElementAdder() {
                     </svg>
                   </span>
                 </div>
-                <div class="flex flex-col items-start justify-between font-light text-gray-600">
-                  <p class="text-[15px]">Ordered list</p>
-                  <span class="text-xs font-light text-gray-400">
+                <div className="flex flex-col items-start justify-between font-light text-gray-600">
+                  <p className="text-[15px]">Ordered list</p>
+                  <span className="text-xs font-light text-gray-400">
                     Create a list with numbered
                   </span>
                 </div>
-              </button>
-              <button class="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-green-100">
-                <div class="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-green-200">
-                  <span class="tag w-full text-center text-xl font-medium text-gray-700 group-hover:text-green-900">
+                <div className="flex-grow"></div>{" "}
+                <button>
+                  <AiFillPlusCircle className="text-3xl mx-3" />
+                </button>
+              </div>
+              <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
+                <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
+                  <span className="tag w-full text-center text-xl font-medium text-gray-700 group-hover:text-blue-900">
                     <svg
-                      class="mx-auto h-6 w-6"
+                      className="mx-auto h-6 w-6"
                       aria-hidden="true"
                       fill="none"
                       stroke="currentColor"
                       stroke-width="2"
                       viewBox="0 0 24 24"
-                    //   xmlns="http://www.w3.org/2000/svg"
+                      //   xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
@@ -182,13 +214,17 @@ export default function PreElementAdder() {
                     </svg>
                   </span>
                 </div>
-                <div class="flex flex-col items-start justify-between font-light text-gray-600">
-                  <p class="text-[15px]">Info box</p>
-                  <span class="text-xs font-light text-gray-400">
+                <div className="flex flex-col items-start justify-between font-light text-gray-600">
+                  <p className="text-[15px]">Info box</p>
+                  <span className="text-xs font-light text-gray-400">
                     Add a box with additional info
                   </span>
                 </div>
-              </button>
+                <div className="flex-grow"></div>{" "}
+                <button>
+                  <AiFillPlusCircle className="text-3xl mx-3" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -196,15 +232,15 @@ export default function PreElementAdder() {
         {/* <a
           href="https://github.com/samansayar"
           target="_blank"
-          class="mx-auto flex w-[300px] items-center justify-start gap-x-3 rounded-lg border border-gray-700 bg-gray-700 px-4 py-2"
+          className="mx-auto flex w-[300px] items-center justify-start gap-x-3 rounded-lg border border-gray-700 bg-gray-700 px-4 py-2"
         >
-          <button class="inline-flex items-center space-x-2 rounded-full bg-gray-700 font-semibold text-white">
+          <button className="inline-flex items-center space-x-2 rounded-full bg-gray-700 font-semibold text-white">
             <svg
             //   xmlns="http://www.w3.org/2000/svg"
             //   xmlns:xlink="http://www.w3.org/1999/xlink"
               aria-hidden="true"
               role="img"
-              class="w-6"
+              className="w-6"
               preserveAspectRatio="xMidYMid meet"
               viewBox="0 0 24 24"
             >
@@ -218,7 +254,7 @@ export default function PreElementAdder() {
               </g>
             </svg>
           </button>
-          <p class="text-sm text-white">My Github 🙂</p>
+          <p className="text-sm text-white">My Github 🙂</p>
         </a> */}
       </div>
     </>

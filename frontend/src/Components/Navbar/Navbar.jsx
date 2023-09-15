@@ -1,4 +1,4 @@
-import logoImg from "../../logo.png"
+import logoImg from "../../logo.png";
 import {
   Container,
   Box,
@@ -19,6 +19,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { CgMenuRound } from "react-icons/cg";
 
 const IconButton = ({ children }) => {
   return (
@@ -41,6 +42,11 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const toggleUserMenu = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  };
 
   return (
     <Box
@@ -56,14 +62,14 @@ const Navbar = () => {
       <Container maxW="1280px" px={4} mx="auto">
         <HStack spacing={4}>
           <Image
-            alt="dev logo"
+            alt="ReadMeMaker Logo"
             w={"auto"}
-            h={12}
+            h={14}
             src={logoImg}
             rounded={50}
           />
           <Button display={{ base: "block", md: "none" }} onClick={toggleMenu}>
-            ☰
+            <CgMenuRound className="text-2xl items-center" />
           </Button>
           <Input
             // display={{ base: "block", md: "block" }}
@@ -85,8 +91,8 @@ const Navbar = () => {
             >
               LogIn
             </Button> */}
-            <Menu isLazy isOpen={isMenuOpen} onClose={toggleMenu}>
-              <MenuButton size="sm" onClick={toggleMenu}>
+            <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
+              <MenuButton size="sm" onClick={toggleUserMenu}>
                 <Avatar
                   size="sm"
                   src={
