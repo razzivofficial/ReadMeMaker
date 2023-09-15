@@ -65,15 +65,17 @@ const Navbar = () => {
             ☰
           </Button>
           <Input
+            // display={{ base: "block", md: "block" }}
+            display={"block"}
             maxW="30rem"
-            placeholder="Search..."
+            placeholder="Search Templates"
             borderColor={useColorModeValue("gray.300", "white")}
             borderRadius="5px"
             d={{ base: "none", md: "block" }}
           />
           <Spacer />
           <HStack spacing={3}>
-            <Button
+            {/* <Button
               w={20}
               color="#fff"
               rounded="md"
@@ -81,9 +83,9 @@ const Navbar = () => {
               _hover={{ bg: "#1b28b3" }}
             >
               LogIn
-            </Button>
+            </Button> */}
             <Menu isLazy isOpen={isMenuOpen} onClose={toggleMenu}>
-              <MenuButton as={Avatar} size="sm" onClick={toggleMenu}>
+              <MenuButton size="sm" onClick={toggleMenu}>
                 <Avatar
                   size="sm"
                   src={
@@ -100,9 +102,9 @@ const Navbar = () => {
                 <Link _hover={{ textDecoration: "none" }} isExternal>
                   <MenuItem>
                     <VStack justify="start" alignItems="left">
-                      <Text fontWeight="500">Rajiv L</Text>
+                      <Text fontWeight="500">Rajiv Lochan Dash</Text>
                       <Text size="sm" color="gray.500" mt="0 !important">
-                        @Razziv
+                        @razzivofficial
                       </Text>
                     </VStack>
                   </MenuItem>
@@ -122,7 +124,9 @@ const Navbar = () => {
                 </MenuItem>
                 <MenuDivider />
                 <MenuItem>
-                  <Text fontWeight="500">Sign Out</Text>
+                  <Text color={"red.600"} fontWeight="500">
+                    Sign Out
+                  </Text>
                 </MenuItem>
               </MenuList>
             </Menu>

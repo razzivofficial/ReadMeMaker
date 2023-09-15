@@ -43,7 +43,7 @@ const Footer = () => {
         borderTopColor="gray.900"
         pt="20px"
       >
-        <Link href="https://templateskart.com" isExternal>
+        <Link href="#" isExternal display={{ base: "none", md: "block" }}>
           <Image
             w="30%"
             src="https://t3.ftcdn.net/jpg/04/01/04/04/360_F_401040407_G0Oc6pezJWHDUMLrFEkcSJMXgi3fuIT0.jpg"
