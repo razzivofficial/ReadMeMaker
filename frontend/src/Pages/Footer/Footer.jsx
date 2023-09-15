@@ -13,6 +13,8 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   PopoverBody,
+  Link,
+  Image,
 } from "@chakra-ui/react";
 
 import FooterSignup from "./SignUp";
@@ -41,6 +43,13 @@ const Footer = () => {
         borderTopColor="gray.900"
         pt="20px"
       >
+        <Link href="https://templateskart.com" isExternal>
+          <Image
+            w="30%"
+            src="https://t3.ftcdn.net/jpg/04/01/04/04/360_F_401040407_G0Oc6pezJWHDUMLrFEkcSJMXgi3fuIT0.jpg"
+            alt="ReadMeMaker"
+          />
+        </Link>
         <Box d={["block", "block", "none", "none"]} mb="30px" mx={5}>
           <FooterSignup />
         </Box>
