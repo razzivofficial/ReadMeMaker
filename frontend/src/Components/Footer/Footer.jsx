@@ -1,4 +1,5 @@
 import React from "react";
+import logoImg from "../../logo.png"
 import {
   Container,
   Box,
@@ -46,7 +47,7 @@ const Footer = () => {
         <Link href="#" isExternal display={{ base: "none", md: "block" }}>
           <Image
             w="30%"
-            src="https://t3.ftcdn.net/jpg/04/01/04/04/360_F_401040407_G0Oc6pezJWHDUMLrFEkcSJMXgi3fuIT0.jpg"
+            src={logoImg}
             alt="ReadMeMaker"
           />
         </Link>
