@@ -44,7 +44,7 @@ const Footer = () => {
         borderTopColor="gray.900"
         pt="20px"
       >
-        <Link href="#" isExternal display={{ base: "none", md: "block" }}>
+        <Link href="/" display={{ base: "none", md: "block" }}>
           <Image
             w="30%"
             src={logoImg}

@@ -55,7 +55,7 @@ const dropdownLinks = [
   },
 ];
 
-function Navbar() {
+function Navbar2() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const menuProps = {
     bg: useColorModeValue("gray.200", "gray.700"),
@@ -294,4 +294,4 @@ function MenuLink({ name, path, icon, onClose }) {
   );
 }
 
-export default Navbar;
+export default Navbar2;
