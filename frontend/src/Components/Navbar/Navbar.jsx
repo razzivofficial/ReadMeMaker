@@ -21,6 +21,9 @@ import {
 import { useState } from "react";
 import { CgMenuRound } from "react-icons/cg";
 
+import Documentation from "../../Pages/Documentation/Documentation";
+import { AboutUs } from "../../Pages/AboutUs/AboutUs";
+
 const IconButton = ({ children }) => {
   return (
     <Button
@@ -49,6 +52,7 @@ const Navbar = () => {
   };
 
   return (
+
     <Box
       py="2"
       boxShadow="sm"
@@ -59,6 +63,7 @@ const Navbar = () => {
       width="100%"
       zIndex="1"
     >
+
       <Container maxW="1280px" px={4} mx="auto">
         <HStack spacing={4}>
           <Image
@@ -81,6 +86,10 @@ const Navbar = () => {
             d={{ base: "none", md: "block" }}
           />
           <Spacer />
+          <ul className="flex">
+            <a href="/Documentation"><li className="p-2">Docs</li></a>
+            <a href="/AboutUs"><li className="p-2">About us</li></a>
+          </ul>
           <HStack spacing={3}>
             {/* <Button
               w={20}
@@ -141,6 +150,7 @@ const Navbar = () => {
         </HStack>
       </Container>
     </Box>
+
   );
 };
 
