@@ -1,4 +1,4 @@
-import logoImg from "../../logo.png"
+import logoImg from "../../logo.png";
 import {
   Container,
   Box,
@@ -19,6 +19,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { CgMenuRound } from "react-icons/cg";
 
 import Documentation from "../../Pages/Documentation/Documentation";
 import { AboutUs } from "../../Pages/AboutUs/AboutUs";
@@ -44,6 +45,11 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const toggleUserMenu = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  };
 
   return (
 
@@ -61,14 +67,14 @@ const Navbar = () => {
       <Container maxW="1280px" px={4} mx="auto">
         <HStack spacing={4}>
           <Image
-            alt="dev logo"
+            alt="ReadMeMaker Logo"
             w={"auto"}
-            h={12}
+            h={14}
             src={logoImg}
             rounded={50}
           />
           <Button display={{ base: "block", md: "none" }} onClick={toggleMenu}>
-            ☰
+            <CgMenuRound className="text-2xl items-center" />
           </Button>
           <Input
             // display={{ base: "block", md: "block" }}
@@ -94,8 +100,8 @@ const Navbar = () => {
             >
               LogIn
             </Button> */}
-            <Menu isLazy isOpen={isMenuOpen} onClose={toggleMenu}>
-              <MenuButton size="sm" onClick={toggleMenu}>
+            <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
+              <MenuButton size="sm" onClick={toggleUserMenu}>
                 <Avatar
                   size="sm"
                   src={
@@ -127,7 +133,7 @@ const Navbar = () => {
                   <Text fontWeight="500">Create Post</Text>
                 </MenuItem>
                 <MenuItem>
-                  <Text fontWeight="500">Reading List</Text>
+                  <Text fontWeight="500">Book Maarks</Text>
                 </MenuItem>
                 <MenuItem>
                   <Text fontWeight="500">Settings</Text>
