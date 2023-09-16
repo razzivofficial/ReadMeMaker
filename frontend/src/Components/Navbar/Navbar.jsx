@@ -32,8 +32,8 @@ import { FiSun } from "react-icons/fi";
 
 const navLinks = [
   { name: "About", path: "#" },
-  { name: "Blog", path: "#" },
-  { name: "Features", path: "#" },
+  { name: "Documentation", path: "#" },
+  // { name: "Features", path: "#" },
 ];
 
 const dropdownLinks = [
@@ -43,7 +43,7 @@ const dropdownLinks = [
     icon: MdTimeline,
   },
   {
-    name: "Tech Stack",
+    name: "Join Community",
     path: "#",
     icon: BsGlobe2,
   },
