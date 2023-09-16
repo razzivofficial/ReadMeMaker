@@ -29,7 +29,6 @@ import { BiChevronDown } from "react-icons/bi";
 import { MdTimeline } from "react-icons/md";
 import { BsBook, BsGlobe2 } from "react-icons/bs";
 import { FiSun } from "react-icons/fi";
-import HomePage from "../../Pages/HomePage/HomePage";
 
 const navLinks = [
   { name: "About", path: "#" },
