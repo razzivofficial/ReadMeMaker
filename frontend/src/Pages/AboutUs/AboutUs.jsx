@@ -1,7 +1,14 @@
-import React from 'react'
+import React from "react";
 
-export const AboutUs = () => {
-    return (
-        <div>This is AboutUs</div>
-    )
+export default function AboutUs() {
+  return (
+    <>
+      <div>This is AboutUs</div>
+      <div>This is AboutUs</div>
+      <div>This is AboutUs</div>
+      <div>This is AboutUs</div>
+      <div>This is AboutUs</div>
+      <div>This is AboutUs</div>
+    </>
+  );
 }
