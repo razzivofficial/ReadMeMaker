@@ -6,8 +6,8 @@ import { GrPowerReset } from "react-icons/gr";
 export default function ElementAdder() {
   return (
     <>
-      <div className="flex h-screen w-full flex-col items-center justify-center gap-y-2">
-        <div className="w-[60%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-md shadow-gray-100">
+      <div className="flex mt-12 h-screen w-[100%] flex-col items-center gap-y-2">
+        <div className="w-[60%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-lg shadow-gray-200">
           <div className="flex items-center justify-between px-2 text-base font-medium text-gray-700">
             <div>Add Elements</div>
             {/* <div>

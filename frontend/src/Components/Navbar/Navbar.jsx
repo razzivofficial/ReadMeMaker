@@ -219,7 +219,7 @@ function Navbar() {
                 <Text fontWeight="500">Create Post</Text>
               </MenuItem>
               <MenuItem>
-                <Text fontWeight="500">Book Maarks</Text>
+                <Text fontWeight="500">Bookmarks</Text>
               </MenuItem>
               <MenuItem>
                 <Text fontWeight="500">Settings</Text>
