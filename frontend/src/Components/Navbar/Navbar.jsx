@@ -78,6 +78,8 @@ function Navbar() {
       width="100%"
       bg={useColorModeValue("gray.100", "gray.700")}
       top="0"
+      position={"fixed"}
+      zIndex={999}
     >
       <Flex
         h={16}
@@ -113,7 +115,6 @@ function Navbar() {
             />
           </Link>
           <Input
-            // display={{ base: "block", md: "block" }}
             display={"block"}
             maxW="30rem"
             placeholder="Search Templates"
