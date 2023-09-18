@@ -31,8 +31,8 @@ import { BsBook, BsGlobe2 } from "react-icons/bs";
 import { FiSun } from "react-icons/fi";
 
 const navLinks = [
-  { name: "About", path: "#" },
-  { name: "Documentation", path: "#" },
+  { name: "About", path: "/About" },
+  { name: "Documentation", path: "/Documentation" },
   // { name: "Features", path: "#" },
 ];
 
