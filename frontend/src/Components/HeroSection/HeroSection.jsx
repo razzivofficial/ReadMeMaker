@@ -1,6 +1,32 @@
-import * as React from "react";
+import { React, useState, useEffect } from "react";
 import { chakra, Stack, Text, Button, Box } from "@chakra-ui/react";
 import { GiCoffeeCup } from "react-icons/gi";
+
+// Animation Logic Started
+
+// const text = [
+//   "Drag & Drop Interface",
+//   "Interface Markdown",
+//   "Preview Custom Templates",
+// ];
+
+const Typewriter = ({ text, delay }) => {
+  const [currentText, setCurrentText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setCurrentText((prevText) => prevText + text[currentIndex]);
+        setCurrentIndex((prevIndex) => prevIndex + 1);
+      }, delay);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, delay, text]);
+
+  return <span>{currentText}</span>;
+};
 
 const HeroSection = () => {
   return (
@@ -38,7 +64,8 @@ const HeroSection = () => {
             color="teal"
             bg="linear-gradient(transparent 50%, #83e9e7 50%)"
           >
-            Drag & Drop Interface Markdown Preview Custom Templates
+            {/* Drag & Drop Interface Markdown Preview Custom Templates */}
+            <Typewriter text="My React App" delay={100} />
           </chakra.span>
         </chakra.h1>
         <Text maxW="550px" fontSize="xl" textAlign="center" color="gray.500">
