@@ -1,34 +1,56 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { chakra, Stack, Text, Button, Box } from "@chakra-ui/react";
 import { GiCoffeeCup } from "react-icons/gi";
 
-// Animation Logic Started
+const textArray = [
+  "Drag & Drop Interface",
+  "Interface Markdown",
+  "Preview Custom Templates",
+];
 
-// const text = [
-//   "Drag & Drop Interface",
-//   "Interface Markdown",
-//   "Preview Custom Templates",
-// ];
-
-const Typewriter = ({ text, delay }) => {
-  const [currentText, setCurrentText] = useState("");
+const Typewriter = ({ text, delay, infinite }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isTyping, setIsTyping] = useState(true);
 
   useEffect(() => {
-    if (currentIndex < text.length) {
-      const timeout = setTimeout(() => {
-        setCurrentText((prevText) => prevText + text[currentIndex]);
-        setCurrentIndex((prevIndex) => prevIndex + 1);
-      }, delay);
+    let timeout;
 
-      return () => clearTimeout(timeout);
+    if (isTyping) {
+      if (currentIndex < text.length) {
+        timeout = setTimeout(() => {
+          setCurrentText((prevText) => prevText + text[currentIndex]);
+          setCurrentIndex((prevIndex) => prevIndex + 1);
+        }, delay);
+      } else {
+        setIsTyping(false);
+
+        if (infinite) {
+          setTimeout(() => {
+            setCurrentIndex(0);
+            setCurrentText("");
+            setIsTyping(true);
+          }, 3000);
+        }
+      }
     }
-  }, [currentIndex, delay, text]);
+
+    return () => clearTimeout(timeout);
+  }, [currentIndex, delay, infinite, isTyping, text]);
 
   return <span>{currentText}</span>;
 };
 
 const HeroSection = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % textArray.length);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Box
       p={{ base: 8, md: 14 }}
@@ -64,8 +86,7 @@ const HeroSection = () => {
             color="teal"
             bg="linear-gradient(transparent 50%, #83e9e7 50%)"
           >
-            {/* Drag & Drop Interface Markdown Preview Custom Templates */}
-            <Typewriter text="My React App" delay={100} />
+            <Typewriter text={textArray[0]} delay={100} infinite />
           </chakra.span>
         </chakra.h1>
         <Text maxW="550px" fontSize="xl" textAlign="center" color="gray.500">
