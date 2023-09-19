@@ -8,49 +8,21 @@ const textArray = [
   "Preview Custom Templates",
 ];
 
-const Typewriter = ({ text, delay, infinite }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentText, setCurrentText] = useState("");
-  const [isTyping, setIsTyping] = useState(true);
-
-  useEffect(() => {
-    let timeout;
-
-    if (isTyping) {
-      if (currentIndex < text.length) {
-        timeout = setTimeout(() => {
-          setCurrentText((prevText) => prevText + text[currentIndex]);
-          setCurrentIndex((prevIndex) => prevIndex + 1);
-        }, delay);
-      } else {
-        setIsTyping(false);
-
-        if (infinite) {
-          setTimeout(() => {
-            setCurrentIndex(0);
-            setCurrentText("");
-            setIsTyping(true);
-          }, 3000);
-        }
-      }
-    }
-
-    return () => clearTimeout(timeout);
-  }, [currentIndex, delay, infinite, isTyping, text]);
-
-  return <span>{currentText}</span>;
-};
-
-const HeroSection = () => {
+const Typewriter = ({ text }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % textArray.length);
-    }, 1000);
+    }, 3000); // Change the delay as needed
+
     return () => clearInterval(interval);
   }, []);
 
+  return <span>{textArray[currentIndex]}</span>;
+};
+
+const HeroSection = () => {
   return (
     <Box
       p={{ base: 8, md: 14 }}
@@ -86,7 +58,7 @@ const HeroSection = () => {
             color="teal"
             bg="linear-gradient(transparent 50%, #83e9e7 50%)"
           >
-            <Typewriter text={textArray[0]} delay={100} infinite />
+            <Typewriter />
           </chakra.span>
         </chakra.h1>
         <Text maxW="550px" fontSize="xl" textAlign="center" color="gray.500">
