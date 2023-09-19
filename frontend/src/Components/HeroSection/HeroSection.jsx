@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { chakra, Stack, Text, Button, Box } from "@chakra-ui/react";
+import { chakra, Stack, Text, Button, Box, Link } from "@chakra-ui/react";
 import { GiCoffeeCup } from "react-icons/gi";
 
 const textArray = [
@@ -76,7 +76,7 @@ const HeroSection = () => {
             <Typewriter />
           </chakra.span>
         </chakra.h1>
-        <Text maxW="550px" fontSize="xl" textAlign="center" color="gray.500">
+        <Text maxW="850px" fontSize="xl" textAlign="center" color="gray.500">
           Crafting documentation is like painting the portrait of your project's
           soul. Each line of code, every design choice, and every contributor's
           effort are woven together into a tapestry that tells the story of your
@@ -89,16 +89,18 @@ const HeroSection = () => {
           w={{ base: "100%", sm: "auto" }}
           spacing={5}
         >
-          <Button
-            colorScheme="teal"
-            variant="outline"
-            rounded="md"
-            size="lg"
-            height="3.5rem"
-            fontSize="1.2rem"
-          >
-            Get Started
-          </Button>
+          <Link to="/editor">
+            <Button
+              colorScheme="teal"
+              variant="outline"
+              rounded="md"
+              size="lg"
+              height="3.5rem"
+              fontSize="1.2rem"
+            >
+              Get Started
+            </Button>
+          </Link>
           <Button
             leftIcon={<GiCoffeeCup />}
             colorScheme="gray"
