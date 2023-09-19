@@ -1,4 +1,4 @@
-import { Container, Box, HStack, Skeleton, Stack } from "@chakra-ui/react";
+import { Container, Box,Skeleton, Stack } from "@chakra-ui/react";
 
 const Loader = () => {
   return (
