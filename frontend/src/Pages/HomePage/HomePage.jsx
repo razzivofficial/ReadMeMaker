@@ -9,7 +9,7 @@ export default function HomePage() {
     // Simulate data loading with a delay
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 200);
   }, []);
 
   return (

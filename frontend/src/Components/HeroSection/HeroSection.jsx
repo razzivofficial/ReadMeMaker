@@ -89,7 +89,7 @@ const HeroSection = () => {
           w={{ base: "100%", sm: "auto" }}
           spacing={5}
         >
-          <Link to="/editor">
+          <Link href="/editor">
             <Button
               colorScheme="teal"
               variant="outline"
