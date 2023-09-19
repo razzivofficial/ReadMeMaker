@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <div>
       <HeroSection/>
-      <ElementAdder />
+      {/* <ElementAdder /> */}
     </div>
   );
 }
