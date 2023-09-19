@@ -3,25 +3,15 @@ import { chakra, Stack, Text, Button, Box } from "@chakra-ui/react";
 import { GiCoffeeCup } from "react-icons/gi";
 
 const textArray = [
-  "Drag & Drop Interface",
-  "Interface Markdown",
-  "Preview Custom Templates",
+  " Drag & Drop Interface",
+  " Interface Markdown",
+  " Preview Custom Templates",
 ];
 
 const Typewriter = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
-  const [showCursor, setShowCursor] = useState(true);
-  const typingSpeed = 250; // Adjust the typing speed as needed (lower value = faster)
-  const cursorBlinkSpeed = 800; // Adjust cursor blink speed (in milliseconds)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setShowCursor((prevShowCursor) => !prevShowCursor);
-    }, cursorBlinkSpeed);
-
-    return () => clearInterval(interval);
-  }, []);
+  const typingSpeed = 300; // Adjust the typing speed as needed (lower value = faster)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -42,7 +32,7 @@ const Typewriter = () => {
   return (
     <span>
       {currentText}
-      {showCursor ? <span>|</span> : null}
+      <span>|</span>
     </span>
   );
 };
