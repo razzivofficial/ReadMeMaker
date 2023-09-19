@@ -8,18 +8,43 @@ const textArray = [
   "Preview Custom Templates",
 ];
 
-const Typewriter = ({ text }) => {
+const Typewriter = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+  const typingSpeed = 250; // Adjust the typing speed as needed (lower value = faster)
+  const cursorBlinkSpeed = 800; // Adjust cursor blink speed (in milliseconds)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % textArray.length);
-    }, 3000); // Change the delay as needed
+      setShowCursor((prevShowCursor) => !prevShowCursor);
+    }, cursorBlinkSpeed);
 
     return () => clearInterval(interval);
   }, []);
 
-  return <span>{textArray[currentIndex]}</span>;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentText((prevText) => {
+        const targetText = textArray[currentIndex];
+        if (prevText === targetText) {
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % textArray.length);
+          return "";
+        }
+        const nextChar = targetText.charAt(prevText.length);
+        return prevText + nextChar;
+      });
+    }, typingSpeed);
+
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
+  return (
+    <span>
+      {currentText}
+      {showCursor ? <span>|</span> : null}
+    </span>
+  );
 };
 
 const HeroSection = () => {
