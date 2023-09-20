@@ -180,8 +180,14 @@ const Testimonials = () => {
         </Center>
       </Container>
 
-      {/* Developed by */}
-      <Container maxW="5xl" p={{ base: 5, md: 10 }}>
+      <Container
+        maxW="5xl"
+        p={{ base: 5, md: 10 }}
+        mt={{
+          base: 18,
+          md: 10,
+        }}
+      >
         <Flex justify="center" mb={8}>
           <chakra.h3 fontSize="3xl" fontWeight="bold" mb={4}>
             Developed by
