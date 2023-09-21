@@ -3,9 +3,9 @@ import { chakra, Stack, Text, Button, Box, Link } from "@chakra-ui/react";
 import { GiCoffeeCup } from "react-icons/gi";
 
 const textArray = [
-  " Drag & Drop Interface",
-  " Interface Markdown",
-  " Preview Custom Templates",
+  "#Drag & Drop Interface",
+  "#Interface Markdown",
+  "#Preview Custom Templates",
 ];
 
 const Typewriter = () => {
