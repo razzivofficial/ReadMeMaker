@@ -2,9 +2,10 @@ import { Divider, Button } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
+import ReactMarkdown from "react-markdown";
 
 export default function ElementAdder() {
-  const [markDown, setMarkDown] = useState("Welcome to ReadMeMaker");
+  const [markDown, setMarkDown] = useState("#Welcome to ReadMeMaker");
   return (
     <>
       <div className="flex mt-32 h-screen w-[100%] flex-col items-center gap-y-2">
@@ -18,16 +19,10 @@ export default function ElementAdder() {
             value={markDown}
             onChange={(e) => setMarkDown(e.target.value)}
           ></textarea>
-          <textarea
-            className="bg-slate-900 m-6"
-            name=""
-            id=""
-            cols="70"
-            style={{ color: "white" }}
-            value={markDown}
-          >
-            {/* {markDown} */}
-          </textarea>
+          <div className="bg-slate-900 m-6 w-[100px]" style={{ color: "white" }}>
+            <ReactMarkdown>{markDown}</ReactMarkdown>
+          </div>
+          {/* <ReactMarkdown>{markDown}</ReactMarkdown> */}
           <div className="w-[25%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-lg shadow-gray-200">
             <div className="flex items-center justify-between px-2 text-base font-medium text-gray-700">
               <div>Add Elements</div>
