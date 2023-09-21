@@ -24,8 +24,9 @@ export default function ElementAdder() {
             id=""
             cols="70"
             style={{ color: "white" }}
+            value={markDown}
           >
-            {markDown}
+            {/* {markDown} */}
           </textarea>
           <div className="w-[25%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-lg shadow-gray-200">
             <div className="flex items-center justify-between px-2 text-base font-medium text-gray-700">
