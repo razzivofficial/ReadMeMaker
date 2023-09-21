@@ -1,4 +1,5 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
+
 import {
   Box,
   Flex,
@@ -29,6 +30,19 @@ import { BiChevronDown } from "react-icons/bi";
 import { MdTimeline } from "react-icons/md";
 import { BsBook, BsGlobe2 } from "react-icons/bs";
 import { FiSun } from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
+
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+} from '@chakra-ui/react'
 
 const navLinks = [
   { name: "About", path: "/About" },
@@ -56,6 +70,12 @@ const dropdownLinks = [
 
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const initialRef = React.useRef(null);
+  const finalRef = React.useRef(null);
+
+  const [changeMode, setChangeMode] = useState(true);
+
   const menuProps = {
     bg: useColorModeValue("gray.200", "gray.700"),
     color: useColorModeValue("blue.400", "blue.200"),
@@ -68,9 +88,11 @@ function Navbar() {
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
+
   const toggleUserMenu = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
   };
+
   return (
     <Box
       px={4}
@@ -85,7 +107,7 @@ function Navbar() {
         h={16}
         alignItems="center"
         justifyContent="space-between"
-        maxW={800}
+        maxW={1000}
         mx="auto"
       >
         <IconButton
@@ -168,10 +190,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                    // boxShadow={useColorModeValue(
-                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                    // )}
+                  // boxShadow={useColorModeValue(
+                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                  // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -236,18 +258,109 @@ function Navbar() {
           <Spacer />
         </HStack>
         <IconButton aria-label="Color Switcher" icon={<FiSun />} />
+        <Button colorScheme='blue' onClick={onOpen} >Signup</Button>
+
       </Flex>
+      <Modal
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          {changeMode ? (
+            <>
+              <ModalHeader textAlign={"center"} >Create your account</ModalHeader>
+            </>
+          ) : (
+            <>
+              <ModalHeader textAlign={"center"}>Log in into your account</ModalHeader>
+            </>
+
+          )}
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl isRequired>
+              <FormLabel>Enter Your email</FormLabel>
+              <Input ref={initialRef} placeholder='Enter your email' />
+            </FormControl>
+
+            <FormControl mt={4} isRequired>
+              <FormLabel>Password</FormLabel>
+              <Input placeholder='Password' type="password" />
+            </FormControl>
+            {!changeMode ? (
+              <>
+                <Text py={"4"} color="gray.700" textAlign="center" justify="center" cursor={"pointer"} _hover={{ color: "gray.400" }} >Forgot password?</Text>
+              </>
+            ) : (
+              <>
+                <Text py={"4"} color="gray.700" textAlign="center" justify="center" cursor={"pointer"} _hover={{ color: "gray.400" }} display={"none"} >Forgot password?</Text>
+              </>
+            )}
+
+            <Flex alignItems={"center"} justify={"center"} my={"2"}>
+              {!changeMode ? (
+                <>
+                  <Button textAlign="center" justify="center" leftIcon={<FcGoogle />}>Log in with Google</Button>
+                </>
+              ) : (
+                <>
+                  <Flex alignItems={"center"} justify={"center"} mt={"5"}>
+                    <Button textAlign="center" justify="center" leftIcon={<FcGoogle />}> Sign up using Google</Button>
+                  </Flex>
+                </>
+              )}
+            </Flex>
+            <Flex justify={"center"} alignItems={"center"}>
+              {changeMode ? (
+
+                <Text py={"3"} color="gray.700" textAlign="center" justify="center" >Already Registered?
+                  <Button color={"red.400"} _hover={{ color: "red.700" }} variant='none' onClick={() => setChangeMode(!changeMode)} >Log in</Button>
+                </Text>
+              ) : (
+                <Text py={"3"} color="gray.700" textAlign="center" justify="center"  >Not yet Registered?
+                  <Button color={"red.400"} _hover={{ color: "red.700" }} variant='none' onClick={() => setChangeMode(!changeMode)} >Sign up</Button>
+                </Text>
+              )}
+            </Flex>
+          </ModalBody>
+
+          <ModalFooter>
+            {changeMode ? (
+              <>
+                <Button colorScheme='blue' mr={3}>
+                  Sign up
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button colorScheme='blue' mr={3}>
+                  Log In
+                </Button>
+              </>
+            )}
+
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       {/* Mobile Screen Links */}
-      {isOpen ? (
-        <Box pb={4} display={["inherit", "inherit", "none"]}>
-          <Stack as="nav" spacing={2}>
-            {navLinks.map((link, index) => (
-              <NavLink key={index} {...link} onClose={onClose} />
-            ))}
-          </Stack>
-        </Box>
-      ) : null}
-    </Box>
+      {
+        isOpen ? (
+          <Box pb={4} display={["inherit", "inherit", "none"]}>
+            <Stack as="nav" spacing={2}>
+              {navLinks.map((link, index) => (
+                <NavLink key={index} {...link} onClose={onClose} />
+              ))}
+            </Stack>
+          </Box>
+        ) : null
+      }
+
+
+    </Box >
   );
 }
 
