@@ -166,8 +166,8 @@ const Testimonials = () => {
                     rounded="md"
                     w={{ base: "100%", md: "max-content" }}
                     mt={{ base: "8", md: "28", sm: "12" }}
+                    leftIcon={<AiFillBug/>}
                   >
-                    <AiFillBug style={{ paddingRight: "2px" }} />
                     Report a bug
                   </Button>
                 </Box>
