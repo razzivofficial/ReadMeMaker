@@ -5,7 +5,7 @@ import { GrPowerReset } from "react-icons/gr";
 import ReactMarkdown from "react-markdown";
 
 export default function ElementAdder() {
-  const [markDown, setMarkDown] = useState("#Welcome to ReadMeMaker");
+  const [markDown, setMarkDown] = useState(`# Welcome to ReadMeMaker`);
   return (
     <>
       <div className="flex mt-32 h-screen w-[100%] flex-col items-center gap-y-2">
