@@ -1,16 +1,21 @@
 import { Divider, Button } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { React, useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
-import ReactMarkdown from "react-markdown";
+import MarkdownEditor from "@uiw/react-markdown-editor";
+import "@wcj/dark-mode";
+import "./ElementAdder.css";
+
+const code = `# hi this is working`;
 
 export default function ElementAdder() {
-  const [markDown, setMarkDown] = useState(`# Welcome to ReadMeMaker`);
+  const [markdownVal, setMarkdownVal] = useState(code);
+  console.log("markdownVal:", markdownVal);
   return (
     <>
       <div className="flex mt-32 h-screen w-[100%] flex-col items-center gap-y-2">
         <div className="" style={{ display: "flex", flexDirection: "row" }}>
-          <textarea
+          {/* <textarea
             className="bg-slate-100 m-6"
             name=""
             id=""
@@ -21,9 +26,40 @@ export default function ElementAdder() {
           ></textarea>
           <div className="bg-slate-900 m-6 w-[100px]" style={{ color: "white" }}>
             <ReactMarkdown>{markDown}</ReactMarkdown>
+          </div> */}
+
+          <div>
+            <dark-mode light="Light" dark="Dark"></dark-mode>
+            <h3>Auto</h3>
+            <div className="eleAdd">
+              <MarkdownEditor
+                value={markdownVal}
+                onChange={(value) => {
+                  setMarkdownVal(value);
+                }}
+              />
+            </div>
+            <h3>Light</h3>
+            <div className="eleAdd" data-color-mode="light">
+              <MarkdownEditor
+                value={markdownVal}
+                onChange={(value) => {
+                  setMarkdownVal(value);
+                }}
+              />
+            </div>
+            <h3>Dark</h3>
+            <div className="eleAdd" data-color-mode="dark">
+              <MarkdownEditor
+                value={markdownVal}
+                onChange={(value) => {
+                  setMarkdownVal(value);
+                }}
+              />
+            </div>
           </div>
-          {/* <ReactMarkdown>{markDown}</ReactMarkdown> */}
-          <div className="w-[25%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-lg shadow-gray-200">
+
+          <div className="w-[30%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-lg shadow-gray-200">
             <div className="flex items-center justify-between px-2 text-base font-medium text-gray-700">
               <div>Add Elements</div>
               {/* {Search bar code starts} */}
