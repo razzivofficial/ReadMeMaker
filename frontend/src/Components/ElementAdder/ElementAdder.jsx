@@ -28,7 +28,7 @@ export default function ElementAdder() {
             <ReactMarkdown>{markDown}</ReactMarkdown>
           </div> */}
 
-          <div>
+          {/* <div>
             <dark-mode light="Light" dark="Dark"></dark-mode>
             <h3>Auto</h3>
             <div className="eleAdd">
@@ -57,7 +57,7 @@ export default function ElementAdder() {
                 }}
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="w-[30%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-lg shadow-gray-200">
             <div className="flex items-center justify-between px-2 text-base font-medium text-gray-700">
