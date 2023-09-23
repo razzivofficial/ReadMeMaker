@@ -2,63 +2,64 @@ import { Divider, Button } from "@chakra-ui/react";
 import { React, useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
-import MarkdownEditor from "@uiw/react-markdown-editor";
-import "@wcj/dark-mode";
+import MDEditor, { commands } from "@uiw/react-md-editor";
+import { BiHelpCircle } from "react-icons/bi";
 import "./ElementAdder.css";
 
-const code = `# hi this is working`;
+const help = {
+  name: "help",
+  keyCommand: "help",
+  buttonProps: { "aria-label": "Insert help" },
+  icon: (
+    <svg viewBox="0 0 16 16" width="12px" height="12px">
+      <BiHelpCircle />
+    </svg>
+  ),
+  execute: (state, api) => {
+    window.open("/documentation", "_blank");
+  },
+};
 
 export default function ElementAdder() {
-  const [markdownVal, setMarkdownVal] = useState(code);
-  console.log("markdownVal:", markdownVal);
+  const mkdStr = `## Markdown Editor`;
+  const [value, setValue] = useState(mkdStr);
   return (
     <>
       <div className="flex mt-32 h-screen w-[100%] flex-col items-center gap-y-2">
-        <div className="" style={{ display: "flex", flexDirection: "row" }}>
-          {/* <textarea
-            className="bg-slate-100 m-6"
-            name=""
-            id=""
-            cols="70"
-            style={{ color: "black" }}
-            value={markDown}
-            onChange={(e) => setMarkDown(e.target.value)}
-          ></textarea>
-          <div className="bg-slate-900 m-6 w-[100px]" style={{ color: "white" }}>
-            <ReactMarkdown>{markDown}</ReactMarkdown>
-          </div> */}
-
-          {/* <div>
-            <dark-mode light="Light" dark="Dark"></dark-mode>
+        <div className="" style={{ display: "flex", flexDirection: "col" }}>
+          <div className="container">
             <h3>Auto</h3>
-            <div className="eleAdd">
-              <MarkdownEditor
-                value={markdownVal}
-                onChange={(value) => {
-                  setMarkdownVal(value);
-                }}
-              />
-            </div>
-            <h3>Light</h3>
-            <div className="eleAdd" data-color-mode="light">
-              <MarkdownEditor
-                value={markdownVal}
-                onChange={(value) => {
-                  setMarkdownVal(value);
-                }}
+            <MDEditor
+              height={500}
+              // width={2000}
+              value={value}
+              commands={[...commands.getCommands(), help]}
+              onChange={setValue}
+            />
+
+            {/* Dont remove this code  */}
+            {/* Dont remove this code  */}
+            {/* Dont remove this code  */}
+
+            {/* <h3>Light</h3>
+            <div data-color-mode="light">
+              <MDEditor
+                height={200}
+                commands={[...commands.getCommands(), help]}
+                value={value}
+                onChange={setValue}
               />
             </div>
             <h3>Dark</h3>
-            <div className="eleAdd" data-color-mode="dark">
-              <MarkdownEditor
-                value={markdownVal}
-                onChange={(value) => {
-                  setMarkdownVal(value);
-                }}
+            <div data-color-mode="dark">
+              <MDEditor
+                height={200}
+                commands={[...commands.getCommands(), help]}
+                value={value}
+                onChange={setValue}
               />
-            </div>
-          </div> */}
-
+            </div> */}
+          </div>
           <div className="w-[30%] rounded-xl border border-gray-200 bg-white py-4 px-2 shadow-lg shadow-gray-200">
             <div className="flex items-center justify-between px-2 text-base font-medium text-gray-700">
               <div>Add Elements</div>
