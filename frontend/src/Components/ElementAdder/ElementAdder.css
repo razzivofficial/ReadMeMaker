@@ -2,3 +2,8 @@
   font-family: sans-serif;
   text-align: center;
 } */
+
+.h-screen {
+  height: 80vh;
+}
+
