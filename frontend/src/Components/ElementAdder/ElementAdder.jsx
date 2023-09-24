@@ -93,7 +93,7 @@ export default function ElementAdder() {
         </div>
         {/* {Search bar code ends} */}
       </div>
-      <div className="mt-5">
+      <div className="mt-5 p-5">
         {/* <Divider /> */}
         <div className="flex max-h-[400px] flex-col overflow-y-scroll mx-20">
           <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
