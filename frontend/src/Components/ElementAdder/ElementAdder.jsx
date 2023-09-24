@@ -1,4 +1,4 @@
-import { Divider, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { React, useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
