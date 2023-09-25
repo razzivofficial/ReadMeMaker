@@ -1,4 +1,4 @@
-const ENV=require("./.env")
+const ENV = require("./.env");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
