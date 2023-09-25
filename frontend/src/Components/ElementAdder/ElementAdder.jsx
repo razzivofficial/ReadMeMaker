@@ -1,9 +1,9 @@
-import { Button } from "@chakra-ui/react";
-import { React, useState } from "react";
-import { AiFillPlusCircle } from "react-icons/ai";
+import React, { useState } from "react";
+import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import { BiHelpCircle } from "react-icons/bi";
+import { Button } from "@chakra-ui/react";
 import "./ElementAdder.css";
 
 const help = {
@@ -21,44 +21,47 @@ const help = {
 };
 
 export default function ElementAdder() {
-  const mkdStr = `## Markdown Editor`;
-  const [value, setValue] = useState(mkdStr);
-  //   console.log("Value:", value);
+  const initialMkdStr = `## Markdown Editor`;
+  const [value, setValue] = useState(initialMkdStr);
 
-  /* Dynamic allocation code starts */
-  const inputEle = [
+  const [elementData, setElementData] = useState([
     {
-      type: "text",
-      id: 1,
-      value: "",
+      slno: "1",
+      title: "Acknowledgements",
+      desc: "Acknowledgements unordered list",
+      code: "## Acknowledgement codes",
     },
-  ];
+    {
+      slno: "2",
+      title: "Acknowledgements",
+      desc: "Acknowledgements unordered list",
+      code: "## Acknowledgement codes",
+    },
+    {
+      slno: "3",
+      title: "Acknowledgements",
+      desc: "Acknowledgements unordered list",
+      code: "## Acknowledgement codes",
+    },
+  ]);
 
-  const [arr, setArr] = useState(inputEle);
+  const [selectedElements, setSelectedElements] = useState([]);
 
-  const addEle = () => {
-    setArr((s) => {
-      return [
-        ...s,
-        {
-          type: "text",
-          value: "xyz",
-        },
-      ];
-    });
+  const toggleAddRemove = (index, code) => {
+    if (selectedElements.includes(index)) {
+      // Remove code
+      setSelectedElements((prevSelected) =>
+        prevSelected.filter((selected) => selected !== index)
+      );
+      setValue((prevValue) => prevValue.replace(code, ""));
+    } else {
+      // Add code
+      setSelectedElements((prevSelected) => [...prevSelected, index]);
+      setValue((prevValue) => prevValue + "\n" + code);
+    }
   };
 
-  const handleChange = (e) => {
-    e.preventDefault();
-
-    const index = e.target.id;
-    setArr((s) => {
-      const newEle = s.slice();
-      newEle[index].value = e.target.value;
-      // console.log('newArr', JSON.stringify(newArr));
-      return newEle;
-    });
-  };
+  const isElementSelected = (index) => selectedElements.includes(index);
 
   return (
     <>
@@ -68,34 +71,10 @@ export default function ElementAdder() {
           <h1 className=" text-center text-2xl mb-4">Editor</h1>
           <MDEditor
             height={500}
-            // width={2000}
             value={value}
             commands={[...commands.getCommands(), help]}
             onChange={setValue}
           />
-
-          {/* Dont remove this code  */}
-          {/* Dont remove this code  */}
-          {/* Dont remove this code  */}
-
-          {/* <h3>Light</h3>
-            <div data-color-mode="light">
-              <MDEditor
-                height={200}
-                commands={[...commands.getCommands(), help]}
-                value={value}
-                onChange={setValue}
-              />
-            </div>
-            <h3>Dark</h3>
-            <div data-color-mode="dark">
-              <MDEditor
-                height={200}
-                commands={[...commands.getCommands(), help]}
-                value={value}
-                onChange={setValue}
-              />
-            </div> */}
         </div>
       </div>
       <div className=" border border-info rounded-3xl m-8 bg-slate-50">
@@ -103,7 +82,6 @@ export default function ElementAdder() {
           <h4 class="mb-3 mt-5 text-2xl font-medium leading-tight text-primary">
             Add Predefined Elements
           </h4>
-          {/* {Search bar code starts} */}
           <div className="flex items-center justify-center mt-4 w-[40%]">
             <div className="flex relative mx-auto text-gray-600 w-[100%]">
               <input
@@ -134,53 +112,37 @@ export default function ElementAdder() {
               <GrPowerReset className="text-2xl " />
             </Button>
           </div>
-          {/* {Search bar code ends} */}
         </div>
         <div className="mt-5 p-5">
           <div className="flex max-h-[400px] flex-col overflow-y-scroll mx-20">
-            {/* {arr.map((item, i) => {
-              onChange={handleChange}
-              inputEle.value={item.value}
-            inputEle.id={i}
-            inputEle.type={item.type}
-            })} */}
-            <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
-              <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
-                <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
-                  1
-                </span>
+            {elementData.map((item, index) => (
+              <div
+                key={item.slno}
+                className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100"
+              >
+                <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
+                  <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
+                    {item.slno}
+                  </span>
+                </div>
+                <div className="flex flex-col items-start justify-between font-light text-gray-600">
+                  <p className="text-[15px] text-xl font-medium">
+                    {item.title}
+                  </p>
+                  <span className="text-xs font-light text-gray-400">
+                    {item.desc}
+                  </span>
+                </div>
+                <div className="flex-grow"></div>
+                <button onClick={() => toggleAddRemove(index, item.code)}>
+                  {isElementSelected(index) ? (
+                    <AiFillCheckCircle className="text-3xl mx-3" />
+                  ) : (
+                    <AiFillPlusCircle className="text-3xl mx-3" />
+                  )}
+                </button>
               </div>
-              <div className="flex flex-col items-start justify-between font-light text-gray-600">
-                <p className="text-[15px] text-xl font-medium">
-                  Acknowledgements
-                </p>
-                <span className="text-xs font-light text-gray-400">
-                  Acknowledgements unordered list
-                </span>
-              </div>
-              <div className="flex-grow"></div>
-              <button>
-                <AiFillPlusCircle onClick={addEle} className="text-3xl mx-3" />
-              </button>
-            </div>
-            {/*
-
-            <div>
-      <button onClick={addEle}>+</button>
-      {arr.map((item, i) => {
-        return (
-          <input
-            onChange={handleChange}
-            value={item.value}
-            id={i}
-            type={item.type}
-            size="40"
-          />
-        );
-      })}
-    </div>
-    
-    */}
+            ))}
           </div>
         </div>
       </div>
