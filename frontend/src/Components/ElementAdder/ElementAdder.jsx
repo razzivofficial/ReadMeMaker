@@ -33,15 +33,15 @@ export default function ElementAdder() {
     },
     {
       slno: "2",
-      title: "Acknowledgements",
+      title: "API Reference",
       desc: "Acknowledgements unordered list",
-      code: "## Acknowledgement codes",
+      code: "# API Reference",
     },
     {
       slno: "3",
-      title: "Acknowledgements",
-      desc: "Acknowledgements unordered list",
-      code: "## Acknowledgement codes",
+      title: "Appendix",
+      desc: "Appendix unordered list",
+      code: "### Acknowledgement codes",
     },
   ]);
 
@@ -49,13 +49,11 @@ export default function ElementAdder() {
 
   const toggleAddRemove = (index, code) => {
     if (selectedElements.includes(index)) {
-      // Remove code
       setSelectedElements((prevSelected) =>
         prevSelected.filter((selected) => selected !== index)
       );
       setValue((prevValue) => prevValue.replace(code, ""));
     } else {
-      // Add code
       setSelectedElements((prevSelected) => [...prevSelected, index]);
       setValue((prevValue) => prevValue + "\n" + code);
     }
