@@ -3,15 +3,15 @@ import { chakra, Stack, Text, Button, Box, Link } from "@chakra-ui/react";
 import { GiCoffeeCup } from "react-icons/gi";
 
 const textArray = [
-  "#Drag & Drop Interface",
-  "#Interface Markdown",
-  "#Preview Custom Templates",
+  "# Create READMEs with ease",
+  "# Collaborate in real-time",
+  "# Live markdown compilation",
 ];
 
 const Typewriter = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
-  const typingSpeed = 300; // Adjust the typing speed as needed (lower value = faster)
+  const typingSpeed = 200; // Adjust the typing speed as needed (lower value = faster)
 
   useEffect(() => {
     const interval = setInterval(() => {

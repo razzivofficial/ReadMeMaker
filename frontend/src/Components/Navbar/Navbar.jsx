@@ -42,7 +42,7 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 
 const navLinks = [
   { name: "About", path: "/About" },
@@ -87,7 +87,6 @@ function Navbar() {
   //   };
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-
 
   const toggleUserMenu = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
@@ -190,10 +189,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                  // boxShadow={useColorModeValue(
-                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                  // )}
+                    // boxShadow={useColorModeValue(
+                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                    // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -258,8 +257,9 @@ function Navbar() {
           <Spacer />
         </HStack>
         <IconButton aria-label="Color Switcher" icon={<FiSun />} />
-        <Button colorScheme='blue' onClick={onOpen} >Signup</Button>
-
+        <Button className="ml-6" colorScheme="blue" onClick={onOpen}>
+          Signup
+        </Button>
       </Flex>
       <Modal
         initialFocusRef={initialRef}
@@ -271,57 +271,117 @@ function Navbar() {
         <ModalContent>
           {changeMode ? (
             <>
-              <ModalHeader textAlign={"center"} >Create your account</ModalHeader>
+              <ModalHeader textAlign={"center"}>
+                Create your account
+              </ModalHeader>
             </>
           ) : (
             <>
-              <ModalHeader textAlign={"center"}>Log in into your account</ModalHeader>
+              <ModalHeader textAlign={"center"}>
+                Log in into your account
+              </ModalHeader>
             </>
-
           )}
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl isRequired>
               <FormLabel>Enter Your email</FormLabel>
-              <Input ref={initialRef} placeholder='Enter your email' />
+              <Input ref={initialRef} placeholder="Enter your email" />
             </FormControl>
 
             <FormControl mt={4} isRequired>
               <FormLabel>Password</FormLabel>
-              <Input placeholder='Password' type="password" />
+              <Input placeholder="Password" type="password" />
             </FormControl>
             {!changeMode ? (
               <>
-                <Text py={"4"} color="gray.700" textAlign="center" justify="center" cursor={"pointer"} _hover={{ color: "gray.400" }} >Forgot password?</Text>
+                <Text
+                  py={"4"}
+                  color="gray.700"
+                  textAlign="center"
+                  justify="center"
+                  cursor={"pointer"}
+                  _hover={{ color: "gray.400" }}
+                >
+                  Forgot password?
+                </Text>
               </>
             ) : (
               <>
-                <Text py={"4"} color="gray.700" textAlign="center" justify="center" cursor={"pointer"} _hover={{ color: "gray.400" }} display={"none"} >Forgot password?</Text>
+                <Text
+                  py={"4"}
+                  color="gray.700"
+                  textAlign="center"
+                  justify="center"
+                  cursor={"pointer"}
+                  _hover={{ color: "gray.400" }}
+                  display={"none"}
+                >
+                  Forgot password?
+                </Text>
               </>
             )}
 
             <Flex alignItems={"center"} justify={"center"} my={"2"}>
               {!changeMode ? (
                 <>
-                  <Button textAlign="center" justify="center" leftIcon={<FcGoogle />}>Log in with Google</Button>
+                  <Button
+                    textAlign="center"
+                    justify="center"
+                    leftIcon={<FcGoogle />}
+                  >
+                    Log in with Google
+                  </Button>
                 </>
               ) : (
                 <>
                   <Flex alignItems={"center"} justify={"center"} mt={"5"}>
-                    <Button textAlign="center" justify="center" leftIcon={<FcGoogle />}> Sign up using Google</Button>
+                    <Button
+                      textAlign="center"
+                      justify="center"
+                      leftIcon={<FcGoogle />}
+                    >
+                      {" "}
+                      Sign up using Google
+                    </Button>
                   </Flex>
                 </>
               )}
             </Flex>
             <Flex justify={"center"} alignItems={"center"}>
               {changeMode ? (
-
-                <Text py={"3"} color="gray.700" textAlign="center" justify="center" >Already Registered?
-                  <Button color={"red.400"} _hover={{ color: "red.700" }} variant='none' onClick={() => setChangeMode(!changeMode)} >Log in</Button>
+                <Text
+                  py={"3"}
+                  color="gray.700"
+                  textAlign="center"
+                  justify="center"
+                >
+                  Already Registered?
+                  <Button
+                    color={"red.400"}
+                    _hover={{ color: "red.700" }}
+                    variant="none"
+                    onClick={() => setChangeMode(!changeMode)}
+                  >
+                    Log in
+                  </Button>
                 </Text>
               ) : (
-                <Text py={"3"} color="gray.700" textAlign="center" justify="center"  >Not yet Registered?
-                  <Button color={"red.400"} _hover={{ color: "red.700" }} variant='none' onClick={() => setChangeMode(!changeMode)} >Sign up</Button>
+                <Text
+                  py={"3"}
+                  color="gray.700"
+                  textAlign="center"
+                  justify="center"
+                >
+                  Not yet Registered?
+                  <Button
+                    color={"red.400"}
+                    _hover={{ color: "red.700" }}
+                    variant="none"
+                    onClick={() => setChangeMode(!changeMode)}
+                  >
+                    Sign up
+                  </Button>
                 </Text>
               )}
             </Flex>
@@ -330,13 +390,13 @@ function Navbar() {
           <ModalFooter>
             {changeMode ? (
               <>
-                <Button colorScheme='blue' mr={3}>
+                <Button colorScheme="blue" mr={3}>
                   Sign up
                 </Button>
               </>
             ) : (
               <>
-                <Button colorScheme='blue' mr={3}>
+                <Button colorScheme="blue" mr={3}>
                   Log In
                 </Button>
               </>
@@ -347,20 +407,16 @@ function Navbar() {
         </ModalContent>
       </Modal>
       {/* Mobile Screen Links */}
-      {
-        isOpen ? (
-          <Box pb={4} display={["inherit", "inherit", "none"]}>
-            <Stack as="nav" spacing={2}>
-              {navLinks.map((link, index) => (
-                <NavLink key={index} {...link} onClose={onClose} />
-              ))}
-            </Stack>
-          </Box>
-        ) : null
-      }
-
-
-    </Box >
+      {isOpen ? (
+        <Box pb={4} display={["inherit", "inherit", "none"]}>
+          <Stack as="nav" spacing={2}>
+            {navLinks.map((link, index) => (
+              <NavLink key={index} {...link} onClose={onClose} />
+            ))}
+          </Stack>
+        </Box>
+      ) : null}
+    </Box>
   );
 }
 
