@@ -26,7 +26,7 @@ export default function ElementAdder() {
   //   console.log("Value:", value);
 
   /* Dynamic allocation code starts */
-  const inputArr = [
+  const inputEle = [
     {
       type: "text",
       id: 1,
@@ -34,15 +34,15 @@ export default function ElementAdder() {
     },
   ];
 
-  const [arr, setArr] = useState(inputArr);
+  const [arr, setArr] = useState(inputEle);
 
-  const addInput = () => {
+  const addEle = () => {
     setArr((s) => {
       return [
         ...s,
         {
           type: "text",
-          value: "",
+          value: "xyz",
         },
       ];
     });
@@ -53,10 +53,10 @@ export default function ElementAdder() {
 
     const index = e.target.id;
     setArr((s) => {
-      const newArr = s.slice();
-      newArr[index].value = e.target.value;
-
-      return newArr;
+      const newEle = s.slice();
+      newEle[index].value = e.target.value;
+      // console.log('newArr', JSON.stringify(newArr));
+      return newEle;
     });
   };
 
@@ -138,6 +138,12 @@ export default function ElementAdder() {
         </div>
         <div className="mt-5 p-5">
           <div className="flex max-h-[400px] flex-col overflow-y-scroll mx-20">
+            {/* {arr.map((item, i) => {
+              onChange={handleChange}
+              inputEle.value={item.value}
+            inputEle.id={i}
+            inputEle.type={item.type}
+            })} */}
             <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
               <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
                 <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
@@ -154,137 +160,27 @@ export default function ElementAdder() {
               </div>
               <div className="flex-grow"></div>
               <button>
-                <AiFillPlusCircle className="text-3xl mx-3" />
+                <AiFillPlusCircle onClick={addEle} className="text-3xl mx-3" />
               </button>
             </div>
-            {/**/}
-            <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
-              <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
-                <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
-                  2
-                </span>
-              </div>
-              <div className="flex flex-col items-start justify-between font-light text-gray-600">
-                <p className="text-[15px] text-xl font-medium">API Reference</p>
-                <span className="text-xs font-light text-gray-400">
-                  API information
-                </span>
-              </div>
-              <div className="flex-grow"></div>
-              <button>
-                <AiFillPlusCircle className="text-3xl mx-3" />
-              </button>
-            </div>
-            {/**/}
-            <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
-              <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
-                <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
-                  3
-                </span>
-              </div>
-              <div className="flex flex-col items-start justify-between font-light text-gray-600">
-                <p className="text-[15px] text-xl font-medium">Appendix</p>
-                <span className="text-xs font-light text-gray-400">
-                  Any additional information
-                </span>
-              </div>
-              <div className="flex-grow"></div>
-              <button>
-                <AiFillPlusCircle className="text-3xl mx-3" />
-              </button>
-            </div>
-            {/**/}
-            <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
-              <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
-                <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
-                  4
-                </span>
-              </div>
-              <div className="flex flex-col items-start justify-between font-light text-gray-600">
-                <p className="text-[15px] text-xl font-medium">Authors</p>
-                <span className="text-xs font-light text-gray-400">
-                  Authors of the project
-                </span>
-              </div>
-              <div className="flex-grow"></div>
-              <button>
-                <AiFillPlusCircle className="text-3xl mx-3" />
-              </button>
-            </div>
-            {/**/}
-            <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
-              <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
-                <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
-                  5
-                </span>
-              </div>
-              <div className="flex flex-col items-start justify-between font-light text-gray-600">
-                <p className="text-[15px] text-xl font-medium">Badges</p>
-                <span className="text-xs font-light text-gray-400">
-                  Add frofessional badges
-                </span>
-              </div>
-              <div className="flex-grow"></div>
-              <button>
-                <AiFillPlusCircle className="text-3xl mx-3" />
-              </button>
-            </div>
-            {/**/}
-            <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
-              <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
-                <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
-                  6
-                </span>
-              </div>
-              <div className="flex flex-col items-start justify-between font-light text-gray-600">
-                <p className="text-[15px] text-xl font-medium">
-                  Color Reference
-                </p>
-                <span className="text-xs font-light text-gray-400">
-                  Color code references
-                </span>
-              </div>
-              <div className="flex-grow"></div>
-              <button>
-                <AiFillPlusCircle className="text-3xl mx-3" />
-              </button>
-            </div>
-            {/**/}
-            <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
-              <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
-                <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
-                  7
-                </span>
-              </div>
-              <div className="flex flex-col items-start justify-between font-light text-gray-600">
-                <p className="text-[15px] text-xl font-medium">Contributing</p>
-                <span className="text-xs font-light text-gray-400">
-                  The contributers are always welcome
-                </span>
-              </div>
-              <div className="flex-grow"></div>
-              <button>
-                <AiFillPlusCircle className="text-3xl mx-3" />
-              </button>
-            </div>
-            {/**/}
-            <div className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100">
-              <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
-                <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
-                  8
-                </span>
-              </div>
-              <div className="flex flex-col items-start justify-between font-light text-gray-600">
-                <p className="text-[15px] text-xl font-medium">Demo</p>
-                <span className="text-xs font-light text-gray-400">
-                  Insert gif or link to demo
-                </span>
-              </div>
-              <div className="flex-grow"></div>
-              <button>
-                <AiFillPlusCircle className="text-3xl mx-3" />
-              </button>
-            </div>
+            {/*
+
+            <div>
+      <button onClick={addEle}>+</button>
+      {arr.map((item, i) => {
+        return (
+          <input
+            onChange={handleChange}
+            value={item.value}
+            id={i}
+            type={item.type}
+            size="40"
+          />
+        );
+      })}
+    </div>
+    
+    */}
           </div>
         </div>
       </div>
