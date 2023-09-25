@@ -12,6 +12,9 @@ const connectDB = async () => {
   // }
 };
 
+/*  */
+const User = require("./models/Users");
+
 const port = 8080;
 app.listen(port, () => {
   console.log("Har har mahadev");
