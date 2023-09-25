@@ -1,8 +1,7 @@
+const ENV=require("./.env")
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const BASE_URL =
-  "mongodb+srv://razzivofficial:rOJUw5Dr785JZCYC@clusermd.pfxgblf.mongodb.net/myDb";
 const connectDB = async () => {
   await mongoose.connect(BASE_URL);
   // try {
