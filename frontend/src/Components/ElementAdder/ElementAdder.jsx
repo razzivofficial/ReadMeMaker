@@ -29,19 +29,19 @@ export default function ElementAdder() {
       slno: "1",
       title: "Acknowledgements",
       desc: "Acknowledgements unordered list",
-      code: "## Acknowledgement codes",
+      code: "# Acknowledgement codes",
     },
     {
       slno: "2",
       title: "API Reference",
       desc: "Acknowledgements unordered list",
-      code: "# API Reference",
+      code: "## API Reference hgdidevgidchb",
     },
     {
       slno: "3",
       title: "Appendix",
       desc: "Appendix unordered list",
-      code: "### Acknowledgement codes",
+      code: "### Appendix unordered list kchvedchivihkcvhisvvs",
     },
   ]);
 
