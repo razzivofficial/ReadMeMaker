@@ -15,6 +15,17 @@ const connectDB = async () => {
 /*  */
 const User = require("./models/Users");
 
+//Middlewaire for parsing JSON
+app.use(express.json());
+
+//Registration
+app.post("/register", async (req, res) => {
+  try {
+    const { useremail, password } = req.body;
+    console.log(req.body);
+  } catch {}
+});
+
 const port = 8080;
 app.listen(port, () => {
   console.log("Har har mahadev");
