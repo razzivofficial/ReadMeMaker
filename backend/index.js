@@ -22,8 +22,25 @@ app.use(express.json());
 app.post("/register", async (req, res) => {
   try {
     const { useremail, password } = req.body;
+    console.log("user email", useremail, "password", password);
     console.log(req.body);
-  } catch {}
+    // if (!useremail || !password) {
+    //   console.log('no data');
+    //   res.status(401).send({ message: 'Please enter all the fields' });
+    // } else {
+    //   console.log('data present')
+    //   let newUser = new User({
+    //     username: username,
+    //     useremail: useremail,
+    //     password: password
+    //     })
+    const user = new User({ useremail, password });
+    await user.save();
+    res.status(201).json({ message: "Registration is successful" });
+  } catch (error) {
+    res.status(500).json({ message: "Registration failed" });
+    console.log(error);
+  }
 });
 
 const port = 8080;
