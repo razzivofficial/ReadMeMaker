@@ -38,6 +38,28 @@ app.post("/register", async (req, res) => {
   }
 });
 
+/* Login */
+app.post('/login', async (req, res) => {
+  try {
+    const { useremail, password } = req.body;
+    const user = await User.findOne({ useremail });
+
+    if (!user) {
+      return res.status(401).json({ error: "Invalid Useremail or password" });
+    }
+
+    // Compare the stored password hash with the provided password
+    if (user.password !== password) {
+      return res.status(401).json({ error: 'Invalid useremail or Password' });
+    }
+
+    res.status(200).json({ message: "Login Successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Login failed", error: error.message });
+  }
+});
+
 const port = 8080;
 app.listen(port, () => {
   console.log("Har har mahadev");
