@@ -1,6 +1,6 @@
 require("dotenv").config();
 const MONGO_URL = process.env.MONGO_URL;
-
+const cors = require("cors");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -21,6 +21,10 @@ const User = require("./models/Users");
 //Middlewaire for parsing JSON
 app.use(express.json());
 
+//Eneble CORS
+// cors({ origin: "*" })(app, {});
+app.use(cors());
+
 //Registration
 app.post("/register", async (req, res) => {
   try {
@@ -39,7 +43,7 @@ app.post("/register", async (req, res) => {
 });
 
 /* Login */
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
   try {
     const { useremail, password } = req.body;
     const user = await User.findOne({ useremail });
@@ -50,7 +54,7 @@ app.post('/login', async (req, res) => {
 
     // Compare the stored password hash with the provided password
     if (user.password !== password) {
-      return res.status(401).json({ error: 'Invalid useremail or Password' });
+      return res.status(401).json({ error: "Invalid useremail or Password" });
     }
 
     res.status(200).json({ message: "Login Successful" });

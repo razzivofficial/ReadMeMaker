@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 import {
   Box,
   Flex,
@@ -90,6 +90,44 @@ function Navbar() {
 
   const toggleUserMenu = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
+  };
+
+  /* Login */
+  const [loginData, setLoginData] = useState({
+    useremail: "",
+    password: "",
+  });
+  //login submit
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/login",
+        loginData
+      );
+      const { success, message } = response.data;
+
+      if (success) {
+        console.log("Login Successful");
+      } else {
+        console.log(message);
+      }
+    } catch (error) {
+      console.error(`Error in logging ${error}`);
+    }
+    setLoginData({
+      useremail: "",
+      password: "",
+    });
+  };
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+
+    setLoginData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   return (
@@ -286,12 +324,26 @@ function Navbar() {
           <ModalBody pb={6}>
             <FormControl isRequired>
               <FormLabel>Enter Your email</FormLabel>
-              <Input ref={initialRef} placeholder="Enter your email" />
+              <Input
+                ref={initialRef}
+                placeholder="Enter your email"
+                name="useremail"
+                value={loginData.useremail}
+                onChange={handleLoginChange}
+                required
+              />
             </FormControl>
 
             <FormControl mt={4} isRequired>
               <FormLabel>Password</FormLabel>
-              <Input placeholder="Password" type="password" />
+              <Input
+                placeholder="Password"
+                type="password"
+                name="password"
+                value={loginData.password}
+                onChange={handleLoginChange}
+                required
+              />
             </FormControl>
             {!changeMode ? (
               <>
@@ -340,8 +392,9 @@ function Navbar() {
                       textAlign="center"
                       justify="center"
                       leftIcon={<FcGoogle />}
+                      onSubmit={handleLoginSubmit}
                     >
-                      {" "}
+                      {/* {" "} */}
                       Sign up using Google
                     </Button>
                   </Flex>
