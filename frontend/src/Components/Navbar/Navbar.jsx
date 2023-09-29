@@ -25,7 +25,7 @@ import {
 } from "@chakra-ui/react";
 import logoImg from "../../logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiFillGithub } from "react-icons/ai";
 import { BiChevronDown } from "react-icons/bi";
 import { MdTimeline } from "react-icons/md";
 import { BsBook, BsGlobe2 } from "react-icons/bs";
@@ -227,10 +227,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                    // boxShadow={useColorModeValue(
-                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                    // )}
+                  // boxShadow={useColorModeValue(
+                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                  // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -299,6 +299,8 @@ function Navbar() {
           Signup
         </Button>
       </Flex>
+
+      {/* Modal section ends */}
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
@@ -321,30 +323,69 @@ function Navbar() {
             </>
           )}
           <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl isRequired>
-              <FormLabel>Enter Your email</FormLabel>
-              <Input
-                ref={initialRef}
-                placeholder="Enter your email"
-                name="useremail"
-                value={loginData.useremail}
-                onChange={handleLoginChange}
-                required
-              />
-            </FormControl>
 
-            <FormControl mt={4} isRequired>
-              <FormLabel>Password</FormLabel>
-              <Input
-                placeholder="Password"
-                type="password"
-                name="password"
-                value={loginData.password}
-                onChange={handleLoginChange}
-                required
-              />
-            </FormControl>
+          <ModalBody pb={6}>
+            {!changeMode ? (
+              <>
+                <FormControl isRequired>
+                  <FormLabel>Email</FormLabel>
+                  <Input
+                    ref={initialRef}
+                    placeholder="Email"
+                    name="useremail"
+                    focusBorderColor='green.400'
+                    value={loginData.useremail}
+                    onChange={handleLoginChange}
+                    required
+                  />
+                </FormControl>
+              </>
+            ) : (
+
+              <>
+                <FormControl isRequired>
+                  <FormLabel>Enter Your email</FormLabel>
+                  <Input
+                    ref={initialRef}
+                    placeholder="Enter your email"
+                    name="useremail"
+                    value={loginData.useremail}
+                    onChange={handleLoginChange}
+                    required
+                  />
+                </FormControl>
+              </>
+            )}
+            {changeMode ? (
+              <>
+                <FormControl mt={4} isRequired>
+                  <FormLabel>Password</FormLabel>
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    name="password"
+                    value={loginData.password}
+                    onChange={handleLoginChange}
+                    required
+                  />
+                </FormControl>
+              </>
+            ) : (
+              <>
+                <FormControl mt={4} isRequired>
+                  <FormLabel>Password</FormLabel>
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    name="password"
+                    focusBorderColor='green.400'
+                    value={loginData.password}
+                    onChange={handleLoginChange}
+                    required
+                  />
+                </FormControl>
+              </>
+            )}
             {!changeMode ? (
               <>
                 <Text
@@ -396,6 +437,33 @@ function Navbar() {
                     >
                       {/* {" "} */}
                       Sign up using Google
+                    </Button>
+                  </Flex>
+                </>
+              )}
+            </Flex>
+            <Flex alignItems={"center"} justify={"center"} my={"2"}>
+              {!changeMode ? (
+                <>
+                  <Button
+                    textAlign="center"
+                    justify="center"
+                    leftIcon={<AiFillGithub />}
+                  >
+                    Log in with Github
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Flex alignItems={"center"} justify={"center"} mt={"5"}>
+                    <Button
+                      textAlign="center"
+                      justify="center"
+                      leftIcon={<AiFillGithub />}
+                      onSubmit={handleLoginSubmit}
+                    >
+                      {/* {" "} */}
+                      Sign up using Github
                     </Button>
                   </Flex>
                 </>
@@ -459,6 +527,8 @@ function Navbar() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      {/* Modal section ends */}
+
       {/* Mobile Screen Links */}
       {isOpen ? (
         <Box pb={4} display={["inherit", "inherit", "none"]}>
