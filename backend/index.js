@@ -4,13 +4,18 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const ElementData = require("./models/EditorData");
+
 const connectDB = async () => {
   await mongoose.connect(MONGO_URL);
   try {
     await mongoose.connect(MONGO_URL);
-    console.log("Sambandham Bhavati");
+    console.log("Mongo DB connected");
+    // Example: Fetch all elements from the database
+    const elements = await ElementData.find();
+    console.log("Fetched elements:", elements);
   } catch (error) {
-    console.log("Sambandham Asafal", error.message);
+    console.log("Mongo DB Connection error", error.message);
     console.error(error);
   }
 };

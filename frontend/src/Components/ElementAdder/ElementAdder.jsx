@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { React, useState, useEffect } from "react";
 import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
 import MDEditor, { commands } from "@uiw/react-md-editor";
@@ -23,29 +23,39 @@ const help = {
 export default function ElementAdder() {
   const initialMkdStr = `## Markdown Editor`;
   const [value, setValue] = useState(initialMkdStr);
-
-  const [elementData, setElementData] = useState([
-    {
-      slno: "1",
-      title: "Acknowledgements",
-      desc: "Acknowledgements unordered list",
-      code: "# Acknowledgement codes",
-    },
-    {
-      slno: "2",
-      title: "API Reference",
-      desc: "Acknowledgements unordered list",
-      code: "## API Reference hgdidevgidchb",
-    },
-    {
-      slno: "3",
-      title: "Appendix",
-      desc: "Appendix unordered list",
-      code: "### Appendix unordered list kchvedchivihkcvhisvvs",
-    },
-  ]);
-
+  const [elementData, setElementData] = useState([]);
   const [selectedElements, setSelectedElements] = useState([]);
+
+  // const [elementData, setElementData] = useState([
+  //   {
+  //     slno: "1",
+  //     title: "Acknowledgements",
+  //     desc: "Acknowledgements unordered list",
+  //     code: "# Acknowledgement codes",
+  //   },
+  //   {
+  //     slno: "2",
+  //     title: "API Reference",
+  //     desc: "Acknowledgements unordered list",
+  //     code: "## API Reference hgdidevgidchb",
+  //   },
+  //   {
+  //     slno: "3",
+  //     title: "Appendix",
+  //     desc: "Appendix unordered list",
+  //     code: "### Appendix unordered list kchvedchivihkcvhisvvs",
+  //   },
+  // ]);
+
+  useEffect(() => {
+    fetch("/elementdatas")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Fetched data:", data);
+        setElementData(data);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
 
   const toggleAddRemove = (index, code) => {
     if (selectedElements.includes(index)) {
@@ -66,7 +76,11 @@ export default function ElementAdder() {
       {/* EDITOR */}
       <div className="flex mt-32 h-screen mx-10 flex-col">
         <div className="container h-[70%]">
-          <h1 className=" text-center text-2xl mb-4">Editor</h1>
+          {/* <h1 className=" text-center text-2xl mb-4">Editor</h1> */}
+          <h1 class="block text-center mb-4 bg-gradient-to-tr from-blue-800 to-blue-400 bg-clip-text font-sans text-5xl font-semibold leading-tight tracking-normal text-transparent antialiased transition duration-600 ease-in-out transform hover:text-black hover:from-purple-500 hover:to-purple-700">
+            .MD EDITOR
+          </h1>
+
           <MDEditor
             height={500}
             value={value}
@@ -115,7 +129,7 @@ export default function ElementAdder() {
           <div className="flex max-h-[400px] flex-col overflow-y-scroll mx-20">
             {elementData.map((item, index) => (
               <div
-                key={item.slno}
+                key={item._id}
                 className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100"
               >
                 <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
