@@ -11,8 +11,8 @@ const connectDB = async () => {
   try {
     await mongoose.connect(MONGO_URL);
     console.log("Mongo DB connected");
-    // Example: Fetch all elements from the database
-    const elements = await ElementData.find();
+
+    const elements = await ElementData.find({});
     console.log("Fetched elements:", elements);
   } catch (error) {
     console.log("Mongo DB Connection error", error.message);
@@ -68,11 +68,25 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ message: "Login failed", error: error.message });
   }
 });
+app.get("/ElementData", async (req, res) => {
+  try {
+    const elementData = await ElementData.find({});
+    res.json(elementData);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 const port = 8080;
 app.listen(port, () => {
-  console.log("Har har mahadev");
+  console.log("Server is running on port", port);
   connectDB();
 });
+
+
+
+
+
 
 module.exports = connectDB;

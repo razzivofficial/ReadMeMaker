@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import axios from "axios";
 import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import { GrPowerReset } from "react-icons/gr";
 import MDEditor, { commands } from "@uiw/react-md-editor";
@@ -48,13 +49,17 @@ export default function ElementAdder() {
   // ]);
 
   useEffect(() => {
-    fetch("/elementdatas")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched data:", data);
-        setElementData(data);
+    axios
+      .get("/ElementData")
+      .then((res) => {
+        console.log("Fetched data:", res.data);
+        console.log("Data fetched successfully");
+        setElementData(res.data);
       })
-      .catch((error) => console.error("Error fetching data:", error));
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        console.log("ma chuda");
+      });
   }, []);
 
   const toggleAddRemove = (index, code) => {
@@ -127,26 +132,26 @@ export default function ElementAdder() {
         </div>
         <div className="mt-5 p-5">
           <div className="flex max-h-[400px] flex-col overflow-y-scroll mx-20">
-            {elementData.map((item, index) => (
+            {elementData.map((element, index) => (
               <div
-                key={item._id}
+                key={index._id}
                 className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100"
               >
                 <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
                   <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
-                    {item.slno}
+                    {element.slno}
                   </span>
                 </div>
                 <div className="flex flex-col items-start justify-between font-light text-gray-600">
                   <p className="text-[15px] text-xl font-medium">
-                    {item.title}
+                    {element.title}
                   </p>
                   <span className="text-xs font-light text-gray-400">
-                    {item.desc}
+                    {element.desc}
                   </span>
                 </div>
                 <div className="flex-grow"></div>
-                <button onClick={() => toggleAddRemove(index, item.code)}>
+                <button onClick={() => toggleAddRemove(index, element.code)}>
                   {isElementSelected(index) ? (
                     <AiFillCheckCircle className="text-3xl mx-3" />
                   ) : (
