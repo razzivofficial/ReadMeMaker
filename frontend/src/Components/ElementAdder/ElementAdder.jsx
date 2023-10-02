@@ -53,12 +53,12 @@ export default function ElementAdder() {
       .get("/ElementData")
       .then((res) => {
         console.log("Fetched data:", res.data);
-        console.log("Data fetched successfully");
+        console.log("Congo, Data fetched successfully");
         setElementData(res.data);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
-        console.log("ma chuda");
+        console.error("Error fetching the data:", error);
+        console.log("Not working bro");
       });
   }, []);
 
