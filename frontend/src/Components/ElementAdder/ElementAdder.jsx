@@ -57,8 +57,8 @@ export default function ElementAdder() {
         setElementData(res.data);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
-        console.log("ma chuda");
+        console.error("Error fetching the data:", error);
+        console.log("Not working bro");
       });
   }, []);
 
