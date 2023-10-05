@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { chakra, Stack, Text, Button, Box, Link } from "@chakra-ui/react";
 import { GiCoffeeCup } from "react-icons/gi";
+import { Link as Navlink } from "react-router-dom";
 
 const textArray = [
   "# Create READMEs with ease",
@@ -89,7 +90,7 @@ const HeroSection = () => {
           w={{ base: "100%", sm: "auto" }}
           spacing={5}
         >
-          <Link href="/editor">
+          <Link as={Navlink} to="/editor">
             <Button
               colorScheme="teal"
               variant="outline"
