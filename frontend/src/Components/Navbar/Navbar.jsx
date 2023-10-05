@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link as Navlink } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
@@ -45,25 +46,25 @@ import {
 } from "@chakra-ui/react";
 
 const navLinks = [
-  { name: "About", path: "/About" },
-  { name: "Documentation", path: "/Documentation" },
-  // { name: "Features", path: "#" },
+  { name: "About", to: "/About" },
+  { name: "Documentation", to: "/Documentation" },
+  // { name: "Features", to: "#" },
 ];
 
 const dropdownLinks = [
   {
     name: "Trending Projects",
-    path: "#",
+    to: "#",
     icon: MdTimeline,
   },
   {
     name: "Join Community",
-    path: "#",
+    to: "#",
     icon: BsGlobe2,
   },
   {
     name: "Open Source",
-    path: "#",
+    to: "#",
     icon: BsBook,
   },
 ];
@@ -164,7 +165,7 @@ function Navbar() {
             rounded="full"
             src="https://avatars2.githubusercontent.com/u/37842853?v=4"
           /> */}
-          <Link href="/" w={{ base: "12rem", md: "18rem" }}>
+          <Link as={Navlink} to="/" w={{ base: "12rem", md: "18rem" }}>
             <Image
               alt="ReadMeMaker Logo"
               //   w={"80%"}
@@ -189,7 +190,7 @@ function Navbar() {
             alignItems="center"
           >
             {navLinks.map((link, index) => (
-              <NavLink key={index} {...link} onClose={onClose} />
+              <NavLink key={index} to={link.to} {...link} onClose={onClose} />
             ))}
             {/* Dropdown Menu */}
             <Menu autoSelect={false} isLazy>
@@ -237,6 +238,7 @@ function Navbar() {
                         key={index}
                         name={link.name}
                         path={link.path}
+                        to={link.to}
                         icon={link.icon}
                         onClose={onClose}
                       />
@@ -300,7 +302,7 @@ function Navbar() {
         </Button>
       </Flex>
 
-      {/* Modal section ends */}
+      {/* Modal section starts */}
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
@@ -543,7 +545,7 @@ function Navbar() {
   );
 }
 
-function NavLink({ name, path, onClose }) {
+function NavLink({ name, path, to, onClose }) {
   const link = {
     bg: useColorModeValue("gray.200", "gray.700"),
     color: useColorModeValue("blue.500", "blue.200"),
@@ -551,7 +553,8 @@ function NavLink({ name, path, onClose }) {
 
   return (
     <Link
-      href={path}
+      as={Navlink}
+      to={to}
       px={3}
       py={1}
       lineHeight="inherit"
@@ -568,9 +571,10 @@ function NavLink({ name, path, onClose }) {
   );
 }
 
-function MenuLink({ name, path, icon, onClose }) {
+function MenuLink({ name, path, to, icon, onClose }) {
   return (
-    <Link href={path} onClick={() => onClose()}>
+    <Link href={path} as={Navlink}
+      to={to} onClick={() => onClose()}>
       <MenuItem
         _hover={{
           color: "blue.400",

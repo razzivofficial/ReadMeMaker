@@ -1,5 +1,6 @@
 import React from "react";
 import logoImg from "../../logo.png"
+import { Link as Navlink } from "react-router-dom";
 import {
   Container,
   Box,
@@ -44,7 +45,7 @@ const Footer = () => {
         borderTopColor="gray.900"
         pt="20px"
       >
-        <Link href="/" display={{ base: "none", md: "block" }}>
+        <Link as={Navlink} to={"/"} display={{ base: "none", md: "block" }}>
           <Image
             w="30%"
             src={logoImg}
