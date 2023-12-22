@@ -68,6 +68,7 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ message: "Login failed", error: error.message });
   }
 });
+
 app.get("/ElementData", async (req, res) => {
   try {
     const elementData = await ElementData.find({});
@@ -83,10 +84,5 @@ app.listen(port, () => {
   console.log("Server is running on port", port);
   connectDB();
 });
-
-
-
-
-
 
 module.exports = connectDB;
