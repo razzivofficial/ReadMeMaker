@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Collaborators](https://contrib.rocks/image?repo=addymistrel/GrabWay)](https://github.com/addymistrel/GrabWay/graphs/contributors)
+[![Collaborators](https://contrib.rocks/image?repo=razzivofficial/ReadMeMaker)](https://github.com/razzivofficial/ReadMeMaker/graphs/contributors)
 
 ## Thanks to all Collaborators 💪
 
