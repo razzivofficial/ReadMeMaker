@@ -181,12 +181,12 @@ export default function ElementAdder() {
       desc: "List any references or external resources used in creating the project.",
       code: "## References\n\nList any references or external resources used in creating the project.",
     },
-    // {
-    //   slno: "27",
-    //   title: "Acknowledgement Codes",
-    //   desc: "List of acknowledgements with links.",
-    //   code: "## Acknowledgement Codes\n\n- [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)\n- [Awesome README](https://github.com/matiassingers/awesome-readme)\n- [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)",
-    // },
+    {
+      slno: "27",
+      title: "Acknowledgement Codes",
+      desc: "List of acknowledgements with links.",
+      code: "## Acknowledgement Codes\n\n- [Example Link 1](http://example.com)\n- [Example Link 2](http://example.com)\n- [Example Link 3](http://example.com)",
+    },
   ]);
 
   const [selectedElements, setSelectedElements] = useState([]);
@@ -224,7 +224,11 @@ export default function ElementAdder() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row mx-2 md:mx-10 mt-20 md:mt-32">
+    <>
+    <div className="editorHeading mb-10">
+    <span> I love to learn more! </span>
+    </div>
+    <div className="flex flex-col md:flex-row mx-2 md:mx-10 mt-32 md:mt-34">
       {/* Left Panel - Element List */}
       <div className="md:w-1/3 p-2 md:p-4 bg-slate-50 border border-info rounded-3xl mb-8 md:mb-0">
         <h4 className="text-shadow text-2xl font-medium leading-tight text-primary mb-4">
@@ -279,5 +283,6 @@ export default function ElementAdder() {
         />
       </div>
     </div>
+    </>
   );
 }
