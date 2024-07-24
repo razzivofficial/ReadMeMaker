@@ -226,7 +226,7 @@ export default function ElementAdder() {
   return (
     <>
     <div className="editorHeading mb-10">
-    <span> I love to learn more! </span>
+    <span> ReadMeMaker Ultimate Editor </span>
     </div>
     <div className="flex flex-col md:flex-row mx-2 md:mx-10 mt-32 md:mt-34">
       {/* Left Panel - Element List */}
