@@ -225,7 +225,6 @@ export default function ElementAdder() {
 
   return (
     <div className="flex flex-col md:flex-row mx-2 md:mx-10 mt-20 md:mt-32">
-
       {/* Left Panel - Element List */}
       <div className="md:w-1/3 p-2 md:p-4 bg-slate-50 border border-info rounded-3xl mb-8 md:mb-0">
         <h4 className="text-shadow text-2xl font-medium leading-tight text-primary mb-4">
@@ -270,7 +269,6 @@ export default function ElementAdder() {
           ))}
         </div>
       </div>
-
       {/* Right Panel - Markdown Editor */}
       <div className="md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 bg-white border border-gray-300 rounded-3xl">
         <MDEditor
