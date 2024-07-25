@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link as Navlink } from "react-router-dom";
 import axios from "axios";
+import { toast } from 'react-toastify';
 import {
   Box,
   Flex,
@@ -23,6 +24,7 @@ import {
   MenuDivider,
   VStack,
   Image,
+  Toast,
 } from "@chakra-ui/react";
 import logoImg from "../../logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -94,42 +96,74 @@ function Navbar() {
   };
 
   /* Login */
-  const [loginData, setLoginData] = useState({
-    useremail: "",
-    password: "",
-  });
-  //login submit
-  const handleLoginSubmit = async (e) => {
+
+  const [logincredentials, setloginCredentials] = useState({ email: '', password: '' });
+
+  const handleloginSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/login",
-        loginData
-      );
-      const { success, message } = response.data;
+    const response = await fetch('http://localhost:5000/users/loginuser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: logincredentials.email,
+        password: logincredentials.password
+      })
+    })
+    const json = await response.json();
 
-      if (success) {
-        console.log("Login Successful");
-      } else {
-        console.log(message);
-      }
-    } catch (error) {
-      console.error(`Error in logging ${error}`);
+    if (!json.success) {
+      toast.error("Enter valid credentials");
+    } else {
+      toast.success("Login successful");
+      // isOpen(false)
+      // alert('login successful');
+      localStorage.setItem("userEmail", credentials.email);
+      localStorage.setItem("authToken", json.authToken);
     }
-    setLoginData({
-      useremail: "",
-      password: "",
-    });
   };
-  const handleLoginChange = (e) => {
-    const { name, value } = e.target;
 
-    setLoginData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const handleChange = (event) => {
+    setloginCredentials({ ...logincredentials, [event.target.id]: event.target.value });
   };
+
+  /* Signup */
+  const [credentials, setcredentials] = useState({ name: "", email: "", password: "" })
+
+
+  const handleregistration = async (e) => {
+    e.preventDefault();
+    const response = await fetch('http://localhost:5000/users/createuser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: credentials.name,
+        email: credentials.email,
+        password: credentials.password,
+      })
+    })
+    const json = await response.json()
+    console.log(json.message);
+    if (json.message !== "success") {
+      toast.error("Registration failed with error: " + json.error);
+
+    } else {
+      toast.success("Registration successful");
+    }
+  }
+  const onchange = (event) => {
+    setcredentials({ ...credentials, [event.target.id]: event.target.value })
+  }
+
+  const handleLogout = () => {
+    toast.success("Logout successful");
+    localStorage.removeItem('authToken');
+    // window.location.reload('/');
+};
 
   return (
     <Box
@@ -248,7 +282,9 @@ function Navbar() {
               )}
             </Menu>
           </HStack>
-          <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
+          /* menu rajiv */
+          {localStorage.getItem('authToken') ? (
+            <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
             <MenuButton size="sm" onClick={toggleUserMenu}>
               <Avatar
                 size="sm"
@@ -260,7 +296,7 @@ function Navbar() {
             <MenuList
               zIndex={5}
               border="2px solid"
-              borderColor={useColorModeValue("gray.700", "gray.100")}
+              // borderColor={useColorModeValue("gray.700", "gray.100")}
               boxShadow="4px 4px 0"
             >
               <Link _hover={{ textDecoration: "none" }} isExternal>
@@ -288,18 +324,34 @@ function Navbar() {
               </MenuItem>
               <MenuDivider />
               <MenuItem>
-                <Text color={"red.600"} fontWeight="500">
+                <Button color={"red.600"} fontWeight="500" onClick={handleLogout}>
                   Sign Out
-                </Text>
+                </Button>
               </MenuItem>
             </MenuList>
           </Menu>
+          ):
+          (
+            <Text></Text>
+          )
+          }
+            
+
+
           <Spacer />
         </HStack>
         <IconButton aria-label="Color Switcher" icon={<FiSun />} />
-        <Button className="ml-6" colorScheme="blue" onClick={onOpen}>
-          Signup
-        </Button>
+
+        {!localStorage.getItem("authToken") ? (
+          <Button className="ml-6" colorScheme="blue" onClick={onOpen}>
+            Signup
+          </Button>
+        ) :
+          (
+            <Text></Text>
+          )
+        }
+
       </Flex>
 
       {/* Modal section starts */}
@@ -336,8 +388,9 @@ function Navbar() {
                     placeholder="Email"
                     name="useremail"
                     focusBorderColor='green.400'
-                    value={loginData.useremail}
-                    onChange={handleLoginChange}
+                    id='email'
+                    value={logincredentials.email}
+                    onChange={handleChange}
                     required
                   />
                 </FormControl>
@@ -346,13 +399,26 @@ function Navbar() {
 
               <>
                 <FormControl isRequired>
+                  <FormLabel>Enter Your name</FormLabel>
+                  <Input
+                    ref={initialRef}
+                    placeholder="Enter your name"
+                    name="name"
+                    id='name'
+                    value={credentials.name}
+                    onChange={onchange}
+                    required
+                  />
+                </FormControl>
+                <FormControl isRequired>
                   <FormLabel>Enter Your email</FormLabel>
                   <Input
                     ref={initialRef}
                     placeholder="Enter your email"
-                    name="useremail"
-                    value={loginData.useremail}
-                    onChange={handleLoginChange}
+                    name="email"
+                    id='email'
+                    value={credentials.email}
+                    onChange={onchange}
                     required
                   />
                 </FormControl>
@@ -365,9 +431,9 @@ function Navbar() {
                   <Input
                     placeholder="Password"
                     type="password"
-                    name="password"
-                    value={loginData.password}
-                    onChange={handleLoginChange}
+                    id='password'
+                    value={credentials.password}
+                    onChange={onchange}
                     required
                   />
                 </FormControl>
@@ -379,10 +445,10 @@ function Navbar() {
                   <Input
                     placeholder="Password"
                     type="password"
-                    name="password"
+                    id='password'
                     focusBorderColor='green.400'
-                    value={loginData.password}
-                    onChange={handleLoginChange}
+                    value={logincredentials.password}
+                    onChange={handleChange}
                     required
                   />
                 </FormControl>
@@ -435,7 +501,6 @@ function Navbar() {
                       textAlign="center"
                       justify="center"
                       leftIcon={<FcGoogle />}
-                      onSubmit={handleLoginSubmit}
                     >
                       {/* {" "} */}
                       Sign up using Google
@@ -462,7 +527,6 @@ function Navbar() {
                       textAlign="center"
                       justify="center"
                       leftIcon={<AiFillGithub />}
-                      onSubmit={handleLoginSubmit}
                     >
                       {/* {" "} */}
                       Sign up using Github
@@ -513,13 +577,13 @@ function Navbar() {
           <ModalFooter>
             {changeMode ? (
               <>
-                <Button colorScheme="blue" mr={3}>
+                <Button colorScheme="blue" mr={3} onClick={handleregistration}>
                   Sign up
                 </Button>
               </>
             ) : (
               <>
-                <Button colorScheme="blue" mr={3}>
+                <Button colorScheme="blue" mr={3} onClick={handleloginSubmit}>
                   Log In
                 </Button>
               </>
