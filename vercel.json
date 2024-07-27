@@ -1,0 +1,22 @@
+{
+  "projects": {
+    "frontend": {
+      "src": "frontend",
+      "output": "build"
+    },
+    "backend": {
+      "src": "backend",
+      "output": "api"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/build/$1"
+    }
+  ]
+}
