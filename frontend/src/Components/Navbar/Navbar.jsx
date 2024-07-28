@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link as Navlink } from "react-router-dom";
 import axios from "axios";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import {
   Box,
   Flex,
@@ -97,21 +97,27 @@ function Navbar() {
 
   /* Login */
 
-  const [logincredentials, setloginCredentials] = useState({ email: '', password: '' });
+  const [logincredentials, setloginCredentials] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleloginSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('http://localhost:5000/users/loginuser', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: logincredentials.email,
-        password: logincredentials.password
-      })
-    })
+    const response = await fetch(
+      "https://readmemaker-backend.vercel.app/users/loginuser",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: logincredentials.email,
+          password: logincredentials.password,
+        }),
+      }
+    );
     const json = await response.json();
 
     if (!json.success) {
@@ -126,44 +132,52 @@ function Navbar() {
   };
 
   const handleChange = (event) => {
-    setloginCredentials({ ...logincredentials, [event.target.id]: event.target.value });
+    setloginCredentials({
+      ...logincredentials,
+      [event.target.id]: event.target.value,
+    });
   };
 
   /* Signup */
-  const [credentials, setcredentials] = useState({ name: "", email: "", password: "" })
-
+  const [credentials, setcredentials] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const handleregistration = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:5000/users/createuser', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: credentials.name,
-        email: credentials.email,
-        password: credentials.password,
-      })
-    })
-    const json = await response.json()
+    const response = await fetch(
+      "https://readmemaker-backend.vercel.app/users/createuser",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: credentials.name,
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      }
+    );
+    const json = await response.json();
     console.log(json.message);
     if (json.message !== "success") {
       toast.error("Registration failed with error: " + json.error);
-
     } else {
       toast.success("Registration successful");
     }
-  }
+  };
   const onchange = (event) => {
-    setcredentials({ ...credentials, [event.target.id]: event.target.value })
-  }
+    setcredentials({ ...credentials, [event.target.id]: event.target.value });
+  };
 
   const handleLogout = () => {
     toast.success("Logout successful");
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
     // window.location.reload('/');
-};
+  };
 
   return (
     <Box
@@ -262,10 +276,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                  // boxShadow={useColorModeValue(
-                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                  // )}
+                    // boxShadow={useColorModeValue(
+                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                    // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -282,61 +296,61 @@ function Navbar() {
               )}
             </Menu>
           </HStack>
-          /* menu rajiv */
-          {localStorage.getItem('authToken') ? (
+          {/* Menu rajiv */}
+          {localStorage.getItem("authToken") ? (
             <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
-            <MenuButton size="sm" onClick={toggleUserMenu}>
-              <Avatar
-                size="sm"
-                src={
-                  "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
-                }
-              />
-            </MenuButton>
-            <MenuList
-              zIndex={5}
-              border="2px solid"
-              // borderColor={useColorModeValue("gray.700", "gray.100")}
-              boxShadow="4px 4px 0"
-            >
-              <Link _hover={{ textDecoration: "none" }} isExternal>
+              <MenuButton size="sm" onClick={toggleUserMenu}>
+                <Avatar
+                  size="sm"
+                  src={
+                    "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
+                  }
+                />
+              </MenuButton>
+              <MenuList
+                zIndex={5}
+                border="2px solid"
+                // borderColor={useColorModeValue("gray.700", "gray.100")}
+                boxShadow="4px 4px 0"
+              >
+                <Link _hover={{ textDecoration: "none" }} isExternal>
+                  <MenuItem>
+                    <VStack justify="start" alignItems="left">
+                      <Text fontWeight="500">Rajiv Lochan Dash</Text>
+                      <Text size="sm" color="gray.500" mt="0 !important">
+                        @razzivofficial
+                      </Text>
+                    </VStack>
+                  </MenuItem>
+                </Link>
+                <MenuDivider />
                 <MenuItem>
-                  <VStack justify="start" alignItems="left">
-                    <Text fontWeight="500">Rajiv Lochan Dash</Text>
-                    <Text size="sm" color="gray.500" mt="0 !important">
-                      @razzivofficial
-                    </Text>
-                  </VStack>
+                  <Text fontWeight="500">Dashboard</Text>
                 </MenuItem>
-              </Link>
-              <MenuDivider />
-              <MenuItem>
-                <Text fontWeight="500">Dashboard</Text>
-              </MenuItem>
-              <MenuItem>
-                <Text fontWeight="500">Create Post</Text>
-              </MenuItem>
-              <MenuItem>
-                <Text fontWeight="500">Bookmarks</Text>
-              </MenuItem>
-              <MenuItem>
-                <Text fontWeight="500">Settings</Text>
-              </MenuItem>
-              <MenuDivider />
-              <MenuItem>
-                <Button color={"red.600"} fontWeight="500" onClick={handleLogout}>
-                  Sign Out
-                </Button>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-          ):
-          (
+                <MenuItem>
+                  <Text fontWeight="500">Create Post</Text>
+                </MenuItem>
+                <MenuItem>
+                  <Text fontWeight="500">Bookmarks</Text>
+                </MenuItem>
+                <MenuItem>
+                  <Text fontWeight="500">Settings</Text>
+                </MenuItem>
+                <MenuDivider />
+                <MenuItem>
+                  <Button
+                    color={"red.600"}
+                    fontWeight="500"
+                    onClick={handleLogout}
+                  >
+                    Sign Out
+                  </Button>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          ) : (
             <Text></Text>
-          )
-          }
-            
-
+          )}
 
           <Spacer />
         </HStack>
@@ -346,12 +360,9 @@ function Navbar() {
           <Button className="ml-6" colorScheme="blue" onClick={onOpen}>
             Signup
           </Button>
-        ) :
-          (
-            <Text></Text>
-          )
-        }
-
+        ) : (
+          <Text></Text>
+        )}
       </Flex>
 
       {/* Modal section starts */}
@@ -387,8 +398,8 @@ function Navbar() {
                     ref={initialRef}
                     placeholder="Email"
                     name="useremail"
-                    focusBorderColor='green.400'
-                    id='email'
+                    focusBorderColor="green.400"
+                    id="email"
                     value={logincredentials.email}
                     onChange={handleChange}
                     required
@@ -396,7 +407,6 @@ function Navbar() {
                 </FormControl>
               </>
             ) : (
-
               <>
                 <FormControl isRequired>
                   <FormLabel>Enter Your name</FormLabel>
@@ -404,7 +414,7 @@ function Navbar() {
                     ref={initialRef}
                     placeholder="Enter your name"
                     name="name"
-                    id='name'
+                    id="name"
                     value={credentials.name}
                     onChange={onchange}
                     required
@@ -416,7 +426,7 @@ function Navbar() {
                     ref={initialRef}
                     placeholder="Enter your email"
                     name="email"
-                    id='email'
+                    id="email"
                     value={credentials.email}
                     onChange={onchange}
                     required
@@ -431,7 +441,7 @@ function Navbar() {
                   <Input
                     placeholder="Password"
                     type="password"
-                    id='password'
+                    id="password"
                     value={credentials.password}
                     onChange={onchange}
                     required
@@ -445,8 +455,8 @@ function Navbar() {
                   <Input
                     placeholder="Password"
                     type="password"
-                    id='password'
-                    focusBorderColor='green.400'
+                    id="password"
+                    focusBorderColor="green.400"
                     value={logincredentials.password}
                     onChange={handleChange}
                     required
@@ -637,8 +647,7 @@ function NavLink({ name, path, to, onClose }) {
 
 function MenuLink({ name, path, to, icon, onClose }) {
   return (
-    <Link href={path} as={Navlink}
-      to={to} onClick={() => onClose()}>
+    <Link href={path} as={Navlink} to={to} onClick={() => onClose()}>
       <MenuItem
         _hover={{
           color: "blue.400",
