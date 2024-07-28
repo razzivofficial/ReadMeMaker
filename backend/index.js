@@ -11,9 +11,9 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use("/api/users", User);
+app.use("/api/users", User); // Ensure this route is correct
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000; // Use the PORT environment variable provided by Vercel
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
