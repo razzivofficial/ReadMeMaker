@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useEffect  } from "react";
 import { Link as Navlink } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
 import {
   Box,
@@ -24,7 +23,6 @@ import {
   MenuDivider,
   VStack,
   Image,
-  Toast,
 } from "@chakra-ui/react";
 import logoImg from "../../logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -122,10 +120,11 @@ function Navbar() {
 
     if (!json.success) {
       toast.error("Enter valid credentials");
+      setloginCredentials({ email: "", password: "" }); 
     } else {
       toast.success("Login successful");
-      // isOpen(false)
-      // alert('login successful');
+      setloginCredentials({ email: "", password: "" }); 
+      onClose()
       localStorage.setItem("userEmail", credentials.email);
       localStorage.setItem("authToken", json.authToken);
     }
@@ -137,7 +136,8 @@ function Navbar() {
       [event.target.id]: event.target.value,
     });
   };
-
+  
+  
   /* Signup */
   const [credentials, setcredentials] = useState({
     name: "",
@@ -164,20 +164,34 @@ function Navbar() {
     const json = await response.json();
     console.log(json.message);
     if (json.message !== "success") {
-      toast.error("Registration failed with error: " + json.error);
+      toast.error("Registration failed: " + json.error);
+      setcredentials({ name: "", email: "", password: "" });
     } else {
       toast.success("Registration successful");
+      setcredentials({ name: "", email: "", password: "" });
+      onClose()
     }
   };
   const onchange = (event) => {
     setcredentials({ ...credentials, [event.target.id]: event.target.value });
   };
 
+
+    // const [email, setEmail] = useState('');
+  
+    // useEffect(() => {
+    //   const storedEmail = localStorage.getItem('userEmail');
+    //   if (storedEmail) {
+    //     setEmail(storedEmail);
+    //   }
+    // }, []);
+
   const handleLogout = () => {
     toast.success("Logout successful");
     localStorage.removeItem("authToken");
-    // window.location.reload('/');
   };
+
+  
 
   return (
     <Box
@@ -316,7 +330,7 @@ function Navbar() {
                 <Link _hover={{ textDecoration: "none" }} isExternal>
                   <MenuItem>
                     <VStack justify="start" alignItems="left">
-                      <Text fontWeight="500">Rajiv Lochan Dash</Text>
+                      <Text fontWeight="500">Rajiv</Text>
                       <Text size="sm" color="gray.500" mt="0 !important">
                         @razzivofficial
                       </Text>
