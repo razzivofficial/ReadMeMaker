@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use("/users", User);
+app.use("/api/users", User); // Updated route
 
 const port = process.env.PORT || 5000; // Use the PORT environment variable provided by Vercel
 
