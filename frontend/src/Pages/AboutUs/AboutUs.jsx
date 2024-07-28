@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-
 import {
   FormControl,
   FormLabel,
@@ -167,7 +166,7 @@ const Testimonials = () => {
                     rounded="md"
                     w={{ base: "100%", md: "max-content" }}
                     mt={{ base: "8", md: "28", sm: "12" }}
-                    leftIcon={<AiFillBug/>}
+                    leftIcon={<AiFillBug />}
                   >
                     Report a bug
                   </Button>
