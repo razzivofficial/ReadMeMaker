@@ -1,24 +1,20 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
+const User = require("./routes/Users");
+const dbconnect = require("./db/db");
 
-const User = require('./routes/Users')
-
-const dbconnect = require('./db/db');
-
-
-dbconnect()
+dbconnect();
 
 const app = express();
 app.use(cors());
-const port = 5000
-
 app.use(bodyParser.json());
 
+app.use("/users", User);
 
-app.use('/users',User);
+const port = process.env.PORT || 5000; // Use the PORT environment variable provided by Vercel
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
