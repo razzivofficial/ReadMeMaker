@@ -4,11 +4,12 @@ import {
   Text,
   VStack,
   HStack,
-  IconButton,
   Collapse,
+  useColorModeValue,
+  IconButton,
 } from "@chakra-ui/react";
 import { Link as ScrollLink } from "react-scroll";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 
 const Sidebar = ({ sections }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,31 +24,33 @@ const Sidebar = ({ sections }) => {
       position={{ base: "relative", md: "sticky" }}
       top="4rem"
       w={{ base: "full", md: "25%" }}
+      zIndex={10}
+      bg={useColorModeValue("gray.100", "gray.700")}
+      rounded="md"
+      shadow="md"
+      p={4}
     >
       <HStack
         justifyContent="space-between"
         display={{ base: "flex", md: "none" }}
-        bg="white"
-        p={4}
-        shadow="md"
+        onClick={toggleSidebar}
+        cursor="pointer"
       >
         <Text fontSize="2xl" fontWeight="bold">
           Documentation
         </Text>
-        {/* <IconButton
+        <IconButton
+          icon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
           aria-label="Toggle Sidebar"
-          icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-          onClick={toggleSidebar}
-        /> */}
+          variant="outline"
+        />
       </HStack>
       <Collapse in={isOpen || { base: false, md: true }} animateOpacity>
         <VStack
           align="flex-start"
           spacing={4}
-          p={4}
-          bg="white"
-          shadow="md"
-          rounded="md"
+          mt={4}
+          display={{ base: isOpen ? "block" : "none", md: "block" }}
         >
           {sections.map((section, index) => (
             <Box key={index} w="100%">

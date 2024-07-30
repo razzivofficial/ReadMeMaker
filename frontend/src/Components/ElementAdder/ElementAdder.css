@@ -1,25 +1,131 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
 .editorHeading span {
-  font-family: 'Bebas Neue', cursive;
+  font-family: "Bebas Neue", cursive;
   font-size: 2em;
   position: absolute;
   top: -1%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  /* margin-bottom: 2%; */
+  transform: translate(-50%, -50%);
   background-image: linear-gradient(gold, gold);
   background-size: 90% 10px;
   background-repeat: no-repeat;
   background-position: 100% 0%;
-  transition: background-size .7s, background-position .5s ease-in-out;
+  transition: background-size 0.7s, background-position 0.5s ease-in-out;
+}
+
+@media (max-width: 600px) {
+  .editorHeading span {
+    font-size: 1.2em;
+    top: 10;
+    background-size: 80% 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .editorHeading span {
+    font-size: 1em;
+    background-size: 70% 8px;
+  }
 }
 
 .editorHeading span:hover {
   background-size: 100% 100%;
   background-position: 0% 100%;
-  transition: background-position .7s, background-size .5s ease-in-out;
+  transition: background-position 0.7s, background-size 0.5s ease-in-out;
 }
 
 .text-shadow {
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Download button css */
+.Btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background-color: rgb(27, 27, 27);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition-duration: 0.3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.11);
+}
+
+.svgIcon {
+  fill: rgb(49, 130, 206);
+}
+
+.icon2 {
+  width: 15px;
+  height: 5px;
+  border-bottom: 2px solid rgb(49, 130, 206);
+  border-left: 2px solid rgb(49, 130, 206);
+  border-right: 2px solid rgb(49, 130, 206);
+}
+
+.tooltip {
+  position: absolute;
+  left: -105px;
+  opacity: 0;
+  background-color: rgb(12, 12, 12);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: 0.2s;
+  pointer-events: none;
+  letter-spacing: 0.5px;
+}
+
+.tooltip::before {
+  position: absolute;
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: rgb(12, 12, 12);
+  background-size: 1000%;
+  background-position: center;
+  transform: rotate(45deg);
+  right: -5%;
+  transition-duration: 0.3s;
+}
+
+.Btn:hover .tooltip {
+  opacity: 1;
+  transition-duration: 0.3s;
+}
+
+.Btn:hover {
+  background-color: rgb(49, 130, 206);
+  transition-duration: 0.3s;
+}
+
+.Btn:hover .icon2 {
+  border-bottom: 2px solid rgb(235, 235, 235);
+  border-left: 2px solid rgb(235, 235, 235);
+  border-right: 2px solid rgb(235, 235, 235);
+}
+
+.Btn:hover .svgIcon {
+  fill: rgb(255, 255, 255);
+  animation: slide-in-top 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }

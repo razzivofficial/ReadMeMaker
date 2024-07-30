@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
-import { GrPowerReset } from "react-icons/gr";
+import {
+  AiFillPlusCircle,
+  AiFillCheckCircle,
+} from "react-icons/ai";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import { BiHelpCircle } from "react-icons/bi";
-import { Button } from "@chakra-ui/react";
 import "./ElementAdder.css";
 
 const help = {
@@ -334,9 +335,21 @@ export default function ElementAdder() {
     }
   };
 
+  const downloadMarkdown = () => {
+    const blob = new Blob([value], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "README.md";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <>
-      <div className="editorHeading mb-10">
+      <div className="editorHeading">
         <span> ReadMeMaker Ultimate Editor </span>
       </div>
       <div className="flex flex-col md:flex-row mx-2 md:mx-10 mt-32 md:mt-34">
@@ -385,15 +398,31 @@ export default function ElementAdder() {
           </div>
         </div>
         {/* Right Panel - Markdown Editor */}
-        <div className="md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 bg-white border border-gray-300 rounded-3xl">
+        <div className="md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 bg-white border border-gray-300 rounded-3xl relative">
+          <div className="flex justify-between items-center mb-2 mt-8">
+            <div className="absolute top-2 right-2">
+              <button className="Btn" onClick={downloadMarkdown}>
+                <svg
+                  className="svgIcon"
+                  viewBox="0 0 384 512"
+                  height="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
+                </svg>
+                <span className="icon2"></span>
+                <span className="tooltip">Download</span>
+              </button>
+            </div>
+          </div>
           <MDEditor
-            height={600}
+            height={700}
             value={value}
-            commands={[...commands.getCommands(), help]}
-            onChange={(newValue) => {
-              setValue(newValue);
-              setHasUnsavedChanges(true); // Update unsaved changes on edit
+            onChange={(v) => {
+              setValue(v);
+              setHasUnsavedChanges(true);
             }}
+            commands={[commands.codePreview, help]}
           />
         </div>
       </div>
