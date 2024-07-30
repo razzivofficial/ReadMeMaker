@@ -14,43 +14,38 @@ import {
   Tr,
   Th,
   Td,
-  VStack,
   useColorModeValue,
+  useTheme,
 } from "@chakra-ui/react";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 
 const documentation = [
   {
     title: "Introduction",
-    content: `
-      Welcome to the documentation! This section will help you get started with our API.
-    `,
+    content:
+      "Welcome to the documentation! This section will help you get started with our API.",
     code: `
-    const greet = () => {
-      console.log("Hello, World!");
-    }
-    greet();
+      const greet = () => {
+        console.log("Hello, World!");
+      }
+      greet();
     `,
     image: "https://via.placeholder.com/600x200",
     list: ["Getting Started", "Installation", "Basic Usage"],
     subtopics: [
       {
         title: "Overview",
-        content: `
-          This is the overview of the Introduction.
-        `,
+        content: "This is the overview of the Introduction.",
         code: `
-        console.log("Overview of Introduction");
+          console.log("Overview of Introduction");
         `,
         image: "https://via.placeholder.com/600x200",
       },
       {
         title: "Setup",
-        content: `
-          This is the setup guide for the Introduction.
-        `,
+        content: "This is the setup guide for the Introduction.",
         code: `
-        console.log("Setup guide for Introduction");
+          console.log("Setup guide for Introduction");
         `,
         image: "https://via.placeholder.com/600x200",
       },
@@ -58,36 +53,31 @@ const documentation = [
   },
   {
     title: "Authentication",
-    content: `
-      To use our API, you need to authenticate yourself. Use the API key provided to you.
-    `,
+    content:
+      "To use our API, you need to authenticate yourself. Use the API key provided to you.",
     code: `
-    const apiKey = "your-api-key";
-    fetch("https://api.example.com/data", {
-      headers: {
-        "Authorization": \`Bearer \${apiKey}\`
-      }
-    });
+      const apiKey = "your-api-key";
+      fetch("https://api.example.com/data", {
+        headers: {
+          "Authorization": \`Bearer \${apiKey}\`
+        }
+      });
     `,
     image: "https://via.placeholder.com/600x200",
     subtopics: [
       {
         title: "API Key",
-        content: `
-          Information about API Keys.
-        `,
+        content: "Information about API Keys.",
         code: `
-        const apiKey = "your-api-key";
+          const apiKey = "your-api-key";
         `,
         image: "https://via.placeholder.com/600x200",
       },
       {
         title: "OAuth",
-        content: `
-          Information about OAuth authentication.
-        `,
+        content: "Information about OAuth authentication.",
         code: `
-        console.log("OAuth authentication");
+          console.log("OAuth authentication");
         `,
         image: "https://via.placeholder.com/600x200",
       },
@@ -95,9 +85,7 @@ const documentation = [
   },
   {
     title: "Endpoints",
-    content: `
-      Here are the available endpoints:
-    `,
+    content: "Here are the available endpoints:",
     table: {
       headers: ["Endpoint", "Description"],
       rows: [
@@ -112,10 +100,10 @@ const documentation = [
 const Documentation = () => {
   const bg = useColorModeValue("white", "gray.800");
   const textColor = useColorModeValue("gray.900", "white");
+  const theme = useTheme();
 
   return (
     <Flex
-      className="min-h-screen"
       bg={useColorModeValue("gray.50", "gray.900")}
       p={4}
       mt={16}
@@ -128,8 +116,10 @@ const Documentation = () => {
         mt={{ base: 4, md: 0 }}
         ml={{ md: 4 }}
         bg={bg}
-        shadow="md"
+        shadow="lg"
         rounded="md"
+        transition="all 0.3s"
+        _hover={{ shadow: "xl" }}
       >
         {documentation.map((doc, index) => (
           <Box key={index} id={`section-${index}`} mb={8}>
@@ -139,9 +129,11 @@ const Documentation = () => {
             <Text mb={4} color={textColor}>
               {doc.content}
             </Text>
-            {doc.image && <Image src={doc.image} alt={doc.title} mb={4} />}
+            {doc.image && (
+              <Image src={doc.image} alt={doc.title} mb={4} borderRadius="md" />
+            )}
             {doc.list && (
-              <List spacing={3} mb={4}>
+              <List spacing={3} mb={4} pl={4} styleType="disc">
                 {doc.list.map((item, idx) => (
                   <ListItem key={idx} color={textColor}>
                     {item}
@@ -153,13 +145,15 @@ const Documentation = () => {
               <Box
                 as="pre"
                 p={4}
-                bg="gray.900"
+                bg={theme.colors.gray[900]}
                 color="white"
                 rounded="md"
                 overflow="auto"
                 mb={4}
+                border="1px solid"
+                borderColor="gray.700"
               >
-                <Code p={0} display="block" whiteSpace="pre-wrap">
+                <Code display="block" whiteSpace="pre-wrap">
                   {doc.code.trim()}
                 </Code>
               </Box>
@@ -205,7 +199,12 @@ const Documentation = () => {
                     {subtopic.content}
                   </Text>
                   {subtopic.image && (
-                    <Image src={subtopic.image} alt={subtopic.title} mb={4} />
+                    <Image
+                      src={subtopic.image}
+                      alt={subtopic.title}
+                      mb={4}
+                      borderRadius="md"
+                    />
                   )}
                   {subtopic.code && (
                     <Box
@@ -216,8 +215,10 @@ const Documentation = () => {
                       rounded="md"
                       overflow="auto"
                       mb={4}
+                      border="1px solid"
+                      borderColor="gray.700"
                     >
-                      <Code p={0} display="block" whiteSpace="pre-wrap">
+                      <Code display="block" whiteSpace="pre-wrap">
                         {subtopic.code.trim()}
                       </Code>
                     </Box>
