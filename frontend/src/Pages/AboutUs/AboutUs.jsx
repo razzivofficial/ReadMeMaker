@@ -28,7 +28,7 @@ import {
   FaQuora,
   FaTwitter,
 } from "react-icons/fa";
-import imgA from "../../img1.png";
+import imgA from "../../MediaFiles/logo.png";
 
 import { AiFillBug } from "react-icons/ai";
 

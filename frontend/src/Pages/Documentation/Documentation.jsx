@@ -111,7 +111,7 @@ const Documentation = () => {
     >
       <Sidebar sections={documentation} />
       <Box
-        w={{ base: "100%", md: "75%" }}
+        w={{ base: "100%", md: "80%" }}
         p={4}
         mt={{ base: 4, md: 0 }}
         ml={{ md: 4 }}
