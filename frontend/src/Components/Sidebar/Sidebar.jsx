@@ -23,7 +23,7 @@ const Sidebar = ({ sections }) => {
       as="nav"
       position={{ base: "relative", md: "sticky" }}
       top="4rem"
-      w={{ base: "full", md: "25%" }}
+      w={{ base: "full", md: "20%" }}
       zIndex={10}
       bg={useColorModeValue("gray.100", "gray.700")}
       rounded="md"

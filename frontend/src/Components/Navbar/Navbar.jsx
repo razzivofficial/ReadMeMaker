@@ -24,7 +24,7 @@ import {
   VStack,
   Image,
 } from "@chakra-ui/react";
-import logoImg from "../../logo.png";
+import logoImg from "../../MediaFiles/logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose, AiFillGithub } from "react-icons/ai";
 import { BiChevronDown } from "react-icons/bi";
