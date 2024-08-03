@@ -1,4 +1,4 @@
-import React, { useState,useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import { Link as Navlink } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -72,6 +72,9 @@ const dropdownLinks = [
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
+
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
@@ -102,6 +105,7 @@ function Navbar() {
 
   const handleloginSubmit = async (e) => {
     e.preventDefault();
+    setloginCredentials({ email: "", password: "" });
 
     const response = await fetch(
       "https://readmemaker-backend.vercel.app/users/loginuser",
@@ -120,10 +124,9 @@ function Navbar() {
 
     if (!json.success) {
       toast.error("Enter valid credentials");
-      setloginCredentials({ email: "", password: "" }); 
+      
     } else {
       toast.success("Login successful");
-      setloginCredentials({ email: "", password: "" }); 
       onClose()
       localStorage.setItem("userEmail", credentials.email);
       localStorage.setItem("authToken", json.authToken);
@@ -136,8 +139,8 @@ function Navbar() {
       [event.target.id]: event.target.value,
     });
   };
-  
-  
+
+
   /* Signup */
   const [credentials, setcredentials] = useState({
     name: "",
@@ -147,6 +150,7 @@ function Navbar() {
 
   const handleregistration = async (e) => {
     e.preventDefault();
+    setcredentials({ name: "", email: "", password: "" });
     const response = await fetch(
       "https://readmemaker-backend.vercel.app/users/createuser",
       {
@@ -165,10 +169,9 @@ function Navbar() {
     console.log(json.message);
     if (json.message !== "success") {
       toast.error("Registration failed: " + json.error);
-      setcredentials({ name: "", email: "", password: "" });
     } else {
       toast.success("Registration successful");
-      setcredentials({ name: "", email: "", password: "" });
+      
       onClose()
     }
   };
@@ -177,21 +180,21 @@ function Navbar() {
   };
 
 
-    // const [email, setEmail] = useState('');
-  
-    // useEffect(() => {
-    //   const storedEmail = localStorage.getItem('userEmail');
-    //   if (storedEmail) {
-    //     setEmail(storedEmail);
-    //   }
-    // }, []);
+  // const [email, setEmail] = useState('');
+
+  // useEffect(() => {
+  //   const storedEmail = localStorage.getItem('userEmail');
+  //   if (storedEmail) {
+  //     setEmail(storedEmail);
+  //   }
+  // }, []);
 
   const handleLogout = () => {
     toast.success("Logout successful");
     localStorage.removeItem("authToken");
   };
 
-  
+
 
   return (
     <Box
@@ -212,11 +215,12 @@ function Navbar() {
       >
         <IconButton
           size="md"
-          icon={isOpen ? <AiOutlineClose /> : <GiHamburgerMenu />}
+          icon={isNavbarOpen ? <AiOutlineClose /> : <GiHamburgerMenu />}
           aria-label="Open Menu"
           display={["inherit", "inherit", "none"]}
-          onClick={isOpen ? onClose : onOpen}
+          onClick={() => setIsNavbarOpen(!isNavbarOpen)}
         />
+
         <HStack spacing={8} alignItems="center">
           {/* <Avatar
             href="#"
@@ -290,10 +294,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                    // boxShadow={useColorModeValue(
-                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                    // )}
+                  // boxShadow={useColorModeValue(
+                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                  // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -311,7 +315,7 @@ function Navbar() {
             </Menu>
           </HStack>
           {/* Menu rajiv */}
-          {localStorage.getItem("authToken") ? (
+          {localStorage.getItem("authToken") && (
             <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
               <MenuButton size="sm" onClick={toggleUserMenu}>
                 <Avatar
@@ -362,21 +366,18 @@ function Navbar() {
                 </MenuItem>
               </MenuList>
             </Menu>
-          ) : (
-            <Text></Text>
           )}
 
           <Spacer />
         </HStack>
         <IconButton aria-label="Color Switcher" icon={<FiSun />} />
 
-        {!localStorage.getItem("authToken") ? (
+        {!localStorage.getItem("authToken") && (
           <Button className="ml-6" colorScheme="blue" onClick={onOpen}>
             Signup
           </Button>
-        ) : (
-          <Text></Text>
         )}
+
       </Flex>
 
       {/* Modal section starts */}
@@ -617,18 +618,45 @@ function Navbar() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      {/* Modal section ends */}
 
-      {/* Mobile Screen Links */}
       {isOpen ? (
         <Box pb={4} display={["inherit", "inherit", "none"]}>
           <Stack as="nav" spacing={2}>
             {navLinks.map((link, index) => (
               <NavLink key={index} {...link} onClose={onClose} />
             ))}
+
           </Stack>
         </Box>
       ) : null}
+
+      {isNavbarOpen && (
+        <Box pb={4} display={{ md: "none" }}>
+          <Stack as="nav" spacing={4}>
+            {navLinks.map((link, index) => (
+              <NavLink key={index} to={link.to} {...link} />
+            ))}
+            {!localStorage.getItem("authToken") ? (
+              <Button colorScheme="blue" onClick={onOpen}>
+                Signup
+              </Button>
+            ) : (
+              <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
+                <MenuButton size="sm" onClick={toggleUserMenu}>
+                  <Avatar
+                    size="sm"
+                    src={
+                      "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
+                    }
+                  />
+                </MenuButton>
+              </Menu>
+            )}
+          </Stack>
+        </Box>
+      )}
+
+
     </Box>
   );
 }
