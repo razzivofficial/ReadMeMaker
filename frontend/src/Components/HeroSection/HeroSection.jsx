@@ -3,46 +3,84 @@ import { chakra, Stack, Text, Button, Box, Link } from "@chakra-ui/react";
 import { GiCoffeeCup } from "react-icons/gi";
 import { Link as Navlink } from "react-router-dom";
 
-const textArray = [
-  "# Create READMEs with ease",
-  "# Collaborate in real-time",
-  "# Live markdown compilation",
+// Array of arrays, each containing words associated with the initial letters
+const wordsList = [
+  ["SICK", "PICK", "LICK", "DRAG-DROP_INTERFACE"],
+  ["BITS", "FITS", "HITS", "TEMPLATE_CUSTOMIZATION"],
+  ["RUDE", "DUDE", "GUDE", "NEW_LIVE_EDITOR"],
 ];
 
-const Typewriter = () => {
+const HeroSection = () => {
+  const [currentWordSet, setCurrentWordSet] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentText, setCurrentText] = useState("");
-  const typingSpeed = 200; // Adjust the typing speed as needed (lower value = faster)
+  const [displayedWords, setDisplayedWords] = useState(() =>
+    wordsList[0].map((word, index) => ({
+      text: word.charAt(0),
+      isLast: index === wordsList[0].length - 1,
+    }))
+  );
+  const [isFinalWordTyped, setIsFinalWordTyped] = useState(false);
+
+  const typingSpeed = 160; // Speed of typing effect for regular words
+  const finalWordTypingSpeed = 120; // Speed of typing effect for final words
+  const pauseDuration = 1000; // Duration to pause before moving to next word
+  const finalWordPauseDuration = 1500; // Longer pause before the last word
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentText((prevText) => {
-        const targetText = textArray[currentIndex];
-        if (prevText === targetText) {
-          setCurrentIndex((prevIndex) => (prevIndex + 1) % textArray.length);
-          return "";
-        }
-        const nextChar = targetText.charAt(prevText.length);
-        return prevText + nextChar;
-      });
-    }, typingSpeed);
+    const words = wordsList[currentWordSet];
+    let timer;
+    const isLastWord = currentIndex === words.length - 1;
+    const currentTypingSpeed = isLastWord ? finalWordTypingSpeed : typingSpeed;
 
-    return () => clearInterval(interval);
-  }, [currentIndex]);
+    if (displayedWords[currentIndex].text === words[currentIndex]) {
+      timer = setTimeout(
+        () => {
+          if (isLastWord) {
+            setIsFinalWordTyped(true);
+            setTimeout(() => {
+              setCurrentIndex(0);
+              setCurrentWordSet((prevSet) => (prevSet + 1) % wordsList.length);
+              setDisplayedWords(
+                wordsList[(currentWordSet + 1) % wordsList.length].map(
+                  (word, index) => ({
+                    text: word.charAt(0),
+                    isLast:
+                      index ===
+                      wordsList[(currentWordSet + 1) % wordsList.length]
+                        .length -
+                        1,
+                  })
+                )
+              );
+              setIsFinalWordTyped(false); // Reset for next set
+            }, finalWordPauseDuration);
+          } else {
+            setCurrentIndex((prevIndex) => prevIndex + 1);
+          }
+        },
+        isLastWord ? finalWordPauseDuration : pauseDuration
+      );
+    } else {
+      timer = setTimeout(() => {
+        setDisplayedWords((prevDisplayedWords) => {
+          const updatedDisplayedWords = [...prevDisplayedWords];
+          const nextCharacter =
+            words[currentIndex][displayedWords[currentIndex].text.length];
+          updatedDisplayedWords[currentIndex] = {
+            text: updatedDisplayedWords[currentIndex].text + nextCharacter,
+            isLast: updatedDisplayedWords[currentIndex].isLast,
+          };
+          return updatedDisplayedWords;
+        });
+      }, currentTypingSpeed);
+    }
+    return () => clearTimeout(timer);
+  }, [displayedWords, currentIndex, currentWordSet]);
 
-  return (
-    <span>
-      {currentText}
-      <span>|</span>
-    </span>
-  );
-};
-
-const HeroSection = () => {
   return (
     <Box
-      p={{ base: 8, md: 14 }}
-      bgColor={"whitesmoke"}
+      p={{ base: 4, md: 10 }}
+      bgColor="whitesmoke"
       m={4}
       mt={{ base: 12, md: 18 }}
     >
@@ -63,19 +101,26 @@ const HeroSection = () => {
           </Stack>
         </Box>
         <chakra.h1
-          fontSize={{ base: "4xl", sm: "5xl" }}
+          fontSize={{ base: "xl", sm: "3xl" }}
           fontWeight="bold"
           textAlign="center"
           maxW="800px"
         >
           Get started with ReadMeMaker
           <br />
-          <chakra.span
-            color="teal"
-            bg="linear-gradient(transparent 50%, #83e9e7 50%)"
-          >
-            <Typewriter />
-          </chakra.span>
+          <Stack direction="column" alignItems="center">
+            {displayedWords.map((wordObj, index) => (
+              <Box key={index} textAlign="center">
+                <chakra.span
+                  fontSize={{ base: "2xl", sm: "4xl" }}
+                  fontWeight="bold"
+                  color={wordObj.isLast && isFinalWordTyped ? "red" : "teal"}
+                >
+                  '{wordObj.text}'
+                </chakra.span>
+              </Box>
+            ))}
+          </Stack>
         </chakra.h1>
         <Text maxW="850px" fontSize="xl" textAlign="center" color="gray.500">
           Crafting documentation is like painting the portrait of your project's
