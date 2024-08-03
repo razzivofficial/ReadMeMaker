@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  AiFillPlusCircle,
-  AiFillCheckCircle,
-} from "react-icons/ai";
+import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import { BiHelpCircle } from "react-icons/bi";
+import EditorCard from "../EditorCard/EditorCard";
 import "./ElementAdder.css";
 
 const help = {
@@ -426,6 +424,10 @@ export default function ElementAdder() {
           />
         </div>
       </div>
+      {/* Uncomment this to look on code for templates */}
+
+      {/* <EditorCard /> */}
+
     </>
   );
 }
