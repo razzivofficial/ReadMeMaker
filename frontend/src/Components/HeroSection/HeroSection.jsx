@@ -21,7 +21,7 @@ const HeroSection = () => {
   );
   const [isFinalWordTyped, setIsFinalWordTyped] = useState(false);
 
-  const typingSpeed = 160; // Speed of typing effect for regular words
+  const typingSpeed = 160; 
   const finalWordTypingSpeed = 120; // Speed of typing effect for final words
   const pauseDuration = 1000; // Duration to pause before moving to next word
   const finalWordPauseDuration = 1500; // Longer pause before the last word
