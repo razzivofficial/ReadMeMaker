@@ -426,7 +426,7 @@ export default function ElementAdder() {
       </div>
       {/* Uncomment this to look on code for templates */}
 
-      <EditorCard />
+      {/* <EditorCard /> */}
     </>
   );
 }
