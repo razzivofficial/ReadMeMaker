@@ -82,8 +82,8 @@ export default function ElementAdder() {
     {
       slno: "10",
       title: "API Reference",
-      desc: "Map out the API like it’s a treasure hunt. Provide detailed documentation so users can navigate through endpoints like they’re following a treasure map to hidden goodies.",
-      code: "## API Reference\n\n### Get all items\n\n```http\nGET /api/items\n```\n\n| Parameter | Type     | Description                |\n| :-------- | :------- | :------------------------- |\n| `api_key` | `string` | **Required**. Your API key |\n\n### Get item\n\n```http\nGET /api/items/${id}\n```\n\n| Parameter | Type     | Description                       |\n| :-------- | :------- | :-------------------------------- |\n| `id`      | `string` | **Required**. Id of item to fetch |",
+      desc: "Map out the API like it's a treasure hunt. Provide detailed documentation so users can navigate through endpoints like they're following a treasure map to hidden goodies.",
+      code: "## API Reference\n\n### Get All Items\n\nRetrieve a list of all items.\n\n```http\nGET /api/items\n```\n\n| Parameter | Type     | Description                |\n| :-------- | :------- | :------------------------- |\n| `api_key` | `string` | **Required**. Your API key |\n\n### Get Item\n\nRetrieve a specific item by its unique identifier.\n\n```http\nGET /api/items/{id}\n```\n\n| Parameter | Type     | Description                        |\n| :-------- | :------- | :--------------------------------- |\n| `id`      | `string` | **Required**. ID of the item to fetch. Replace `{id}` with the actual item ID. |",
     },
     {
       slno: "11",
@@ -427,7 +427,6 @@ export default function ElementAdder() {
       {/* Uncomment this to look on code for templates */}
 
       {/* <EditorCard /> */}
-
     </>
   );
 }
