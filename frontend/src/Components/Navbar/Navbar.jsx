@@ -128,7 +128,7 @@ function Navbar() {
     } else {
       toast.success("Login successful");
       onClose()
-      localStorage.setItem("userEmail", credentials.email);
+      localStorage.setItem("userEmail", logincredentials.email);
       localStorage.setItem("authToken", json.authToken);
     }
   };
@@ -171,7 +171,7 @@ function Navbar() {
       toast.error("Registration failed: " + json.error);
     } else {
       toast.success("Registration successful");
-      
+      localStorage.setItem("name", credentials.name);
       onClose()
     }
   };

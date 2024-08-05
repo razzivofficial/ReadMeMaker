@@ -4,9 +4,15 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const jwtSecret = "Madebyrajivandtushar";
 
+
 const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
+};
+
+const checkUniqueUsername = async (username) => {
+    const user = await User.findOne({ username });
+    return !user;
 };
 
 const createuser = async (req, res) => {
@@ -82,7 +88,140 @@ const loginuser = async (req, res) => {
     }
 };
 
+const getNameByEmail = async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        if (!validateEmail(email)) {
+            return res.status(400).json({ error: "Email is not valid" });
+        }
+
+        const user = await User.findOne({ email }, 'name');
+        if (!user) {
+            return res.status(400).json({ error: "User not found" });
+        }
+
+        res.json({ name: user.name });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const updatePassword = async (req, res) => {
+    try {
+        const { email, currentPassword, newPassword } = req.body;
+
+        if (!validateEmail(email)) {
+            return res.status(400).json({ error: "Email is not valid" });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ error: "User not found" });
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: "Current password is incorrect" });
+        }
+
+        const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])/;
+        if (newPassword.length < 8 || !passwordRegex.test(newPassword)) {
+            return res.status(400).json({ error: "New password must be at least 8 characters long, including a special character and a number" });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        res.json({ message: "Password updated successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const updateName = async (req, res) => {
+    try {
+        const { email } = req.params;
+        const { name } = req.body;
+
+        if (!validateEmail(email)) {
+            return res.status(400).json({ error: "Email is not valid" });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ error: "User not found" });
+        }
+
+        user.name = name || user.name;
+        await user.save();
+        res.json({ message: "Name updated successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+const updateUsername = async (req, res) => {
+    try {
+        const { email } = req.params;
+        const { username } = req.body;
+
+        if (!validateEmail(email)) {
+            return res.status(400).json({ error: "Email is not valid" });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ error: "User not found" });
+        }
+
+        const isUsernameUnique = await checkUniqueUsername(username);
+        if (!isUsernameUnique) {
+            return res.status(400).json({ error: "Username already exists" });
+        }
+
+        user.username = username;
+        await user.save();
+        res.json({ message: "Username updated successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+const updateDescription = async (req, res) => {
+    try {
+        const { email } = req.params;
+        const { description } = req.body;
+
+        if (!validateEmail(email)) {
+            return res.status(400).json({ error: "Email is not valid" });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ error: "User not found" });
+        }
+
+        user.description = description || user.description;
+        await user.save();
+        res.json({ message: "Description updated successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     createuser,
-    loginuser
+    loginuser,
+    getNameByEmail,
+    updatePassword,
+    updateName,
+    updateUsername,
+    updateDescription,
 };
