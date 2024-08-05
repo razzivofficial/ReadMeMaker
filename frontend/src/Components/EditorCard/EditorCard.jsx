@@ -1,16 +1,16 @@
 import React from "react";
 import {
-  Container,
   Box,
   Text,
-  Center,
-  useColorModeValue,
-  SimpleGrid,
+  HStack,
   VStack,
   Image,
-  HStack,
   IconButton,
   Divider,
+  useColorModeValue,
+  SimpleGrid,
+  Center,
+  Container,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { FaThumbsUp, FaThumbsDown, FaComment } from "react-icons/fa";
@@ -44,7 +44,7 @@ const MarkdownPreviewCard = ({
       p={4}
       overflow="hidden"
       cursor="pointer"
-      _hover={{ boxShadow: "xl" }}
+      _hover={{ boxShadow: "2xl" }}
       bg={bg}
       role="group"
       m={2}
@@ -80,6 +80,7 @@ const MarkdownPreviewCard = ({
       </Text>
 
       <Box
+        className="markdown-content"
         p={4}
         border="1px solid"
         borderColor="gray.300"
