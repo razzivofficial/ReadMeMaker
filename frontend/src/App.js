@@ -7,11 +7,13 @@ import AboutUs from "./Pages/AboutUs/AboutUs";
 import Documentation from "./Pages/Documentation/Documentation";
 import Editor from "./Pages/Editor/Editor";
 import ErrorPage from "./Pages/Error/ErrorPage";
+import ScrollToTop from "./Components/ScrollToTop/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutUs />} />
