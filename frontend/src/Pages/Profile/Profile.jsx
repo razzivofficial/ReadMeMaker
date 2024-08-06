@@ -113,60 +113,107 @@ const ProfilePage = () => {
       }
     }
   };
+    const handleUpdate = async (field) => {
+        if (field === 'username') {
+            try {
+                const response = await fetch(`https://readmemaker-backend.vercel.app/users/updateUsername/${email}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username }),
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    toast.success('username updated successfully');
+                    setIsEditing(false); 
+                } else {
+                    toast.error(result.error);
+                }
+            } catch (error) {
+                toast.error('Failed to update Username');
+            }
+        }
+        if (field === 'name') {
+            try {
+                const response = await fetch(`https://readmemaker-backend.vercel.app/users/updatename/${email}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name }),
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    toast.success('Name updated successfully');
+                    setIsEditing(false); 
+                } else {
+                    toast.error(result.error);
+                }
+            } catch (error) {
+                toast.error('Failed to update Name');
+            }
+        }
+    };
 
-  return (
-    <Box
-      position="relative"
-      minH="170vh"
-      pt="60px"
-      bg={useColorModeValue("gray.50", "gray.800")}
-    >
-      <Box
-        position="absolute"
-        top="0"
-        left="0"
-        width="100%"
-        height={{ base: "40%", md: "30%" }}
-        bgImage="url('https://image.slidesdocs.com/responsive-images/background/line-professional-frame-blue-square-shape-business-powerpoint-background_9c874dd0f4__960_540.jpg')"
-        bgSize="cover"
-        bgPosition="center"
-      />
-      <VStack
-        spacing={8}
-        mt={{ base: "20%", md: "10%" }}
-        px={4}
-        w="full"
-        maxW="4xl"
-        mx="auto"
-        zIndex="1"
-      >
-        <MotionBox
-          p={6}
-          bg={useColorModeValue("white", "gray.700")}
-          borderRadius="lg"
-          boxShadow="lg"
-          w="full"
-          maxW="4xl"
-          mx="auto"
-          zIndex="1"
-          position="relative"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <HStack align="center" spacing={6} w="full">
-            <Avatar size="2xl" name={name} src="path_to_avatar_image" />
-            <VStack align="start" spacing={4} w="full">
-              <FormControl id="name">
-                <FormLabel>Name</FormLabel>
-                <Input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your name"
-                  isReadOnly={!isEditing}
-                  bg={isEditing ? "white" : "gray.200"}
-                />
-              </FormControl>
+    return (
+        <Box position="relative" width="100%" height="100vh" marginTop="-80px" marginBottom="150px">
+            <Box
+                position="absolute"
+                top="-40"
+                left="0"
+                width="100%"
+                height="50%"
+                bgImage="url('https://image.slidesdocs.com/responsive-images/background/line-professional-frame-blue-square-shape-business-powerpoint-background_9c874dd0f4__960_540.jpg')"
+                bgSize="cover"
+                bgPosition="center"
+            />
+            <VStack spacing={6} mt="20%">
+                <MotionBox
+                    p={6}
+                    bg="gray.100"
+                    borderRadius="lg"
+                    boxShadow="lg"
+                    w="80%"
+                    maxW="4xl"
+                    mx="auto"
+                    zIndex="1"
+                    position="relative"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <HStack align="start" spacing={6}>
+                        <Avatar size="2xl" name={name} src="path_to_avatar_image" />
+                        <VStack align="start" spacing={4} w="full">
+                            
+
+                            <FormControl id="name">
+                                <FormLabel>
+                                    Name
+                                    <IconButton
+                                        ml={2}
+                                        size="sm"
+                                        icon={<EditIcon />}
+                                        onClick={handleEditToggle}
+                                    />
+                                </FormLabel>
+                                <Input
+                                    value={name}
+                                    isReadOnly={!isEditing}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Enter your name"
+                                    bg={isEditing ? "white" : "gray.200"}
+                                />
+                                {isEditing && (
+                                    <Button
+                                        mt={2}
+                                        colorScheme="blue"
+                                        onClick={() => {
+                                            handleUpdate('name');
+                                            setIsEditing(false);  
+                                        }}
+                                    >
+                                        Update Name
+                                    </Button>
+                                )}
+                            </FormControl>
 
               <FormControl id="username">
                 <FormLabel display="flex" alignItems="center">
