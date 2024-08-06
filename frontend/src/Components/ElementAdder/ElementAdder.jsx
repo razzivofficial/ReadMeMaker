@@ -3,6 +3,7 @@ import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import { BiHelpCircle } from "react-icons/bi";
 import "./ElementAdder.css";
+import EditorCard from "../EditorCard/EditorCard";
 
 const help = {
   name: "help",
@@ -405,6 +406,7 @@ export default function ElementAdder() {
           />
         </div>
       </div>
+      <EditorCard />
     </>
   );
 }
