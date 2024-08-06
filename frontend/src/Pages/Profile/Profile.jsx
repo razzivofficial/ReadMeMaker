@@ -101,19 +101,37 @@ const ProfilePage = () => {
                 });
                 const result = await response.json();
                 if (response.ok) {
-                    toast.success('Username updated successfully');
-                    setIsEditing(false); // Exit editing mode
+                    toast.success('username updated successfully');
+                    setIsEditing(false); 
                 } else {
                     toast.error(result.error);
                 }
             } catch (error) {
-                toast.error('Failed to update username');
+                toast.error('Failed to update Username');
+            }
+        }
+        if (field === 'name') {
+            try {
+                const response = await fetch(`https://readmemaker-backend.vercel.app/users/updatename/${email}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name }),
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    toast.success('Name updated successfully');
+                    setIsEditing(false); 
+                } else {
+                    toast.error(result.error);
+                }
+            } catch (error) {
+                toast.error('Failed to update Name');
             }
         }
     };
 
     return (
-        <Box position="relative" width="100%" height="100vh" marginTop="-80px">
+        <Box position="relative" width="100%" height="100vh" marginTop="-80px" marginBottom="150px">
             <Box
                 position="absolute"
                 top="-40"
@@ -142,15 +160,37 @@ const ProfilePage = () => {
                     <HStack align="start" spacing={6}>
                         <Avatar size="2xl" name={name} src="path_to_avatar_image" />
                         <VStack align="start" spacing={4} w="full">
+                            
+
                             <FormControl id="name">
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel>
+                                    Name
+                                    <IconButton
+                                        ml={2}
+                                        size="sm"
+                                        icon={<EditIcon />}
+                                        onClick={handleEditToggle}
+                                    />
+                                </FormLabel>
                                 <Input
                                     value={name}
+                                    isReadOnly={!isEditing}
                                     onChange={(e) => setName(e.target.value)}
                                     placeholder="Enter your name"
-                                    isReadOnly={!isEditing}
                                     bg={isEditing ? "white" : "gray.200"}
                                 />
+                                {isEditing && (
+                                    <Button
+                                        mt={2}
+                                        colorScheme="blue"
+                                        onClick={() => {
+                                            handleUpdate('name');
+                                            setIsEditing(false);  
+                                        }}
+                                    >
+                                        Update Name
+                                    </Button>
+                                )}
                             </FormControl>
 
                             <FormControl id="username">

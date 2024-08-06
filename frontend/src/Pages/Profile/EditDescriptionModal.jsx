@@ -6,7 +6,7 @@ const EditDescriptionModal = ({ isOpen, onClose, email, description, setDescript
 
     const handleSave = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/users/updateDescription/${email}`, {
+            const response = await fetch(`https://readmemaker-backend.vercel.app/users/updateDescription/${email}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
