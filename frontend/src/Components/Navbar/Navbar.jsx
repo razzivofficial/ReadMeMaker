@@ -149,6 +149,17 @@ function Navbar() {
       onClose()
       localStorage.setItem("userEmail", logincredentials.email);
       localStorage.setItem("authToken", json.authToken);
+      const email = localStorage.getItem('userEmail')
+      if (email) {
+        axios
+          .get(`https://readmemaker-backend.vercel.app/users/getNameByEmail/${email}`)
+          .then((response) => {
+            setName(response.data.name);
+          })
+          .catch((error) => {
+            console.error("There was an error fetching the name!", error);
+          });
+      }
     }
   };
 
