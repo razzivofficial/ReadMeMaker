@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import { BiHelpCircle } from "react-icons/bi";
-import EditorCard from "../EditorCard/EditorCard";
 import "./ElementAdder.css";
 
 const help = {
@@ -14,7 +13,7 @@ const help = {
       <BiHelpCircle />
     </svg>
   ),
-  execute: (state, api) => {
+  execute: () => {
     window.open("/documentation", "_blank");
   },
 };
@@ -242,12 +241,10 @@ export default function ElementAdder() {
       code: '<div align="center">\n\n[![Contributors](https://contrib.rocks/image?repo=username/repository)](https://github.com/username/repository/graphs/contributors)',
     },
   ]);
-
   const [selectedElements, setSelectedElements] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredElements, setFilteredElements] = useState([]);
 
-  // Update filteredElements whenever elementData or searchQuery changes
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredElements(elementData);
@@ -259,17 +256,6 @@ export default function ElementAdder() {
     }
   }, [elementData, searchQuery]);
 
-  // const toggleAddRemove = (index, code) => {
-  //   if (selectedElements.includes(index)) {
-  //     setSelectedElements((prevSelected) =>
-  //       prevSelected.filter((selected) => selected !== index)
-  //     );
-  //     setValue((prevValue) => prevValue.replace(code, ""));
-  //   } else {
-  //     setSelectedElements((prevSelected) => [...prevSelected, index]);
-  //     setValue((prevValue) => prevValue + "\n" + code);
-  //   }
-  // };
   const toggleAddRemove = (index, code) => {
     const normalizedCode = code.trim();
     if (selectedElements.includes(index)) {
@@ -302,17 +288,15 @@ export default function ElementAdder() {
     setSearchQuery(e.target.value);
   };
 
-  // Effect to handle beforeunload event
+  const handleBeforeUnload = (event) => {
+    if (hasUnsavedChanges) {
+      event.preventDefault();
+      event.returnValue = "";
+    }
+  };
+
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      if (hasUnsavedChanges) {
-        event.preventDefault();
-        event.returnValue = ""; // triggering the confirmation dialog
-      }
-    };
-
     window.addEventListener("beforeunload", handleBeforeUnload);
-
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
@@ -343,6 +327,22 @@ export default function ElementAdder() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  };
+
+  // Function to replace height with width
+  const replaceHeightWithWidth = (inputText) => {
+    return inputText.replace(
+      /<img\s+([^>]*)height="(\d+)"([^>]*)>/gi,
+      (match, p1, height, p2) => {
+        return `<img ${p1} width="${height}" ${p2}>`;
+      }
+    );
+  };
+
+  const handleValueChange = (v) => {
+    const transformedText = replaceHeightWithWidth(v);
+    setValue(transformedText);
+    setHasUnsavedChanges(true);
   };
 
   return (
@@ -396,37 +396,15 @@ export default function ElementAdder() {
           </div>
         </div>
         {/* Right Panel - Markdown Editor */}
-        <div className="md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 bg-white border border-gray-300 rounded-3xl relative">
-          <div className="flex justify-between items-center mb-2 mt-8">
-            <div className="absolute top-2 right-2">
-              <button className="Btn" onClick={downloadMarkdown}>
-                <svg
-                  className="svgIcon"
-                  viewBox="0 0 384 512"
-                  height="1em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                </svg>
-                <span className="icon2"></span>
-                <span className="tooltip">Download</span>
-              </button>
-            </div>
-          </div>
+        <div className="md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 bg-white border border-gray-300 rounded-3xl">
           <MDEditor
             height={700}
             value={value}
-            onChange={(v) => {
-              setValue(v);
-              setHasUnsavedChanges(true);
-            }}
+            onChange={handleValueChange}
             commands={[commands.codePreview, help]}
           />
         </div>
       </div>
-      {/* Uncomment this to look on code for templates */}
-
-      {/* <EditorCard /> */}
     </>
   );
 }
