@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link as Navlink } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -32,7 +33,7 @@ import { MdTimeline } from "react-icons/md";
 import { BsBook, BsGlobe2 } from "react-icons/bs";
 import { FiSun } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-
+import axios from "axios";
 import {
   Modal,
   ModalOverlay,
@@ -74,7 +75,7 @@ function Navbar() {
 
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
-
+  const navigate = useNavigate();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
@@ -95,6 +96,24 @@ function Navbar() {
   const toggleUserMenu = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
   };
+
+
+  const email = localStorage.getItem('userEmail')
+  const [name, setName] = useState("")
+
+  useEffect(() => {
+    const email = localStorage.getItem('userEmail')
+    if (email) {
+      axios
+        .get(`https://readmemaker-backend.vercel.app/users/getNameByEmail/${email}`)
+        .then((response) => {
+          setName(response.data.name);
+        })
+        .catch((error) => {
+          console.error("There was an error fetching the name!", error);
+        });
+    }
+  }, [])
 
   /* Login */
 
@@ -124,7 +143,7 @@ function Navbar() {
 
     if (!json.success) {
       toast.error("Enter valid credentials");
-      
+
     } else {
       toast.success("Login successful");
       onClose()
@@ -192,6 +211,8 @@ function Navbar() {
   const handleLogout = () => {
     toast.success("Logout successful");
     localStorage.removeItem("authToken");
+    navigate('/')
+
   };
 
 
@@ -334,16 +355,16 @@ function Navbar() {
                 <Link _hover={{ textDecoration: "none" }} isExternal>
                   <MenuItem>
                     <VStack justify="start" alignItems="left">
-                      <Text fontWeight="500">Rajiv</Text>
-                      <Text size="sm" color="gray.500" mt="0 !important">
+                      <Text fontWeight="500">{name}</Text>
+                      {/* <Text size="sm" color="gray.500" mt="0 !important">
                         @razzivofficial
-                      </Text>
+                      </Text> */}
                     </VStack>
                   </MenuItem>
                 </Link>
                 <MenuDivider />
-                <MenuItem>
-                  <Text fontWeight="500">Dashboard</Text>
+                <MenuItem as={Navlink} to={`/profile/${email}`}>
+                  <Text fontWeight="500">Profile</Text>
                 </MenuItem>
                 <MenuItem>
                   <Text fontWeight="500">Create Post</Text>

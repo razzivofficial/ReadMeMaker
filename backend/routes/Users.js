@@ -10,5 +10,6 @@ router.put('/updatePassword', userdetails.updatePassword);
 router.post('/updatename/:email',userdetails.updateName)
 router.post('/updateusername/:email',userdetails.updateUsername)
 router.post('/updatedescription/:email',userdetails.updateDescription)
+router.get('/getdetailbyemail/:email', userdetails.getUserDetailsByEmail);
 
 module.exports = router;
