@@ -275,7 +275,7 @@ function Navbar() {
           <Input
             display={"block"}
             maxW="30rem"
-            placeholder="Search Templates"
+            placeholder="Search Templates or Components"
             borderColor={useColorModeValue("gray.300", "white")}
             borderRadius="5px"
             d={{ base: "none", md: "block" }}

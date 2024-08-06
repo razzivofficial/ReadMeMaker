@@ -1,0 +1,43 @@
+/* Define compact styles for different Markdown headers */
+
+/* blurr code is in element adder last line*/
+
+.markdown-content h1 {
+  font-size: 1.8em;
+  margin: 0.8em 0;
+}
+
+.markdown-content h2 {
+  font-size: 1.4em;
+  margin: 0.7em 0;
+}
+
+.markdown-content h3 {
+  font-size: 1.1em;
+  margin: 0.6em 0;
+}
+
+.markdown-content h4 {
+  font-size: 0.9em;
+  margin: 0.5em 0;
+}
+
+.markdown-content h5 {
+  font-size: 0.7em;
+  margin: 0.4em 0;
+}
+
+.markdown-content h6 {
+  font-size: 0.5em;
+  margin: 0.3em 0;
+}
+
+.card {
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* blurr code is in element adder last line*/

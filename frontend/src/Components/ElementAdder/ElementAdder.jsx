@@ -1,11 +1,11 @@
-// ElementAdder.js
 import React, { useState, useEffect } from "react";
 import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import { BiHelpCircle } from "react-icons/bi";
 import "./ElementAdder.css";
 import EditorCard from "../EditorCard/EditorCard";
-import elementData from "./elementData"; // Import the data from elementData.js
+import elementData from "./elementData";
+import EditorCardLogged from "../EditorCardUnlogged/EditorCardUnlogged";
 
 const help = {
   name: "help",
@@ -106,7 +106,7 @@ export default function ElementAdder() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "README.md";
+    a.download = "ReadMeMaker.md";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -177,7 +177,24 @@ export default function ElementAdder() {
             ))}
           </div>
         </div>
-        <div className="md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 bg-white border border-gray-300 rounded-3xl">
+        {/* Right Panel - Markdown Editor */}
+        <div className="md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 bg-white border border-gray-300 rounded-3xl relative">
+          <div className="flex justify-between items-center mb-2 mt-8">
+            <div className="absolute top-2 right-2">
+              <button className="Btn" onClick={downloadMarkdown}>
+                <svg
+                  className="svgIcon"
+                  viewBox="0 0 384 512"
+                  height="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
+                </svg>
+                <span className="icon2"></span>
+                <span className="tooltip">Download</span>
+              </button>
+            </div>
+          </div>
           <MDEditor
             height={700}
             value={value}
@@ -186,7 +203,20 @@ export default function ElementAdder() {
           />
         </div>
       </div>
-      <EditorCard />
+      <div className="editor-card-container">
+        <div className="blurred-editor-card">
+          <EditorCardLogged />
+        </div>
+        <div className="overlay">
+          <p className="overlay-text">Login to view this content</p>
+          <button
+            className="login-button"
+            onClick={() => (window.location.href = "/login")}
+          >
+            Login
+          </button>
+        </div>
+      </div>
     </>
   );
 }

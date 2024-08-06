@@ -17,8 +17,8 @@ import { FaThumbsUp, FaThumbsDown, FaComment } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import "./EditorCard.css";
-import data from "./EditorCardData"; // Import data from external file
+import "./EditorCardUnlogged.css";
+import data from "./EditorCardUnloggedData"; // Import data from external file
 
 // Function to replace height with width in <img> tags
 const replaceHeightWithWidth = (inputText) => {
@@ -147,7 +147,7 @@ const MarkdownPreviewCard = ({
   );
 };
 
-const EditorCard = () => {
+const EditorCardLogged = () => {
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
 
   return (
@@ -185,4 +185,4 @@ const EditorCard = () => {
   );
 };
 
-export default EditorCard;
+export default EditorCardLogged;
