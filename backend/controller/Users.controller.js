@@ -216,6 +216,27 @@ const updateDescription = async (req, res) => {
     }
 };
 
+const getUserDetailsByEmail = async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        if (!validateEmail(email)) {
+            return res.status(400).json({ error: "Email is not valid" });
+        }
+
+        // Retrieve all user details except the password
+        const user = await User.findOne({ email }, 'name username description');
+        if (!user) {
+            return res.status(400).json({ error: "User not found" });
+        }
+
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     createuser,
     loginuser,
@@ -224,4 +245,5 @@ module.exports = {
     updateName,
     updateUsername,
     updateDescription,
+    getUserDetailsByEmail
 };

@@ -20,7 +20,7 @@ function App() {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/documentation" element={<Documentation />} />
         <Route path="/editor" element={<Editor />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:useremail" element={<Profile />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />
