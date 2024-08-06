@@ -20,6 +20,16 @@ import remarkGfm from "remark-gfm";
 import "./EditorCard.css";
 import data from "./EditorCardData"; // Import data from external file
 
+// Function to replace height with width in <img> tags
+const replaceHeightWithWidth = (inputText) => {
+  return inputText.replace(
+    /<img\s+([^>]*)height="(\d+)"([^>]*)>/gi,
+    (match, p1, height, p2) => {
+      return `<img ${p1} width="${height}" ${p2}>`;
+    }
+  );
+};
+
 const MarkdownPreviewCard = ({
   email,
   username,
@@ -33,6 +43,9 @@ const MarkdownPreviewCard = ({
   const bg = useColorModeValue("white", "#2f3244");
   const markdownBg = useColorModeValue("#f5f5f5", "#1e1e1e");
   const textColor = useColorModeValue("black", "white");
+
+  // Apply the replaceHeightWithWidth function to the markdown content
+  const processedMarkdown = replaceHeightWithWidth(markdown);
 
   return (
     <Box
@@ -93,7 +106,7 @@ const MarkdownPreviewCard = ({
         color={textColor}
       >
         <ReactMarkdown rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>
-          {markdown}
+          {processedMarkdown}
         </ReactMarkdown>
       </Box>
 
@@ -148,7 +161,7 @@ const EditorCard = () => {
             mb={6}
             mt={16}
           >
-            #Ready-Mad-Templates-Of-ReadMeMaker!
+            #Ready-Made-Templates-Of-ReadMeMaker!
           </Text>
 
           <SimpleGrid columns={columns} spacing={4}>
