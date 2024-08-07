@@ -5,7 +5,7 @@ import { BiHelpCircle } from "react-icons/bi";
 import "./ElementAdder.css";
 import EditorCard from "../EditorCard/EditorCard";
 import elementData from "./elementData";
-import EditorCardLogged from "../EditorCardUnlogged/EditorCardUnlogged";
+import EditorCardUnLogged from "../EditorCardUnlogged/EditorCardUnlogged";
 
 const help = {
   name: "help",
@@ -203,9 +203,10 @@ export default function ElementAdder() {
           />
         </div>
       </div>
+      {/* add login work */}
       <div className="editor-card-container">
         <div className="blurred-editor-card">
-          <EditorCardLogged />
+          <EditorCardUnLogged />
         </div>
         <div className="overlay">
           <p className="overlay-text">Login to view this content</p>
@@ -217,6 +218,8 @@ export default function ElementAdder() {
           </button>
         </div>
       </div>
+      {/* if logged in */}
+      <EditorCardUnLogged />
     </>
   );
 }

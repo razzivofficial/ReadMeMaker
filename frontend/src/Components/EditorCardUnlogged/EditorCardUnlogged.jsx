@@ -147,7 +147,7 @@ const MarkdownPreviewCard = ({
   );
 };
 
-const EditorCardLogged = () => {
+const EditorCardUnLogged = () => {
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
 
   return (
@@ -185,4 +185,4 @@ const EditorCardLogged = () => {
   );
 };
 
-export default EditorCardLogged;
+export default EditorCardUnLogged;
