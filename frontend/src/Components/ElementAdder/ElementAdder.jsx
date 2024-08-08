@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import { BiHelpCircle } from "react-icons/bi";
 import "./ElementAdder.css";
-import { useDisclosure } from "@chakra-ui/react";
-import EditorCard from "../EditorCard/EditorCard";
 import elementData from "./elementData";
 import EditorCardUnLogged from "../EditorCardUnlogged/EditorCardUnlogged";
-import LoginModal from '../Navbar/LoginModal'
-import RegistrationModal from '../Navbar/RegistrationModal'
+import LoginModal from "../Navbar/LoginModal";
+import RegistrationModal from "../Navbar/RegistrationModal";
 
 const help = {
   name: "help",
@@ -32,7 +31,6 @@ export default function ElementAdder() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredElements, setFilteredElements] = useState(elementData);
 
-
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [isChangeMode, setChangeMode] = useState(false);
@@ -42,6 +40,11 @@ export default function ElementAdder() {
   const handleLoginClose = () => setIsLoginOpen(false);
   const handleRegistrationOpen = () => setIsRegistrationOpen(true);
   const handleRegistrationClose = () => setIsRegistrationOpen(false);
+
+  const navigate = useNavigate();
+  const goTempCompoPage = () => {
+    navigate("/templatecompo");
+  };
 
   const handleSetChangeMode = (mode) => {
     setChangeMode(mode);
@@ -151,6 +154,7 @@ export default function ElementAdder() {
     setHasUnsavedChanges(true);
   };
 
+
   return (
     <>
       <div className="editorHeading">
@@ -227,52 +231,59 @@ export default function ElementAdder() {
         </div>
       </div>
 
-
-      {!localStorage.getItem('authToken') ? (
+      {!localStorage.getItem("authToken") ? (
         <div className="editor-card-container">
           <div className="blurred-editor-card">
             <EditorCardUnLogged />
           </div>
           <div className="overlay">
             <p className="overlay-text">Login to view this content</p>
-            <button
-              className="login-button"
-              onClick={handleLoginOpen}
-            >
+            <button className="login-button" onClick={handleLoginOpen}>
               Login
             </button>
           </div>
         </div>
       ) : (
-        <EditorCardUnLogged />
+        <>
+          <div className="editor-card-container">
+            <EditorCardUnLogged />
+          </div>
+          <div className="flex justify-center items-center h-20">
+            <button
+              onClick={goTempCompoPage}
+              className="border hover:scale-95 duration-300 relative group cursor-pointer text-sky-50 overflow-hidden h-16 w-64 rounded-md bg-sky-200 p-2 flex justify-center items-center font-extrabold text-lg font-sans"
+            >
+              <div className="absolute right-32 -top-4 group-hover:top-1 group-hover:right-2 z-10 w-40 h-40 rounded-full group-hover:scale-150 duration-500 bg-sky-900"></div>
+              <div className="absolute right-2 -top-4 group-hover:top-1 group-hover:right-2 z-10 w-32 h-32 rounded-full group-hover:scale-150 duration-500 bg-sky-800"></div>
+              <div className="absolute -right-12 top-4 group-hover:top-1 group-hover:right-2 z-10 w-24 h-24 rounded-full group-hover:scale-150 duration-500 bg-sky-700"></div>
+              <div className="absolute right-20 -top-4 group-hover:top-1 group-hover:right-2 z-10 w-16 h-16 rounded-full group-hover:scale-150 duration-500 bg-sky-600"></div>
+              <p className="z-10">View More</p>
+            </button>
+          </div>
+        </>
       )}
 
       {/* Add the modals here */}
       {isChangeMode ? (
         <RegistrationModal
-          isOpen={isRegistrationOpen || isChangeMode}  // Show if in change mode
+          isOpen={isRegistrationOpen || isChangeMode} // Show if in change mode
           onClose={() => {
-            setChangeMode(false);  // Reset change mode when closing
+            setChangeMode(false); // Reset change mode when closing
             handleRegistrationClose();
           }}
           setChangeMode={setChangeMode}
         />
       ) : (
         <LoginModal
-          isOpen={isLoginOpen && !isChangeMode}  // Show only if not in change mode
+          isOpen={isLoginOpen && !isChangeMode} // Show only if not in change mode
           onClose={() => {
-            setChangeMode(false);  // Reset change mode when closing
+            setChangeMode(false); // Reset change mode when closing
             handleLoginClose();
           }}
           setChangeMode={setChangeMode}
           setName={setName}
         />
       )}
-
-
-
-
-
     </>
   );
 }
