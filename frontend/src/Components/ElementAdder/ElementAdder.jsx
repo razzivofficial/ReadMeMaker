@@ -3,9 +3,12 @@ import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import { BiHelpCircle } from "react-icons/bi";
 import "./ElementAdder.css";
+import { useDisclosure } from "@chakra-ui/react";
 import EditorCard from "../EditorCard/EditorCard";
 import elementData from "./elementData";
 import EditorCardUnLogged from "../EditorCardUnlogged/EditorCardUnlogged";
+import LoginModal from '../Navbar/LoginModal'
+import RegistrationModal from '../Navbar/RegistrationModal'
 
 const help = {
   name: "help",
@@ -28,6 +31,26 @@ export default function ElementAdder() {
   const [selectedElements, setSelectedElements] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredElements, setFilteredElements] = useState(elementData);
+
+
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
+  const [isChangeMode, setChangeMode] = useState(false);
+  const [name, setName] = useState("");
+
+  const handleLoginOpen = () => setIsLoginOpen(true);
+  const handleLoginClose = () => setIsLoginOpen(false);
+  const handleRegistrationOpen = () => setIsRegistrationOpen(true);
+  const handleRegistrationClose = () => setIsRegistrationOpen(false);
+
+  const handleSetChangeMode = (mode) => {
+    setChangeMode(mode);
+    if (mode) {
+      handleRegistrationOpen();
+    } else {
+      handleLoginOpen();
+    }
+  };
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
@@ -204,6 +227,7 @@ export default function ElementAdder() {
         </div>
       </div>
 
+
       {!localStorage.getItem('authToken') ? (
         <div className="editor-card-container">
           <div className="blurred-editor-card">
@@ -213,18 +237,39 @@ export default function ElementAdder() {
             <p className="overlay-text">Login to view this content</p>
             <button
               className="login-button"
-              onClick={() => (window.location.href = "/login")}
+              onClick={handleLoginOpen}
             >
               Login
             </button>
           </div>
         </div>
-      )
-        :
-        (
-          <EditorCardUnLogged />
-        )
-      }
+      ) : (
+        <EditorCardUnLogged />
+      )}
+
+      {/* Add the modals here */}
+      {isChangeMode ? (
+        <RegistrationModal
+          isOpen={isRegistrationOpen || isChangeMode}  // Show if in change mode
+          onClose={() => {
+            setChangeMode(false);  // Reset change mode when closing
+            handleRegistrationClose();
+          }}
+          setChangeMode={setChangeMode}
+        />
+      ) : (
+        <LoginModal
+          isOpen={isLoginOpen && !isChangeMode}  // Show only if not in change mode
+          onClose={() => {
+            setChangeMode(false);  // Reset change mode when closing
+            handleLoginClose();
+          }}
+          setChangeMode={setChangeMode}
+          setName={setName}
+        />
+      )}
+
+
 
 
 
