@@ -1,5 +1,5 @@
-// EditorCardData.js
-const data = [
+// TemplateData.js
+const TemplateData = [
   {
     email: "user1@example.com",
     username: "user1",
@@ -131,4 +131,4 @@ Welcome to my profile! I'm a Software Engineer from Bangladesh. Thanks for visit
   },
 ];
 
-export default data;
+export default TemplateData;
