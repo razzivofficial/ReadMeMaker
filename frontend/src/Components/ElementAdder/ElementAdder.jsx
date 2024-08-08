@@ -203,23 +203,31 @@ export default function ElementAdder() {
           />
         </div>
       </div>
-      {/* add login work */}
-      <div className="editor-card-container">
-        <div className="blurred-editor-card">
+
+      {!localStorage.getItem('authToken') ? (
+        <div className="editor-card-container">
+          <div className="blurred-editor-card">
+            <EditorCardUnLogged />
+          </div>
+          <div className="overlay">
+            <p className="overlay-text">Login to view this content</p>
+            <button
+              className="login-button"
+              onClick={() => (window.location.href = "/login")}
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      )
+        :
+        (
           <EditorCardUnLogged />
-        </div>
-        <div className="overlay">
-          <p className="overlay-text">Login to view this content</p>
-          <button
-            className="login-button"
-            onClick={() => (window.location.href = "/login")}
-          >
-            Login
-          </button>
-        </div>
-      </div>
-      {/* if logged in */}
-      <EditorCardUnLogged />
+        )
+      }
+
+
+
     </>
   );
 }
