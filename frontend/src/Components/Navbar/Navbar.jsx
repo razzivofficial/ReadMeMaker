@@ -326,10 +326,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                  // boxShadow={useColorModeValue(
-                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                  // )}
+                    // boxShadow={useColorModeValue(
+                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                    // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -353,7 +353,7 @@ function Navbar() {
                 <Avatar
                   size="sm"
                   src={
-                    "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
+                    "https://s2.r29static.com/bin/entry/f0b/x,80/1640932/image.jpg"
                   }
                 />
               </MenuButton>
@@ -409,7 +409,6 @@ function Navbar() {
             Signup
           </Button>
         )}
-
       </Flex>
 
       {/* Modal section starts */}
@@ -657,7 +656,6 @@ function Navbar() {
             {navLinks.map((link, index) => (
               <NavLink key={index} {...link} onClose={onClose} />
             ))}
-
           </Stack>
         </Box>
       ) : null}
@@ -687,8 +685,6 @@ function Navbar() {
           </Stack>
         </Box>
       )}
-
-
     </Box>
   );
 }
