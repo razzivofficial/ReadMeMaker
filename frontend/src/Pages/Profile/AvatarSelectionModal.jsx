@@ -60,21 +60,16 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
     }
 
     try {
-      const response = await fetch(
-        "https://readmemaker-backend.vercel.app/users/updateavatar",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            avatar: `avatar${selectedAvatar.index + 1}`,
-          }), // Save as avatar1, avatar2, etc.
-        }
-      );
-      navigate(`/profile/${email}`);
+      const response = await fetch("https://readmemaker-backend.vercel.app/users/updateavatar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, avatar: `avatar${selectedAvatar.index + 1}` }), // Save as avatar1, avatar2, etc.
+      });
+      navigate(`/profile/${email}`)
       if (response.ok) {
+
         toast({
           title: "Success",
           description: "Avatar updated successfully.",
