@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   VStack,
@@ -20,8 +21,16 @@ import { motion } from "framer-motion";
 import { EditIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import EditDescriptionModal from "./EditDescriptionModal";
-import AvatarSelectionModal from "./AvatarSelectionModal"; // Ensure this is imported
-
+import AvatarSelectionModal from "./AvatarSelectionModal";
+import avatar1 from "../../MediaFiles/avatar1.png";
+import avatar2 from "../../MediaFiles/avatar2.png";
+import avatar3 from "../../MediaFiles/avatar3.png";
+import avatar4 from "../../MediaFiles/avatar4.png";
+import avatar5 from "../../MediaFiles/avatar5.png";
+import avatar6 from "../../MediaFiles/avatar6.png";
+import avatar7 from "../../MediaFiles/avatar7.png";
+import avatar8 from "../../MediaFiles/avatar8.png";
+import avatar9 from "../../MediaFiles/avatar9.png";
 const MotionBox = motion(Box);
 
 const ProfilePage = () => {
@@ -34,15 +43,84 @@ const ProfilePage = () => {
   const [newPassword, setNewPassword] = useState("");
   const [retypePassword, setRetypePassword] = useState("");
   const [email, setEmail] = useState("");
-  const [avatar, setAvatar] = useState("path_to_default_avatar"); // Default avatar
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isAvatarOpen,
-    onOpen: onAvatarOpen,
-    onClose: onAvatarClose,
-  } = useDisclosure();
   const { useremail } = useParams();
-  const [localmail, setLocalmail] = useState("");
+  const [localmail, setlocalmail] = useState("");
+
+  const [selectedAvatar, setSelectedAvatar] = useState(""); // State for selected avatar
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+
+  const avatars = [
+    avatar1,
+    avatar2,
+    avatar3,
+    avatar4,
+    avatar5,
+    avatar6,
+    avatar7,
+    avatar8,
+    avatar9,
+  ];
+
+  useEffect(() => {
+    const fetchUserAvatar = async () => {
+      const email = useremail;
+      if (!email) {
+        toast({
+          title: "Error",
+          description: "Email not found. Please log in again.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+
+      try {
+        console.log(email);
+        const response = await fetch(
+          "https://readmemaker-backend.vercel.app/users/getavatar",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+          }
+        );
+
+        const data = await response.json();
+        if (response.ok) {
+          const avatarIndex = parseInt(data.avatar.replace("avatar", "")) - 1;
+          setSelectedAvatar(avatars[avatarIndex]);
+        } else {
+          toast({
+            title: "Error",
+            description: data.message || "Failed to fetch avatar.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "An error occurred. Please try again later.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    };
+
+    fetchUserAvatar();
+  }, []);
+
+  const handleAvatarSelect = (avatar) => {
+    setSelectedAvatar(avatar);
+    setIsModalOpen(false);
+  };
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,12 +129,12 @@ const ProfilePage = () => {
       toast.warning("Login First");
       navigate("/");
     }
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     const localEmail = localStorage.getItem("userEmail");
     if (localEmail) {
-      setLocalmail(localEmail);
+      setlocalmail(localEmail);
     }
   }, []);
 
@@ -65,6 +143,12 @@ const ProfilePage = () => {
       setEmail(useremail);
     }
   }, [useremail]);
+
+  const handleAvatarClick = () => {
+    if (useremail === localStorage.getItem("userEmail")) {
+      setIsModalOpen(true);
+    }
+  };
 
   useEffect(() => {
     if (email) {
@@ -76,7 +160,6 @@ const ProfilePage = () => {
           setName(response.data.name);
           setUsername(response.data.username);
           setDescription(response.data.description);
-          setAvatar(response.data.avatar || "path_to_default_avatar"); // Load avatar
         })
         .catch((error) => {
           console.error("There was an error fetching the user details!", error);
@@ -87,7 +170,6 @@ const ProfilePage = () => {
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
-
   const handleEditToggle1 = () => {
     setIsEditing1(!isEditing1);
   };
@@ -128,32 +210,47 @@ const ProfilePage = () => {
   };
 
   const handleUpdate = async (field) => {
-    try {
-      const endpoint =
-        field === "username"
-          ? `https://readmemaker-backend.vercel.app/users/updateUsername/${email}`
-          : `https://readmemaker-backend.vercel.app/users/updatename/${email}`;
-
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          [field]: field === "username" ? username : name,
-        }),
-      });
-      const result = await response.json();
-      if (response.ok) {
-        toast.success(
-          `${
-            field.charAt(0).toUpperCase() + field.slice(1)
-          } updated successfully`
+    if (field === "username") {
+      try {
+        const response = await fetch(
+          `https://readmemaker-backend.vercel.app/users/updateUsername/${email}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username }),
+          }
         );
-        field === "username" ? setIsEditing(false) : setIsEditing1(false);
-      } else {
-        toast.error(result.error);
+        const result = await response.json();
+        if (response.ok) {
+          toast.success("Username updated successfully");
+          setIsEditing(false);
+        } else {
+          toast.error(result.error);
+        }
+      } catch (error) {
+        toast.error("Failed to update Username");
       }
-    } catch (error) {
-      toast.error(`Failed to update ${field}`);
+    }
+    if (field === "name") {
+      try {
+        const response = await fetch(
+          `https://readmemaker-backend.vercel.app/users/updatename/${email}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name }),
+          }
+        );
+        const result = await response.json();
+        if (response.ok) {
+          toast.success("Name updated successfully");
+          setIsEditing(false);
+        } else {
+          toast.error(result.error);
+        }
+      } catch (error) {
+        toast.error("Failed to update Name");
+      }
     }
   };
 
@@ -177,40 +274,6 @@ const ProfilePage = () => {
       toast.error("Failed to delete account");
     }
   };
-
-const handleAvatarSelection = async (selectedAvatar) => {
-    try {
-        const response = await fetch("https://readmemaker-backend.vercel.app/users/updateAvatar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem('authToken')}`, // Ensure token is correct if used
-            },
-            body: JSON.stringify({ email, avatar: selectedAvatar }),
-        });
-
-        // Check if the response is not in JSON format and handle it
-        const contentType = response.headers.get('Content-Type');
-        if (!contentType || !contentType.includes('application/json')) {
-            const text = await response.text();
-            throw new Error(`Expected JSON, but received: ${text}`);
-        }
-
-        const result = await response.json();
-
-        if (response.ok) {
-            toast.success("Avatar updated successfully");
-            setAvatar(selectedAvatar); // Update state with the new avatar
-        } else {
-            console.error('Error response:', result); // Log error response for debugging
-            toast.error(result.error || "Failed to update avatar");
-        }
-    } catch (error) {
-        console.error('Error caught:', error); // Log error for debugging
-        toast.error("Failed to update avatar: An unexpected error occurred.");
-    }
-};
-
 
   return (
     <Box
@@ -246,15 +309,27 @@ const handleAvatarSelection = async (selectedAvatar) => {
           transition={{ duration: 0.5 }}
         >
           <HStack align="start" spacing={6}>
-            <Avatar
-              size="2xl"
-              name={name}
-              src={avatar}
-              cursor="pointer"
-              onClick={onAvatarOpen}
-              borderWidth={2}
-              borderColor="teal.500"
-            />
+            <VStack spacing={2}>
+              <Avatar
+                size="2xl"
+                name={name}
+                src={selectedAvatar}
+                cursor="pointer"
+                onClick={handleAvatarClick}
+                borderWidth={2}
+                borderColor="teal.500"
+                _hover={{ borderColor: "teal.700" }}
+              />
+              <Text fontSize="md" textAlign="center">
+                {name}
+              </Text>
+
+              <AvatarSelectionModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSelectAvatar={handleAvatarSelect}
+              />
+            </VStack>
             <VStack align="start" spacing={4} w="full">
               <FormControl id="name">
                 <FormLabel>
@@ -265,7 +340,6 @@ const handleAvatarSelection = async (selectedAvatar) => {
                       size="sm"
                       icon={<EditIcon />}
                       onClick={handleEditToggle1}
-                      variant="ghost"
                     />
                   )}
                 </FormLabel>
@@ -299,7 +373,6 @@ const handleAvatarSelection = async (selectedAvatar) => {
                       size="sm"
                       icon={<EditIcon />}
                       onClick={handleEditToggle}
-                      variant="ghost"
                     />
                   )}
                 </FormLabel>
@@ -316,7 +389,7 @@ const handleAvatarSelection = async (selectedAvatar) => {
                     colorScheme="blue"
                     onClick={() => {
                       handleUpdate("username");
-                      setIsEditing(false);
+                      setIsEditing(false); // Exit editing mode
                     }}
                   >
                     Update Username
@@ -343,7 +416,6 @@ const handleAvatarSelection = async (selectedAvatar) => {
                       size="sm"
                       icon={<EditIcon />}
                       onClick={onOpen}
-                      variant="ghost"
                     />
                   )}
                 </FormLabel>
@@ -362,6 +434,7 @@ const handleAvatarSelection = async (selectedAvatar) => {
             </VStack>
           </HStack>
         </MotionBox>
+
         {localmail === email && (
           <>
             <MotionBox
@@ -439,11 +512,6 @@ const handleAvatarSelection = async (selectedAvatar) => {
             </MotionBox>
           </>
         )}
-        <AvatarSelectionModal
-          isOpen={isAvatarOpen}
-          onClose={onAvatarClose}
-          onSelectAvatar={handleAvatarSelection} // Pass the correct function
-        />
       </VStack>
     </Box>
   );

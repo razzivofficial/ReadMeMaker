@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -11,8 +11,9 @@ import {
   Button,
   Grid,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
-
+import { useNavigate } from "react-router-dom";
 import avatar1 from "../../MediaFiles/avatar1.png";
 import avatar2 from "../../MediaFiles/avatar2.png";
 import avatar3 from "../../MediaFiles/avatar3.png";
@@ -24,9 +25,11 @@ import avatar8 from "../../MediaFiles/avatar8.png";
 import avatar9 from "../../MediaFiles/avatar9.png";
 
 const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const toast = useToast();
+  const navigate = useNavigate();
+
   const avatars = [
-    "",
-    "https://th-i.thgim.com/public/incoming/5b5wzr/article68500264.ece/alternates/FREE_1200/PTI08_05_2024_000314B.jpg",
     avatar1,
     avatar2,
     avatar3,
@@ -37,6 +40,69 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
     avatar8,
     avatar9,
   ];
+
+  const handleAvatarClick = (avatar, index) => {
+    setSelectedAvatar({ avatar, index });
+  };
+
+  const confirmAvatarSelection = async () => {
+    const email = localStorage.getItem("userEmail"); // Get the email from localStorage
+
+    if (!email) {
+      toast({
+        title: "Error",
+        description: "Email not found. Please log in again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://readmemaker-backend.vercel.app/users/updateavatar",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            avatar: `avatar${selectedAvatar.index + 1}`,
+          }), // Save as avatar1, avatar2, etc.
+        }
+      );
+      navigate(`/profile/${email}`);
+      if (response.ok) {
+        toast({
+          title: "Success",
+          description: "Avatar updated successfully.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        onSelectAvatar(selectedAvatar.avatar);
+        onClose();
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to update avatar.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred. Please try again later.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
@@ -61,15 +127,24 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
                 size="lg"
                 cursor="pointer"
                 borderWidth={2}
-                borderColor="transparent"
+                borderColor={
+                  selectedAvatar?.index === index ? "teal.500" : "transparent"
+                }
                 _hover={{ borderColor: "teal.500" }}
-                onClick={() => onSelectAvatar(avatar)}
+                onClick={() => handleAvatarClick(avatar, index)}
               />
             ))}
           </Grid>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="teal" onClick={onClose}>
+          <Button
+            colorScheme="teal"
+            onClick={confirmAvatarSelection}
+            disabled={!selectedAvatar}
+          >
+            Confirm Selection
+          </Button>
+          <Button onClick={onClose} ml={3}>
             Close
           </Button>
         </ModalFooter>

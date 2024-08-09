@@ -22,6 +22,10 @@ const userSchema = mongoose.Schema({
     description: {
         type: String,  // Add 'description' field
         required: false
+    },
+    avatar: {
+        type: String,  // Store the avatar URL or image path
+        required: false
     }
 });
 

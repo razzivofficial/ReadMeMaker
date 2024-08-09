@@ -46,6 +46,16 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
+import avatar1 from "../../MediaFiles/avatar1.png";
+import avatar2 from "../../MediaFiles/avatar2.png";
+import avatar3 from "../../MediaFiles/avatar3.png";
+import avatar4 from "../../MediaFiles/avatar4.png";
+import avatar5 from "../../MediaFiles/avatar5.png";
+import avatar6 from "../../MediaFiles/avatar6.png";
+import avatar7 from "../../MediaFiles/avatar7.png";
+import avatar8 from "../../MediaFiles/avatar8.png";
+import avatar9 from "../../MediaFiles/avatar9.png";
+
 const navLinks = [
   { name: "About", to: "/About" },
   { name: "Documentation", to: "/Documentation" },
@@ -71,6 +81,71 @@ const dropdownLinks = [
 ];
 
 function Navbar() {
+
+  const avatars = [
+    avatar1,
+    avatar2,
+    avatar3,
+    avatar4,
+    avatar5,
+    avatar6,
+    avatar7,
+    avatar8,
+    avatar9,
+  ];
+  const [selectedAvatar,setSelectedAvatar] = useState("");
+
+  useEffect(() => {
+    const fetchUserAvatar = async () => {
+      const email = localStorage.getItem('userEmail');
+      if (!email) {
+        toast({
+          title: "Error",
+          description: "Email not found. Please log in again.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+
+      try {
+        console.log(email)
+        const response = await fetch("https://readmemaker-backend.vercel.app/users/getavatar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          const avatarIndex = parseInt(data.avatar.replace("avatar", "")) - 1;
+          setSelectedAvatar(avatars[avatarIndex]);
+        } else {
+          toast({
+            title: "Error",
+            description: data.message || "Failed to fetch avatar.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "An error occurred. Please try again later.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    };
+
+    fetchUserAvatar();
+  }, []);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
@@ -326,10 +401,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                    // boxShadow={useColorModeValue(
-                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                    // )}
+                  // boxShadow={useColorModeValue(
+                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                  // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -352,9 +427,8 @@ function Navbar() {
               <MenuButton size="sm" onClick={toggleUserMenu}>
                 <Avatar
                   size="sm"
-                  src={
-                    "https://s2.r29static.com/bin/entry/f0b/x,80/1640932/image.jpg"
-                  }
+                  name={name}
+                  src={selectedAvatar}
                 />
               </MenuButton>
               <MenuList
