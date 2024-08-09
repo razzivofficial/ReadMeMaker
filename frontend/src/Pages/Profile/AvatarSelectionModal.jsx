@@ -13,7 +13,7 @@ import {
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
-
+import { useNavigate } from "react-router-dom";
 import avatar1 from "../../MediaFiles/avatar1.png";
 import avatar2 from "../../MediaFiles/avatar2.png";
 import avatar3 from "../../MediaFiles/avatar3.png";
@@ -27,6 +27,7 @@ import avatar9 from "../../MediaFiles/avatar9.png";
 const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const toast = useToast();
+  const navigate = useNavigate();
 
   const avatars = [
     avatar1,
@@ -66,8 +67,8 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
         },
         body: JSON.stringify({ email, avatar: `avatar${selectedAvatar.index + 1}` }), // Save as avatar1, avatar2, etc.
       });
-
       if (response.ok) {
+
         toast({
           title: "Success",
           description: "Avatar updated successfully.",
