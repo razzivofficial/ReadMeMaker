@@ -46,11 +46,11 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
   };
 
   const confirmAvatarSelection = async () => {
-    const email = localStorage.getItem("userEmail"); // Get the email from localStorage
+    const email = localStorage.getItem("userEmail");
 
     if (!email) {
       toast({
-        title: "Error",
+        title: "Authentication Error",
         description: "Email not found. Please log in again.",
         status: "error",
         duration: 5000,
@@ -60,16 +60,21 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
     }
 
     try {
-      const response = await fetch("https://readmemaker-backend.vercel.app/users/updateavatar", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, avatar: `avatar${selectedAvatar.index + 1}` }), // Save as avatar1, avatar2, etc.
-      });
-      navigate(`/profile/${email}`)
-      if (response.ok) {
+      const response = await fetch(
+        "https://readmemaker-backend.vercel.app/users/updateavatar",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            avatar: `avatar${selectedAvatar.index + 1}`,
+          }),
+        }
+      );
 
+      if (response.ok) {
         toast({
           title: "Success",
           description: "Avatar updated successfully.",
@@ -78,11 +83,12 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
           isClosable: true,
         });
         onSelectAvatar(selectedAvatar.avatar);
+        navigate(`/profile/${email}`);
         onClose();
       } else {
         toast({
-          title: "Error",
-          description: "Failed to update avatar.",
+          title: "Update Failed",
+          description: "Failed to update avatar. Please try again.",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -100,19 +106,25 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+      size={{ base: "sm", md: "xl" }}
+    >
       <ModalOverlay bg="blackAlpha.600" backdropFilter="blur(10px)" />
       <ModalContent
         bg={useColorModeValue("gray.100", "gray.800")}
-        boxShadow="xl"
-        borderRadius="lg"
-        p={6}
+        boxShadow="lg"
+        borderRadius="md"
+        p={4}
+        maxW={{ base: "90%", md: "lg" }}
       >
         <ModalHeader>Select Your Avatar</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Grid
-            templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
+            templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(3, 1fr)" }}
             gap={4}
           >
             {avatars.map((avatar, index) => (
@@ -121,19 +133,20 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
                 src={avatar}
                 size="lg"
                 cursor="pointer"
-                borderWidth={2}
+                borderWidth={4}
                 borderColor={
-                  selectedAvatar?.index === index ? "teal.500" : "transparent"
+                  selectedAvatar?.index === index ? "blue.600" : "transparent"
                 }
-                _hover={{ borderColor: "teal.500" }}
+                _hover={{ borderColor: "blue.600" }}
                 onClick={() => handleAvatarClick(avatar, index)}
+                transition="border-color 0.2s ease"
               />
             ))}
           </Grid>
         </ModalBody>
         <ModalFooter>
           <Button
-            colorScheme="teal"
+            colorScheme="blue"
             onClick={confirmAvatarSelection}
             disabled={!selectedAvatar}
           >

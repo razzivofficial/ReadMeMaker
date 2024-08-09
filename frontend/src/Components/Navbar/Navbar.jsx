@@ -350,7 +350,7 @@ function Navbar() {
           <Input
             display={"block"}
             maxW="30rem"
-            placeholder="Search Templates or Components"
+            placeholder="Search for Users, Templates, or Components"
             borderColor={useColorModeValue("gray.300", "white")}
             borderRadius="5px"
             d={{ base: "none", md: "block" }}
@@ -401,10 +401,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                  // boxShadow={useColorModeValue(
-                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                  // )}
+                    // boxShadow={useColorModeValue(
+                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                    // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -425,11 +425,7 @@ function Navbar() {
           {localStorage.getItem("authToken") && (
             <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
               <MenuButton size="sm" onClick={toggleUserMenu}>
-                <Avatar
-                  size="sm"
-                  name={name}
-                  src={selectedAvatar}
-                />
+                <Avatar size="sm" name={name} src={selectedAvatar} />
               </MenuButton>
               <MenuList
                 zIndex={5}
