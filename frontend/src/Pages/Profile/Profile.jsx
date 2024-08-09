@@ -20,6 +20,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { EditIcon } from "@chakra-ui/icons";
@@ -281,289 +282,299 @@ const ProfilePage = () => {
     }
   };
 
-return (
-  <Box
-    position="relative"
-    width="100%"
-    minHeight="100vh"
-    mt={{ base: "20%", md: "10%" }}
-  >
-    <VStack spacing={8} px={{ base: 4, md: 0 }}>
-      <MotionBox
-        p={8}
-        bg="blue.50"
-        borderRadius="xl"
-        boxShadow="xl"
-        w={{ base: "100%", md: "80%" }}
-        maxW="6xl"
-        mx="auto"
-        zIndex="1"
-        position="relative"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Heading as="h3" size="lg" mb={6} color="blue.600">
-          User Profile
-        </Heading>
-        <HStack
-          align="start"
-          spacing={8}
-          flexDirection={{ base: "column", md: "row" }}
+  const motionBoxBg1 = useColorModeValue("blue.50", "blue.800");
+  const motionBoxBg2 = useColorModeValue("teal.50", "teal.800");
+  const motionBoxBg3 = useColorModeValue("red.50", "red.800");
+  const textColor1 = useColorModeValue("blue.600", "blue.300");
+  const textColor2 = useColorModeValue("red.600", "red.300");
+  const formInputBg = useColorModeValue("white", "gray.800");
+  const emailInputBg = useColorModeValue("gray.100", "gray.600");
+  const descriptionBg = useColorModeValue("gray.50", "gray.800");
+  const borderColor1 = useColorModeValue("blue.600", "blue.300");
+  const borderColor2 = useColorModeValue("blue.800", "blue.500");
+
+  return (
+    <Box
+      position="relative"
+      width="100%"
+      minHeight="100vh"
+      mt={{ base: "20%", md: "10%" }}
+    >
+      <VStack spacing={8} px={{ base: 4, md: 0 }}>
+        <MotionBox
+          p={8}
+          bg={motionBoxBg1}
+          borderRadius="xl"
+          boxShadow="xl"
+          w={{ base: "95%", md: "80%" }}
+          maxW="6xl"
+          mx="auto"
+          zIndex="1"
+          position="relative"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <VStack
-            spacing={4}
-            align="center"
-            width={{ base: "100%", md: "auto" }}
+          <Heading as="h3" size="lg" mb={6} color={textColor1}>
+            User Profile
+          </Heading>
+          <HStack
+            align="start"
+            spacing={8}
+            flexDirection={{ base: "column", md: "row" }}
           >
-            <Avatar
-              size="2xl"
-              name={name}
-              src={selectedAvatar}
-              cursor="pointer"
-              onClick={handleAvatarClick}
-              borderWidth={4}
-              borderColor="teal.600"
-              _hover={{ borderColor: "teal.800" }}
-              boxShadow="lg"
-            />
-            <Text fontSize="lg" fontWeight="bold" textAlign="center">
-              {name}
-            </Text>
-            <AvatarSelectionModal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              onSelectAvatar={handleAvatarSelect}
-            />
-          </VStack>
-          <VStack align="start" spacing={6} w="full">
-            <FormControl id="name">
-              <FormLabel fontWeight="bold">
-                Name
-                {localmail === email && (
-                  <IconButton
-                    ml={2}
-                    size="sm"
-                    icon={<EditIcon />}
-                    onClick={handleEditToggle1}
-                  />
-                )}
-              </FormLabel>
-              <Input
-                value={name}
-                isReadOnly={!isEditing1}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
-                bg={isEditing1 ? "white" : "gray.100"}
-              />
-              {isEditing1 && (
-                <Button
-                  mt={2}
-                  colorScheme="teal"
-                  onClick={() => {
-                    handleUpdate("name");
-                    setIsEditing1(false);
-                  }}
-                >
-                  Update Name
-                </Button>
-              )}
-            </FormControl>
-
-            <FormControl id="username">
-              <FormLabel fontWeight="bold">
-                Username
-                {localmail === email && (
-                  <IconButton
-                    ml={2}
-                    size="sm"
-                    icon={<EditIcon />}
-                    onClick={handleEditToggle}
-                  />
-                )}
-              </FormLabel>
-              <Input
-                value={username}
-                isReadOnly={!isEditing}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
-                bg={isEditing ? "white" : "gray.100"}
-              />
-              {isEditing && (
-                <Button
-                  mt={2}
-                  colorScheme="teal"
-                  onClick={() => {
-                    handleUpdate("username");
-                    setIsEditing(false);
-                  }}
-                >
-                  Update Username
-                </Button>
-              )}
-            </FormControl>
-
-            <FormControl id="email">
-              <FormLabel fontWeight="bold">Email</FormLabel>
-              <Input
-                value={email}
-                isReadOnly
-                bg="gray.100"
-                placeholder="your-email@example.com"
-              />
-            </FormControl>
-
-            <FormControl id="description">
-              <FormLabel fontWeight="bold">
-                Description
-                {localmail === email && (
-                  <IconButton
-                    ml={2}
-                    size="sm"
-                    icon={<EditIcon />}
-                    onClick={onOpen}
-                  />
-                )}
-              </FormLabel>
-              <Text bg="gray.50" p={3} borderRadius="md" w="full">
-                {description}
-              </Text>
-            </FormControl>
-
-            <EditDescriptionModal
-              isOpen={isOpen}
-              onClose={onClose}
-              email={email}
-              description={description}
-              setDescription={setDescription}
-            />
-          </VStack>
-        </HStack>
-      </MotionBox>
-
-      {localmail === email && (
-        <>
-          <MotionBox
-            p={8}
-            bg="teal.50"
-            borderRadius="xl"
-            boxShadow="xl"
-            w="full"
-            maxW="6xl"
-            mx="auto"
-            zIndex="1"
-            position="relative"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Heading as="h2" size="lg" mb={6}>
-              Change Password
-            </Heading>
-
-            <FormControl id="current-password" mb={4}>
-              <FormLabel fontWeight="bold">Current Password</FormLabel>
-              <Input
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="Enter your current password"
-              />
-            </FormControl>
-
-            <FormControl id="new-password" mb={4}>
-              <FormLabel fontWeight="bold">New Password</FormLabel>
-              <Input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Enter your new password"
-              />
-            </FormControl>
-
-            <FormControl id="retype-password" mb={4}>
-              <FormLabel fontWeight="bold">Retype New Password</FormLabel>
-              <Input
-                type="password"
-                value={retypePassword}
-                onChange={(e) => setRetypePassword(e.target.value)}
-                placeholder="Retype your new password"
-              />
-            </FormControl>
-
-            <Button colorScheme="teal" onClick={handleChangePassword}>
-              Change Password
-            </Button>
-          </MotionBox>
-
-          <MotionBox
-            p={8}
-            bg="red.50"
-            borderRadius="xl"
-            boxShadow="xl"
-            w="full"
-            maxW="6xl"
-            mx="auto"
-            zIndex="1"
-            position="relative"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <Heading as="h3" size="lg" mb={6} color="red.600">
-              Account Deletion
-            </Heading>
-            <Button
-              colorScheme="red"
-              onClick={() => setIsDeleteDialogOpen(true)}
+            <VStack
+              spacing={4}
+              align="center"
+              width={{ base: "100%", md: "auto" }}
             >
-              Delete My Account
-            </Button>
-          </MotionBox>
-
-          <AlertDialog
-            isOpen={isDeleteDialogOpen}
-            leastDestructiveRef={cancelRef}
-            onClose={() => setIsDeleteDialogOpen(false)}
-          >
-            <AlertDialogOverlay>
-              <AlertDialogContent>
-                <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                  Delete Account
-                </AlertDialogHeader>
-
-                <AlertDialogBody>
-                  Are you sure you want to delete your account? This action is
-                  irreversible.
-                </AlertDialogBody>
-
-                <AlertDialogFooter>
+              <Avatar
+                size="2xl"
+                name={name}
+                src={selectedAvatar}
+                cursor="pointer"
+                onClick={handleAvatarClick}
+                borderWidth={4}
+                borderColor={borderColor1}
+                _hover={{ borderColor: borderColor2 }}
+                boxShadow="lg"
+              />
+              <Text fontSize="lg" fontWeight="bold" textAlign="center">
+                {name}
+              </Text>
+              <AvatarSelectionModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSelectAvatar={handleAvatarSelect}
+              />
+            </VStack>
+            <VStack align="start" spacing={6} w="full">
+              <FormControl id="name">
+                <FormLabel fontWeight="bold">
+                  Name
+                  {localmail === email && (
+                    <IconButton
+                      ml={2}
+                      size="sm"
+                      icon={<EditIcon />}
+                      onClick={handleEditToggle1}
+                    />
+                  )}
+                </FormLabel>
+                <Input
+                  value={name}
+                  isReadOnly={!isEditing1}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your name"
+                  bg={formInputBg}
+                />
+                {isEditing1 && (
                   <Button
-                    ref={cancelRef}
-                    onClick={() => setIsDeleteDialogOpen(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    colorScheme="red"
+                    mt={2}
+                    colorScheme="blue"
                     onClick={() => {
-                      handleDeleteAccount();
-                      setIsDeleteDialogOpen(false);
+                      handleUpdate("name");
+                      setIsEditing1(false);
                     }}
-                    ml={3}
                   >
-                    Delete
+                    Update Name
                   </Button>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialogOverlay>
-          </AlertDialog>
-        </>
-      )}
-    </VStack>
-  </Box>
-);
+                )}
+              </FormControl>
 
+              <FormControl id="username">
+                <FormLabel fontWeight="bold">
+                  Username
+                  {localmail === email && (
+                    <IconButton
+                      ml={2}
+                      size="sm"
+                      icon={<EditIcon />}
+                      onClick={handleEditToggle}
+                    />
+                  )}
+                </FormLabel>
+                <Input
+                  value={username}
+                  isReadOnly={!isEditing}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Enter your username"
+                  bg={formInputBg}
+                />
+                {isEditing && (
+                  <Button
+                    mt={2}
+                    colorScheme="blue"
+                    onClick={() => {
+                      handleUpdate("username");
+                      setIsEditing(false);
+                    }}
+                  >
+                    Update Username
+                  </Button>
+                )}
+              </FormControl>
+
+              <FormControl id="email">
+                <FormLabel fontWeight="bold">Email</FormLabel>
+                <Input
+                  value={email}
+                  isReadOnly
+                  bg={emailInputBg}
+                  placeholder="your-email@example.com"
+                />
+              </FormControl>
+
+              <FormControl id="description">
+                <FormLabel fontWeight="bold">
+                  Description
+                  {localmail === email && (
+                    <IconButton
+                      ml={2}
+                      size="sm"
+                      icon={<EditIcon />}
+                      onClick={onOpen}
+                    />
+                  )}
+                </FormLabel>
+                <Text bg={descriptionBg} p={3} borderRadius="md" w="full">
+                  {description}
+                </Text>
+              </FormControl>
+
+              <EditDescriptionModal
+                isOpen={isOpen}
+                onClose={onClose}
+                email={email}
+                description={description}
+                setDescription={setDescription}
+              />
+            </VStack>
+          </HStack>
+        </MotionBox>
+
+        {localmail === email && (
+          <>
+            <MotionBox
+              p={8}
+              bg={motionBoxBg2}
+              borderRadius="xl"
+              boxShadow="xl"
+              w={{ base: "95%", md: "80%" }}
+              maxW="6xl"
+              mx="auto"
+              zIndex="1"
+              position="relative"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Heading as="h2" size="lg" mb={6}>
+                Change Password
+              </Heading>
+
+              <FormControl id="current-password" mb={4}>
+                <FormLabel fontWeight="bold">Current Password</FormLabel>
+                <Input
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="Enter your current password"
+                />
+              </FormControl>
+
+              <FormControl id="new-password" mb={4}>
+                <FormLabel fontWeight="bold">New Password</FormLabel>
+                <Input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Enter your new password"
+                />
+              </FormControl>
+
+              <FormControl id="retype-password" mb={4}>
+                <FormLabel fontWeight="bold">Retype New Password</FormLabel>
+                <Input
+                  type="password"
+                  value={retypePassword}
+                  onChange={(e) => setRetypePassword(e.target.value)}
+                  placeholder="Retype your new password"
+                />
+              </FormControl>
+
+              <Button colorScheme="teal" onClick={handleChangePassword}>
+                Change Password
+              </Button>
+            </MotionBox>
+
+            <MotionBox
+              p={8}
+              bg={motionBoxBg3}
+              borderRadius="xl"
+              boxShadow="xl"
+              w={{ base: "95%", md: "80%" }}
+              maxW="6xl"
+              mx="auto"
+              zIndex="1"
+              position="relative"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <Heading as="h3" size="lg" mb={6} color={textColor2}>
+                Account Deletion
+              </Heading>
+              <Button
+                colorScheme="red"
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
+                Delete My Account
+              </Button>
+            </MotionBox>
+
+            <AlertDialog
+              isOpen={isDeleteDialogOpen}
+              leastDestructiveRef={cancelRef}
+              onClose={() => setIsDeleteDialogOpen(false)}
+            >
+              <AlertDialogOverlay>
+                <AlertDialogContent>
+                  <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                    Delete Account
+                  </AlertDialogHeader>
+
+                  <AlertDialogBody>
+                    Are you sure you want to delete your account? This action is
+                    irreversible.
+                  </AlertDialogBody>
+
+                  <AlertDialogFooter>
+                    <Button
+                      ref={cancelRef}
+                      onClick={() => setIsDeleteDialogOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      colorScheme="red"
+                      onClick={() => {
+                        handleDeleteAccount();
+                        setIsDeleteDialogOpen(false);
+                      }}
+                      ml={3}
+                    >
+                      Delete
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
+          </>
+        )}
+      </VStack>
+    </Box>
+  );
 };
 
 export default ProfilePage;

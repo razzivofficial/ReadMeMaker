@@ -8,6 +8,7 @@ import elementData from "./elementData";
 import EditorCardUnLogged from "../EditorCardUnlogged/EditorCardUnlogged";
 import LoginModal from "../Navbar/LoginModal";
 import RegistrationModal from "../Navbar/RegistrationModal";
+import { useColorMode, Button, Box } from "@chakra-ui/react";
 
 const help = {
   name: "help",
@@ -24,7 +25,7 @@ const help = {
 };
 
 export default function ElementAdder() {
-  const initialMkdStr = `*LOGIN TO USE DIRECT TEMPLATES*`;
+  const initialMkdStr = "*LOGIN TO USE DIRECT TEMPLATES*";
   const [value, setValue] = useState(initialMkdStr);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [selectedElements, setSelectedElements] = useState([]);
@@ -35,6 +36,8 @@ export default function ElementAdder() {
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [isChangeMode, setChangeMode] = useState(false);
   const [name, setName] = useState("");
+
+  const { colorMode, toggleColorMode } = useColorMode();
 
   const handleLoginOpen = () => setIsLoginOpen(true);
   const handleLoginClose = () => setIsLoginOpen(false);
@@ -154,20 +157,40 @@ export default function ElementAdder() {
     setHasUnsavedChanges(true);
   };
 
-
   return (
     <>
       <div className="editorHeading">
         <span> ReadMeMaker Ultimate Editor </span>
+        <Button onClick={toggleColorMode} className="toggle-color-mode-btn">
+          {colorMode === "light" ? "🌙" : "🌞"}
+        </Button>
       </div>
-      <div className="flex flex-col md:flex-row mx-2 md:mx-10 mt-32 md:mt-34">
-        <div className="md:w-1/3 p-2 md:p-4 bg-slate-50 border border-info rounded-3xl mb-8 md:mb-0">
-          <h4 className="text-shadow text-2xl font-medium leading-tight text-primary mb-4">
+      <div
+        className={`flex flex-col md:flex-row mx-2 md:mx-10 mt-32 md:mt-34 ${
+          colorMode === "dark" ? "bg-gray-900" : "bg-white"
+        }`}
+      >
+        <div
+          className={`md:w-1/3 p-2 md:p-4 ${
+            colorMode === "dark"
+              ? "bg-gray-800 border-gray-600"
+              : "bg-slate-50 border-info"
+          } border rounded-3xl mb-8 md:mb-0`}
+        >
+          <h4
+            className={`text-shadow text-2xl font-medium leading-tight ${
+              colorMode === "dark" ? "text-white" : "text-primary"
+            } mb-4`}
+          >
             Shortcuts to Stardom: Ready-Made Readme Sections
           </h4>
           <div className="flex items-center w-full mb-4">
             <input
-              className="border-2 w-full border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+              className={`border-2 w-full ${
+                colorMode === "dark"
+                  ? "border-gray-600 bg-gray-700 text-white"
+                  : "border-gray-300 bg-white"
+              } h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none`}
               type="search"
               name="search"
               placeholder="Search Elements"
@@ -179,25 +202,55 @@ export default function ElementAdder() {
             {filteredElements.map((item, index) => (
               <div
                 key={item.slno}
-                className="group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100"
+                className={`group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 ${
+                  colorMode === "dark"
+                    ? "hover:bg-gray-700 text-white"
+                    : "hover:bg-blue-100"
+                }`}
               >
-                <div className="flex h-12 w-12 items-center rounded-lg bg-gray-200 text-black group-hover:bg-blue-200">
-                  <span className="tag w-full text-center text-2xl font-medium text-gray-700 group-hover:text-blue-900">
+                <div
+                  className={`flex h-12 w-12 items-center rounded-lg ${
+                    colorMode === "dark"
+                      ? "bg-gray-600 text-white"
+                      : "bg-gray-200 text-black"
+                  } group-hover:bg-blue-200`}
+                >
+                  <span
+                    className={`tag w-full text-center text-2xl font-medium ${
+                      colorMode === "dark" ? "text-gray-300" : "text-gray-700"
+                    } group-hover:text-blue-900`}
+                  >
                     {item.slno}
                   </span>
                 </div>
-                <div className="flex flex-col items-start justify-between font-light text-gray-600">
-                  <p className="text-xl font-medium">{item.title}</p>
-                  <span className="text-xs font-light text-gray-400">
-                    {item.desc}
-                  </span>
+                <div
+                  className={`flex flex-col items-start justify-between font-light ${
+                    colorMode === "dark" ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  <p
+                    className={`text-xl font-medium ${
+                      colorMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {item.title}
+                  </p>
+                  <span className="text-xs font-light">{item.desc}</span>
                 </div>
                 <div className="flex-grow"></div>
                 <button onClick={() => toggleAddRemove(index, item.code)}>
                   {isElementSelected(index) ? (
-                    <AiFillCheckCircle className="text-3xl mx-3" />
+                    <AiFillCheckCircle
+                      className={`text-3xl mx-3 ${
+                        colorMode === "dark" ? "text-green-400" : ""
+                      }`}
+                    />
                   ) : (
-                    <AiFillPlusCircle className="text-3xl mx-3" />
+                    <AiFillPlusCircle
+                      className={`text-3xl mx-3 ${
+                        colorMode === "dark" ? "text-blue-400" : ""
+                      }`}
+                    />
                   )}
                 </button>
               </div>
@@ -205,7 +258,13 @@ export default function ElementAdder() {
           </div>
         </div>
         {/* Right Panel - Markdown Editor */}
-        <div className="md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 bg-white border border-gray-300 rounded-3xl relative">
+        <div
+          className={`md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 ${
+            colorMode === "dark"
+              ? "bg-gray-800 border-gray-600"
+              : "bg-white border-gray-300"
+          } border rounded-3xl relative`}
+        >
           <div className="flex justify-between items-center mb-2 mt-8">
             <div className="absolute top-2 right-2">
               <button className="Btn" onClick={downloadMarkdown}>
@@ -251,7 +310,11 @@ export default function ElementAdder() {
           <div className="flex justify-center items-center h-20">
             <button
               onClick={goTempCompoPage}
-              className="border hover:scale-95 duration-300 relative group cursor-pointer text-sky-50 overflow-hidden h-16 w-64 rounded-md bg-sky-200 p-2 flex justify-center items-center font-extrabold text-lg font-sans"
+              className={`border hover:scale-95 duration-300 relative group cursor-pointer ${
+                colorMode === "dark"
+                  ? "text-sky-50 bg-sky-700 border-sky-600"
+                  : "text-sky-50 bg-sky-200 border-sky-300"
+              } overflow-hidden h-16 w-64 rounded-md p-2 flex justify-center items-center font-extrabold text-lg font-sans`}
             >
               <div className="absolute right-32 -top-4 group-hover:top-1 group-hover:right-2 z-10 w-40 h-40 rounded-full group-hover:scale-150 duration-500 bg-sky-900"></div>
               <div className="absolute right-2 -top-4 group-hover:top-1 group-hover:right-2 z-10 w-32 h-32 rounded-full group-hover:scale-150 duration-500 bg-sky-800"></div>

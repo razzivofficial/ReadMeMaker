@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { chakra, Stack, Text, Button, Box, Link } from "@chakra-ui/react";
+import {
+  chakra,
+  Stack,
+  Text,
+  Button,
+  Box,
+  Link,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { GiCoffeeCup } from "react-icons/gi";
 import { Link as Navlink } from "react-router-dom";
 
@@ -21,7 +29,7 @@ const HeroSection = () => {
   );
   const [isFinalWordTyped, setIsFinalWordTyped] = useState(false);
 
-  const typingSpeed = 160; 
+  const typingSpeed = 160;
   const finalWordTypingSpeed = 120; // Speed of typing effect for final words
   const pauseDuration = 1000; // Duration to pause before moving to next word
   const finalWordPauseDuration = 1500; // Longer pause before the last word
@@ -80,7 +88,7 @@ const HeroSection = () => {
   return (
     <Box
       p={{ base: 4, md: 10 }}
-      bgColor="whitesmoke"
+      bg={useColorModeValue("gray.100", "gray.700")}
       m={4}
       mt={{ base: 12, md: 18 }}
     >
@@ -89,9 +97,9 @@ const HeroSection = () => {
           mt={10}
           py={2}
           px={3}
-          bg="teal"
+          bg={useColorModeValue("teal.400", "teal.600")}
           w="max-content"
-          color="white"
+          color={useColorModeValue("white", "gray.200")}
           rounded="md"
           fontSize="md"
         >
@@ -105,6 +113,7 @@ const HeroSection = () => {
           fontWeight="bold"
           textAlign="center"
           maxW="800px"
+          color={useColorModeValue("gray.800", "gray.100")}
         >
           Get started with ReadMeMaker
           <br />
@@ -114,7 +123,9 @@ const HeroSection = () => {
                 <chakra.span
                   fontSize={{ base: "2xl", sm: "4xl" }}
                   fontWeight="bold"
-                  color={wordObj.isLast && isFinalWordTyped ? "red" : "teal"}
+                  color={
+                    wordObj.isLast && isFinalWordTyped ? "red.500" : "teal.400"
+                  }
                 >
                   '{wordObj.text}'
                 </chakra.span>
@@ -122,7 +133,12 @@ const HeroSection = () => {
             ))}
           </Stack>
         </chakra.h1>
-        <Text maxW="850px" fontSize="xl" textAlign="center" color="gray.500">
+        <Text
+          maxW="850px"
+          fontSize="xl"
+          textAlign="center"
+          color={useColorModeValue("gray.700", "gray.300")}
+        >
           Crafting documentation is like painting the portrait of your project's
           soul. Each line of code, every design choice, and every contributor's
           effort are woven together into a tapestry that tells the story of your
@@ -155,7 +171,7 @@ const HeroSection = () => {
             size="lg"
             height="3.5rem"
             fontSize="1rem"
-            borderColor="black.500"
+            borderColor={useColorModeValue("gray.500", "gray.400")}
           >
             Buy me a coffee
           </Button>
