@@ -21,7 +21,16 @@ import { motion } from "framer-motion";
 import { EditIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import EditDescriptionModal from "./EditDescriptionModal";
-import AvatarSelectionModal from './AvatarSelectionModal'
+import AvatarSelectionModal from './AvatarSelectionModal';
+import avatar1 from "../../MediaFiles/avatar1.png";
+import avatar2 from "../../MediaFiles/avatar2.png";
+import avatar3 from "../../MediaFiles/avatar3.png";
+import avatar4 from "../../MediaFiles/avatar4.png";
+import avatar5 from "../../MediaFiles/avatar5.png";
+import avatar6 from "../../MediaFiles/avatar6.png";
+import avatar7 from "../../MediaFiles/avatar7.png";
+import avatar8 from "../../MediaFiles/avatar8.png";
+import avatar9 from "../../MediaFiles/avatar9.png";
 const MotionBox = motion(Box);
 
 const ProfilePage = () => {
@@ -41,9 +50,69 @@ const ProfilePage = () => {
     const [selectedAvatar, setSelectedAvatar] = useState(""); // State for selected avatar
     const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
 
-    const handleAvatarClick = () => {
-        setIsModalOpen(true);
-    };
+
+    const avatars = [
+        avatar1,
+        avatar2,
+        avatar3,
+        avatar4,
+        avatar5,
+        avatar6,
+        avatar7,
+        avatar8,
+        avatar9,
+    ];
+
+    useEffect(() => {
+        const fetchUserAvatar = async () => {
+            const email = useremail;
+            if (!email) {
+                toast({
+                    title: "Error",
+                    description: "Email not found. Please log in again.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
+                return;
+            }
+            
+            try {
+                console.log(email)
+                const response = await fetch("https://readmemaker-backend.vercel.app/users/getavatar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email }),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    const avatarIndex = parseInt(data.avatar.replace("avatar", "")) - 1;
+                    setSelectedAvatar(avatars[avatarIndex]);
+                } else {
+                    toast({
+                        title: "Error",
+                        description: data.message || "Failed to fetch avatar.",
+                        status: "error",
+                        duration: 5000,
+                        isClosable: true,
+                    });
+                }
+            } catch (error) {
+                toast({
+                    title: "Error",
+                    description: "An error occurred. Please try again later.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
+            }
+        };
+
+        fetchUserAvatar();
+    }, []);
 
     const handleAvatarSelect = (avatar) => {
         setSelectedAvatar(avatar);
@@ -72,6 +141,13 @@ const ProfilePage = () => {
             setEmail(useremail);
         }
     }, [useremail]);
+
+    const handleAvatarClick = () => {
+        if(useremail === localStorage.getItem('userEmail')){
+        setIsModalOpen(true);
+        }
+    };
+
 
     useEffect(() => {
         if (email) {
