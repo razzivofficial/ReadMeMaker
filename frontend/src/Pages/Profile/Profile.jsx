@@ -39,6 +39,42 @@ import avatar8 from "../../MediaFiles/avatar8.jpg";
 
 const MotionBox = motion(Box);
 
+const generateUniqueUsername = (name, email) => {
+  const timestamp = new Date().getTime();
+  const randomChars = Math.random().toString(36).substring(2, 8);
+  const baseUsername = `${name.replace(
+    /\s+/g,
+    ""
+  )}_${timestamp}_${randomChars}`;
+
+  // Generate username using name and email to make it unique
+  const uniqueUsername = `${baseUsername}_${email.split("@")[0]}`;
+  return uniqueUsername;
+};
+
+const checkAndGenerateUsername = async (email, username, name) => {
+  try {
+    const response = await fetch(
+      `https://readmemaker-backend.vercel.app/users/checkUsername/${username}`,
+      { method: "GET" }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.exists) {
+        // Username exists, generate a new one
+        const newUsername = generateUniqueUsername(name, email);
+        return newUsername;
+      }
+    } else {
+      throw new Error("Failed to check username availability.");
+    }
+  } catch (error) {
+    console.error(error);
+    return null; // Handle error appropriately
+  }
+};
+
 const ProfilePage = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -218,18 +254,31 @@ const ProfilePage = () => {
 
   const handleUpdate = async (field) => {
     if (field === "username") {
+      console.log("Initial username:", username);
+      let finalUsername = username;
+
+      if (username === "") {
+        finalUsername = await checkAndGenerateUsername(email, username, name);
+        console.log("Generated username:", finalUsername);
+        if (!finalUsername) {
+          toast.error("Failed to generate a unique username.");
+          return;
+        }
+      }
+
       try {
         const response = await fetch(
           `https://readmemaker-backend.vercel.app/users/updateUsername/${email}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username }),
+            body: JSON.stringify({ username: finalUsername }),
           }
         );
         const result = await response.json();
         if (response.ok) {
           toast.success("Username updated successfully");
+          setUsername(finalUsername);
           setIsEditing(false);
         } else {
           toast.error(result.error);
@@ -238,6 +287,7 @@ const ProfilePage = () => {
         toast.error("Failed to update Username");
       }
     }
+    // };
     if (field === "name") {
       try {
         const response = await fetch(

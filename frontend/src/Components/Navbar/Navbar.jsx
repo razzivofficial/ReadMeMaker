@@ -734,9 +734,9 @@ function Navbar() {
                 <MenuButton size="sm" onClick={toggleUserMenu}>
                   <Avatar
                     size="sm"
-                    src={
-                      "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
-                    }
+                    // src={
+                    //   "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
+                    // }
                   />
                 </MenuButton>
               </Menu>
