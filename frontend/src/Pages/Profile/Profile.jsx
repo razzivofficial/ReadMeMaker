@@ -262,8 +262,9 @@ const ProfilePage = () => {
 
   const handleDeleteAccount = async () => {
     try {
+    
       const response = await fetch(
-        `https://readmemaker-backend.vercel.app/users/deleteAccount/${email}`,
+        `http://localhost:5000/users/deleteaccount/${email}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -271,9 +272,9 @@ const ProfilePage = () => {
       );
       const result = await response.json();
       if (response.ok) {
+        localStorage.removeItem('authToken');
         toast.success("Account deleted successfully");
-        // Redirect or perform any other action after account deletion
-        navigate("/"); // Redirect to home or login page
+        navigate("/"); 
       } else {
         toast.error(result.error);
       }
