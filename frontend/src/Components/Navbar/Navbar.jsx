@@ -47,19 +47,18 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import avatar1 from "../../MediaFiles/avatar1.png";
-import avatar2 from "../../MediaFiles/avatar2.png";
-import avatar3 from "../../MediaFiles/avatar3.png";
-import avatar4 from "../../MediaFiles/avatar4.png";
-import avatar5 from "../../MediaFiles/avatar5.png";
-import avatar6 from "../../MediaFiles/avatar6.png";
-import avatar7 from "../../MediaFiles/avatar7.png";
-import avatar8 from "../../MediaFiles/avatar8.png";
-import avatar9 from "../../MediaFiles/avatar9.png";
+import avatar1 from "../../MediaFiles/avatar1.jpg";
+import avatar2 from "../../MediaFiles/avatar2.jpg";
+import avatar3 from "../../MediaFiles/avatar3.jpg";
+import avatar4 from "../../MediaFiles/avatar4.jpg";
+import avatar5 from "../../MediaFiles/avatar5.jpg";
+import avatar6 from "../../MediaFiles/avatar6.jpg";
+import avatar7 from "../../MediaFiles/avatar7.jpg";
+import avatar8 from "../../MediaFiles/avatar8.jpg";
 
 const navLinks = [
-  { name: "About", to: "/About" },
-  { name: "Documentation", to: "/Documentation" },
+  { name: "About", to: "/about" },
+  { name: "Documentation", to: "/documentation" },
   // { name: "Features", to: "#" },
 ];
 
@@ -92,7 +91,6 @@ function Navbar() {
     avatar6,
     avatar7,
     avatar8,
-    avatar9,
   ];
   const [selectedAvatar, setSelectedAvatar] = useState("");
 
@@ -427,9 +425,6 @@ function Navbar() {
                   <MenuItem>
                     <VStack justify="start" alignItems="left">
                       <Text fontWeight="500">{name}</Text>
-                      {/* <Text size="sm" color="gray.500" mt="0 !important">
-                        @razzivofficial
-                      </Text> */}
                     </VStack>
                   </MenuItem>
                 </Link>
@@ -739,9 +734,9 @@ function Navbar() {
                 <MenuButton size="sm" onClick={toggleUserMenu}>
                   <Avatar
                     size="sm"
-                    src={
-                      "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
-                    }
+                    // src={
+                    //   "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
+                    // }
                   />
                 </MenuButton>
               </Menu>
