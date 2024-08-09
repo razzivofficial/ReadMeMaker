@@ -67,6 +67,7 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
         },
         body: JSON.stringify({ email, avatar: `avatar${selectedAvatar.index + 1}` }), // Save as avatar1, avatar2, etc.
       });
+      navigate(`/profile/${email}`)
       if (response.ok) {
 
         toast({
