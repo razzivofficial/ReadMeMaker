@@ -157,6 +157,12 @@ export default function ElementAdder() {
     setHasUnsavedChanges(true);
   };
 
+  const [markdownContent, setMarkdownContent] = useState("");
+
+  const handleMarkdownClick = (content) => {
+    setMarkdownContent(content);
+  };
+
   return (
     <>
       <div className="editorHeading">
@@ -281,11 +287,11 @@ export default function ElementAdder() {
               </button>
             </div>
           </div>
+          {/* <EditorCardUnLogged onMarkdownClick={handleMarkdownClick} /> */}
           <MDEditor
             height={700}
-            value={value}
-            onChange={handleValueChange}
-            commands={[commands.codePreview, help]}
+            value={markdownContent}
+            onChange={setMarkdownContent}
           />
         </div>
       </div>
@@ -305,7 +311,7 @@ export default function ElementAdder() {
       ) : (
         <>
           <div className="editor-card-container">
-            <EditorCardUnLogged />
+            <EditorCardUnLogged onMarkdownClick={handleMarkdownClick} />
           </div>
           <div className="flex justify-center items-center h-20">
             <button
