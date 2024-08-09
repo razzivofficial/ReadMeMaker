@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link as Navlink } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -31,7 +31,7 @@ import { AiOutlineClose, AiFillGithub } from "react-icons/ai";
 import { BiChevronDown } from "react-icons/bi";
 import { MdTimeline } from "react-icons/md";
 import { BsBook, BsGlobe2 } from "react-icons/bs";
-import { FiSun } from "react-icons/fi";
+import { FiSun, FiMoon } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import {
@@ -44,33 +44,110 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
+  useColorMode,
 } from "@chakra-ui/react";
 
+import avatar1 from "../../MediaFiles/avatar1.jpg";
+import avatar2 from "../../MediaFiles/avatar2.jpg";
+import avatar3 from "../../MediaFiles/avatar3.jpg";
+import avatar4 from "../../MediaFiles/avatar4.jpg";
+import avatar5 from "../../MediaFiles/avatar5.jpg";
+import avatar6 from "../../MediaFiles/avatar6.jpg";
+import avatar7 from "../../MediaFiles/avatar7.jpg";
+import avatar8 from "../../MediaFiles/avatar8.jpg";
+
 const navLinks = [
-  { name: "About", to: "/About" },
-  { name: "Documentation", to: "/Documentation" },
+  { name: "About", to: "/about" },
+  { name: "Documentation", to: "/documentation" },
   // { name: "Features", to: "#" },
 ];
 
 const dropdownLinks = [
   {
     name: "Trending Projects",
-    to: "#",
+    to: "/projectsreadmemaker",
     icon: MdTimeline,
   },
   {
     name: "Join Community",
-    to: "#",
+    to: "/commreadmemaker",
     icon: BsGlobe2,
   },
   {
     name: "Open Source",
-    to: "#",
+    to: "/opensourcereadmemaker",
     icon: BsBook,
   },
 ];
 
 function Navbar() {
+  const { colorMode, toggleColorMode } = useColorMode();
+  const avatars = [
+    avatar1,
+    avatar2,
+    avatar3,
+    avatar4,
+    avatar5,
+    avatar6,
+    avatar7,
+    avatar8,
+  ];
+  const [selectedAvatar, setSelectedAvatar] = useState("");
+
+  useEffect(() => {
+    const fetchUserAvatar = async () => {
+      const email = localStorage.getItem("userEmail");
+      if (!email) {
+        toast({
+          title: "Error",
+          description: "Email not found. Please log in again.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+
+      try {
+        console.log(email);
+        const response = await fetch(
+          "https://readmemaker-backend.vercel.app/users/getavatar",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+          }
+        );
+
+        const data = await response.json();
+        if (response.ok) {
+          const avatarIndex = parseInt(data.avatar.replace("avatar", "")) - 1;
+          setSelectedAvatar(avatars[avatarIndex]);
+        } else {
+          toast({
+            title: "Error",
+            description: data.message || "Failed to fetch avatar.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "An error occurred. Please try again later.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    };
+
+    fetchUserAvatar();
+  }, []);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
@@ -97,15 +174,16 @@ function Navbar() {
     setIsUserMenuOpen(!isUserMenuOpen);
   };
 
-
-  const email = localStorage.getItem('userEmail')
-  const [name, setName] = useState("")
+  const email = localStorage.getItem("userEmail");
+  const [name, setName] = useState("");
 
   useEffect(() => {
-    const email = localStorage.getItem('userEmail')
+    const email = localStorage.getItem("userEmail");
     if (email) {
       axios
-        .get(`https://readmemaker-backend.vercel.app/users/getNameByEmail/${email}`)
+        .get(
+          `https://readmemaker-backend.vercel.app/users/getNameByEmail/${email}`
+        )
         .then((response) => {
           setName(response.data.name);
         })
@@ -113,7 +191,7 @@ function Navbar() {
           console.error("There was an error fetching the name!", error);
         });
     }
-  }, [])
+  }, []);
 
   /* Login */
 
@@ -143,16 +221,17 @@ function Navbar() {
 
     if (!json.success) {
       toast.error("Enter valid credentials");
-
     } else {
       toast.success("Login successful");
-      onClose()
+      onClose();
       localStorage.setItem("userEmail", logincredentials.email);
       localStorage.setItem("authToken", json.authToken);
-      const email = localStorage.getItem('userEmail')
+      const email = localStorage.getItem("userEmail");
       if (email) {
         axios
-          .get(`https://readmemaker-backend.vercel.app/users/getNameByEmail/${email}`)
+          .get(
+            `https://readmemaker-backend.vercel.app/users/getNameByEmail/${email}`
+          )
           .then((response) => {
             setName(response.data.name);
           })
@@ -169,7 +248,6 @@ function Navbar() {
       [event.target.id]: event.target.value,
     });
   };
-
 
   /* Signup */
   const [credentials, setcredentials] = useState({
@@ -202,13 +280,12 @@ function Navbar() {
     } else {
       toast.success("Registration successful");
       localStorage.setItem("name", credentials.name);
-      onClose()
+      onClose();
     }
   };
   const onchange = (event) => {
     setcredentials({ ...credentials, [event.target.id]: event.target.value });
   };
-
 
   // const [email, setEmail] = useState('');
 
@@ -222,11 +299,8 @@ function Navbar() {
   const handleLogout = () => {
     toast.success("Logout successful");
     localStorage.removeItem("authToken");
-    navigate('/')
-
+    navigate("/");
   };
-
-
 
   return (
     <Box
@@ -254,20 +328,9 @@ function Navbar() {
         />
 
         <HStack spacing={8} alignItems="center">
-          {/* <Avatar
-            href="#"
-            as={Link}
-            size="sm"
-            showBorder={true}
-            borderColor="blue.400"
-            rounded="full"
-            src="https://avatars2.githubusercontent.com/u/37842853?v=4"
-          /> */}
           <Link as={Navlink} to="/" w={{ base: "12rem", md: "18rem" }}>
             <Image
               alt="ReadMeMaker Logo"
-              //   w={"80%"}
-              //   h={14}
               src={logoImg}
               rounded={50}
             />
@@ -275,7 +338,7 @@ function Navbar() {
           <Input
             display={"block"}
             maxW="30rem"
-            placeholder="Search Templates or Components"
+            placeholder="Search for Users, Templates, or Components"
             borderColor={useColorModeValue("gray.300", "white")}
             borderRadius="5px"
             d={{ base: "none", md: "block" }}
@@ -326,10 +389,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                  // boxShadow={useColorModeValue(
-                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                  // )}
+                    // boxShadow={useColorModeValue(
+                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                    // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -350,12 +413,7 @@ function Navbar() {
           {localStorage.getItem("authToken") && (
             <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
               <MenuButton size="sm" onClick={toggleUserMenu}>
-                <Avatar
-                  size="sm"
-                  src={
-                    "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
-                  }
-                />
+                <Avatar size="sm" name={name} src={selectedAvatar} />
               </MenuButton>
               <MenuList
                 zIndex={5}
@@ -367,9 +425,6 @@ function Navbar() {
                   <MenuItem>
                     <VStack justify="start" alignItems="left">
                       <Text fontWeight="500">{name}</Text>
-                      {/* <Text size="sm" color="gray.500" mt="0 !important">
-                        @razzivofficial
-                      </Text> */}
                     </VStack>
                   </MenuItem>
                 </Link>
@@ -402,14 +457,17 @@ function Navbar() {
 
           <Spacer />
         </HStack>
-        <IconButton aria-label="Color Switcher" icon={<FiSun />} />
+        <IconButton
+          aria-label="Color Switcher"
+          icon={colorMode === "light" ? <FiMoon /> : <FiSun />}
+          onClick={toggleColorMode}
+        />
 
         {!localStorage.getItem("authToken") && (
           <Button className="ml-6" colorScheme="blue" onClick={onOpen}>
             Signup
           </Button>
         )}
-
       </Flex>
 
       {/* Modal section starts */}
@@ -657,7 +715,6 @@ function Navbar() {
             {navLinks.map((link, index) => (
               <NavLink key={index} {...link} onClose={onClose} />
             ))}
-
           </Stack>
         </Box>
       ) : null}
@@ -677,9 +734,9 @@ function Navbar() {
                 <MenuButton size="sm" onClick={toggleUserMenu}>
                   <Avatar
                     size="sm"
-                    src={
-                      "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
-                    }
+                    // src={
+                    //   "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
+                    // }
                   />
                 </MenuButton>
               </Menu>
@@ -687,8 +744,6 @@ function Navbar() {
           </Stack>
         </Box>
       )}
-
-
     </Box>
   );
 }

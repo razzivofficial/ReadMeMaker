@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Text,
@@ -12,13 +12,16 @@ import {
   Center,
   Container,
   useBreakpointValue,
+  Button,
 } from "@chakra-ui/react";
 import { FaThumbsUp, FaThumbsDown, FaComment } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import "./EditorCard.css";
-import data from "./EditorCardData"; // Import data from external file
+import ComponentData from "./ComponentData";
+import TemplateData from "./TemplateData";
+import TempCompoLoader from "../Loader/TempCompoLoader";
 
 // Function to replace height with width in <img> tags
 const replaceHeightWithWidth = (inputText) => {
@@ -44,8 +47,16 @@ const MarkdownPreviewCard = ({
   const markdownBg = useColorModeValue("#f5f5f5", "#1e1e1e");
   const textColor = useColorModeValue("black", "white");
 
-  // Apply the replaceHeightWithWidth function to the markdown content
   const processedMarkdown = replaceHeightWithWidth(markdown);
+
+  /* Loader */
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+  }, []);
 
   return (
     <Box
@@ -91,7 +102,6 @@ const MarkdownPreviewCard = ({
       >
         {projectTitle}
       </Text>
-      {/* Add on click transfer code */}
       <Box
         className="markdown-content"
         p={4}
@@ -105,9 +115,16 @@ const MarkdownPreviewCard = ({
         fontFamily="monospace"
         color={textColor}
       >
-        <ReactMarkdown rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>
-          {processedMarkdown}
-        </ReactMarkdown>
+        {isLoading ? (
+          <TempCompoLoader />
+        ) : (
+          <ReactMarkdown
+            rehypePlugins={[rehypeRaw]}
+            remarkPlugins={[remarkGfm]}
+          >
+            {processedMarkdown}
+          </ReactMarkdown>
+        )}
       </Box>
 
       <Divider my={4} />
@@ -149,36 +166,93 @@ const MarkdownPreviewCard = ({
 
 const EditorCard = () => {
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
+  const [selected, setSelected] = useState("templates");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSelection = (type) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setSelected(type);
+      setIsLoading(false);
+    }, 100); // Simulate loading time
+  };
+
+  const dataToDisplay = selected === "templates" ? TemplateData : ComponentData;
 
   return (
     <Container maxW="7xl" p={{ base: 5, md: 10 }}>
       <Center>
         <VStack spacing={4} align="stretch" w="100%">
           <Text
-            fontSize={{ base: "2xl", sm: "3xl", md: "4xl" }}
+            fontSize={{ base: "xl", sm: "2xl", md: "3xl", lg: "4xl" }}
             fontWeight="bold"
             textAlign="center"
-            mb={6}
-            mt={16}
+            mb={8}
+            mt={12}
+            lineHeight="shorter"
+            color="gray.800"
+            textShadow="0 2px 4px rgba(0, 0, 0, 0.3)"
+            bgGradient="linear(to-r, teal.300, blue.500)"
+            bgClip="text"
+            animation="fadeIn 2s ease-in-out"
           >
-            #Ready-Made-Templates-Of-ReadMeMaker!
+            Templates & Components by ReadMeMaker
           </Text>
+          <HStack
+            spacing={{ base: 4, md: 6 }}
+            justify="center"
+            mb={{ base: 4, md: 6 }}
+            wrap="wrap"
+          >
+            <Button
+              onClick={() => handleSelection("templates")}
+              colorScheme={selected === "templates" ? "blue" : "gray"}
+              variant={selected === "templates" ? "solid" : "outline"}
+              borderRadius="md"
+              px={{ base: 4, md: 8 }}
+              py={{ base: 2, md: 4 }}
+              fontSize={{ base: "md", md: "xl" }}
+              borderColor="gray.200"
+              _focus={{ boxShadow: "none" }}
+              minWidth={{ base: "120px", md: "150px" }}
+              mb={{ base: 2, md: 0 }}
+            >
+              Templates
+            </Button>
+            <Button
+              onClick={() => handleSelection("component")}
+              colorScheme={selected === "component" ? "blue" : "gray"}
+              variant={selected === "component" ? "solid" : "outline"}
+              borderRadius="md"
+              px={{ base: 4, md: 8 }}
+              py={{ base: 2, md: 4 }}
+              fontSize={{ base: "md", md: "xl" }}
+              _focus={{ boxShadow: "none" }}
+              minWidth={{ base: "120px", md: "150px" }}
+            >
+              Components
+            </Button>
+          </HStack>
 
-          <SimpleGrid columns={columns} spacing={4}>
-            {data.map((item, index) => (
-              <MarkdownPreviewCard
-                key={index}
-                email={item.email}
-                username={item.username}
-                profilePic={item.profilePic}
-                projectTitle={item.projectTitle}
-                upvotes={item.upvotes}
-                downvotes={item.downvotes}
-                comments={item.comments}
-                markdown={item.markdown}
-              />
-            ))}
-          </SimpleGrid>
+          {isLoading ? (
+            <TempCompoLoader />
+          ) : (
+            <SimpleGrid columns={columns} spacing={4}>
+              {dataToDisplay.map((item, index) => (
+                <MarkdownPreviewCard
+                  key={index}
+                  email={item.email}
+                  username={item.username}
+                  profilePic={item.profilePic}
+                  projectTitle={item.projectTitle}
+                  upvotes={item.upvotes}
+                  downvotes={item.downvotes}
+                  comments={item.comments}
+                  markdown={item.markdown}
+                />
+              ))}
+            </SimpleGrid>
+          )}
         </VStack>
       </Center>
     </Container>

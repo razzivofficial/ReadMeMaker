@@ -3,17 +3,18 @@ import {
   Container,
   Box,
   Skeleton,
+  SimpleGrid,
   Stack,
   useColorMode,
 } from "@chakra-ui/react";
 
-const Loader = () => {
+const TempCompoLoader = () => {
   const { colorMode } = useColorMode();
 
   return (
-    <Container maxW="6xl" px={8} py={16} mx="auto">
-      <Stack spacing={3} mt="3">
-        {Array.from(Array(2).keys()).map((id) => (
+    <Container maxW="7xl" px={8} py={16} mx="auto">
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
+        {Array.from(Array(6).keys()).map((id) => (
           <Box
             key={id}
             cursor="pointer"
@@ -24,18 +25,11 @@ const Loader = () => {
             position="relative"
             rounded="md"
             borderRadius="5px"
+            mt={10}
           >
-            {id === 0 && (
-              <Skeleton
-                height="15rem"
-                borderRadius="5px 5px 0 0"
-                width="100%"
-                bg={colorMode === "dark" ? "#4A5568" : "#E2E8F0"} // Dark mode skeleton color
-              />
-            )}
             <Stack justifyContent="space-between" mt={3} p={5}>
               <Box width="100%">
-                <Stack align="center" marginBottom="5px">
+                <Stack marginBottom="5px">
                   <Box>
                     <Skeleton
                       size="lg"
@@ -58,11 +52,19 @@ const Loader = () => {
                 </Stack>
               </Box>
             </Stack>
+            <Box m={4}>
+              <Skeleton
+                height="15rem"
+                borderRadius="5px 5px 0 0"
+                width="100%"
+                bg={colorMode === "dark" ? "#4A5568" : "#E2E8F0"} // Dark mode skeleton color
+              />
+            </Box>
           </Box>
         ))}
-      </Stack>
+      </SimpleGrid>
     </Container>
   );
 };
 
-export default Loader;
+export default TempCompoLoader;

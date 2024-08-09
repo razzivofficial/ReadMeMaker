@@ -237,6 +237,66 @@ const getUserDetailsByEmail = async (req, res) => {
     }
 };
 
+const updateAvatar = async (req, res) => {
+    const { email, avatar } = req.body;
+
+    try {
+        
+        const user = await User.findOneAndUpdate(
+            { email: email },  
+            { avatar: avatar },  
+            { new: true } 
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'Avatar updated successfully'});
+    } catch (error) {
+        res.status(500).json({ message: 'Server error'});
+    }
+};
+
+const getavatarbyemail = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!validateEmail(email)) {
+            return res.status(400).json({ error: "Email is not valid" });
+        }
+
+        const user = await User.findOne({ email:email });
+        if (!user) {
+            return res.status(400).json({ error: "User not found" });
+        }
+        res.json({ avatar: user.avatar });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const deleteAccount = async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        if (!validateEmail(email)) {
+            return res.status(400).json({ error: "Email is not valid" });
+        }
+
+        const user = await User.findOneAndDelete({ email: email });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json({ message: "Account deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     createuser,
     loginuser,
@@ -245,5 +305,8 @@ module.exports = {
     updateName,
     updateUsername,
     updateDescription,
-    getUserDetailsByEmail
+    getUserDetailsByEmail,
+    updateAvatar,
+    getavatarbyemail,
+    deleteAccount
 };
