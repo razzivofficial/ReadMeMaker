@@ -13,26 +13,27 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
+import avatar1 from "../../MediaFiles/avatar1.png";
+import avatar2 from "../../MediaFiles/avatar2.png";
+import avatar3 from "../../MediaFiles/avatar3.png";
+import avatar4 from "../../MediaFiles/avatar4.png";
+import avatar5 from "../../MediaFiles/avatar5.png";
+import avatar6 from "../../MediaFiles/avatar6.png";
+import avatar7 from "../../MediaFiles/avatar7.png";
+import avatar8 from "../../MediaFiles/avatar8.png";
+import avatar9 from "../../MediaFiles/avatar9.png";
+
 const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
   const avatars = [
-    "",
-    "../../MediaFiles/avatar1.png",
-    "../../MediaFiles/avatar2.png",
-    "../../MediaFiles/avatar3.png",
-    "../../MediaFiles/avatar4.png",
-    "../../MediaFiles/avatar5.png",
-    "../../MediaFiles/avatar6.png",
-    "../../MediaFiles/avatar7.png",
-    "../../MediaFiles/avatar8.png",
-    "../../MediaFiles/avatar9.png",
-    "../../MediaFiles/avatar10.png",
-    "../../MediaFiles/avatar11.png",
-    "../../MediaFiles/avatar12.png",
-    "../../MediaFiles/avatar13.png",
-    "../../MediaFiles/avatar14.png",
-    "../../MediaFiles/avatar15.png",
-    "../../MediaFiles/avatar16.png",
-    "../../MediaFiles/avatar16.png",
+    avatar1,
+    avatar2,
+    avatar3,
+    avatar4,
+    avatar5,
+    avatar6,
+    avatar7,
+    avatar8,
+    avatar9,
   ];
 
   return (
@@ -42,20 +43,20 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
         bg={useColorModeValue("gray.100", "gray.800")}
         boxShadow="xl"
         borderRadius="lg"
-        p={6} // Add padding for better spacing
+        p={6}
       >
         <ModalHeader>Select Your Avatar</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Grid
-            templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }} // Responsive grid
+            templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
             gap={4}
           >
             {avatars.map((avatar, index) => (
               <Avatar
                 key={index}
                 src={avatar}
-                size="lg" // Adjust size for better responsiveness
+                size="lg"
                 cursor="pointer"
                 borderWidth={2}
                 borderColor="transparent"

@@ -21,7 +21,7 @@ import { motion } from "framer-motion";
 import { EditIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import EditDescriptionModal from "./EditDescriptionModal";
-
+import AvatarSelectionModal from './AvatarSelectionModal'
 const MotionBox = motion(Box);
 
 const ProfilePage = () => {
@@ -38,6 +38,17 @@ const ProfilePage = () => {
     const { useremail } = useParams();
     const [localmail, setlocalmail] = useState("");
 
+    const [selectedAvatar, setSelectedAvatar] = useState(""); // State for selected avatar
+    const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+
+    const handleAvatarClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleAvatarSelect = (avatar) => {
+        setSelectedAvatar(avatar);
+        setIsModalOpen(false);
+    };
 
     const navigate = useNavigate();
 
@@ -46,8 +57,8 @@ const ProfilePage = () => {
         if (!authToken) {
             toast.warning("Login First")
             navigate('/')
-        } 
-      }, []);
+        }
+    }, []);
 
     useEffect(() => {
         const localEmail = localStorage.getItem("userEmail");
@@ -204,7 +215,27 @@ const ProfilePage = () => {
                     transition={{ duration: 0.5 }}
                 >
                     <HStack align="start" spacing={6}>
-                        <Avatar size="2xl" name={name} src="path_to_avatar_image" />
+                        <VStack spacing={2}>
+                            <Avatar
+                                size="2xl"
+                                name={name}
+                                src={selectedAvatar}
+                                cursor="pointer"
+                                onClick={handleAvatarClick}
+                                borderWidth={2}
+                                borderColor="teal.500"
+                                _hover={{ borderColor: "teal.700" }}
+                            />
+                            <Text fontSize="md" textAlign="center">
+                                {name}
+                            </Text>
+
+                            <AvatarSelectionModal
+                                isOpen={isModalOpen}
+                                onClose={() => setIsModalOpen(false)}
+                                onSelectAvatar={handleAvatarSelect}
+                            />
+                        </VStack>
                         <VStack align="start" spacing={4} w="full">
                             <FormControl id="name">
                                 <FormLabel>
@@ -314,7 +345,7 @@ const ProfilePage = () => {
                         </VStack>
                     </HStack>
                 </MotionBox>
-                
+
                 {localmail === email && (
                     <>
                         <MotionBox
@@ -393,7 +424,7 @@ const ProfilePage = () => {
                     </>
                 )}
             </VStack>
-        </Box>
+        </Box >
     );
 };
 
