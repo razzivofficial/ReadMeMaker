@@ -277,6 +277,26 @@ const getavatarbyemail = async (req, res) => {
     }
 };
 
+const deleteAccount = async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        if (!validateEmail(email)) {
+            return res.status(400).json({ error: "Email is not valid" });
+        }
+
+        const user = await User.findOneAndDelete({ email: email });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json({ message: "Account deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     createuser,
     loginuser,
@@ -287,5 +307,6 @@ module.exports = {
     updateDescription,
     getUserDetailsByEmail,
     updateAvatar,
-    getavatarbyemail
+    getavatarbyemail,
+    deleteAccount
 };

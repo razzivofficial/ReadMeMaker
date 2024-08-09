@@ -13,5 +13,6 @@ router.post('/updatedescription/:email',userdetails.updateDescription)
 router.get('/getdetailbyemail/:email', userdetails.getUserDetailsByEmail);
 router.post('/updateavatar',userdetails.updateAvatar)
 router.post('/getavatar',userdetails.getavatarbyemail)
+router.delete('/deleteaccount/:email',userdetails.deleteAccount)
 
 module.exports = router;
