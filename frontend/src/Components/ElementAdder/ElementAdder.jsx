@@ -10,7 +10,7 @@ import LoginModal from "../Navbar/LoginModal";
 import RegistrationModal from "../Navbar/RegistrationModal";
 import { useColorMode, Button, Box } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
-
+import data from "../EditorCardUnlogged/EditorCardUnloggedData";
 
 const help = {
   name: "help",
@@ -29,6 +29,7 @@ const help = {
 export default function ElementAdder() {
   const initialMkdStr = "*LOGIN TO USE DIRECT TEMPLATES*";
   const [value, setValue] = useState(initialMkdStr);
+  const [processedMarkdown, setProcessedMarkdown] = useState(initialMkdStr);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [selectedElements, setSelectedElements] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");

@@ -12,7 +12,7 @@ import {
   Center,
   Container,
 } from "@chakra-ui/react";
-import { FaThumbsUp, FaThumbsDown, FaComment } from "react-icons/fa";
+import { FaThumbsUp, FaThumbsDown, FaClipboard } from "react-icons/fa"; // Import the Clipboard icon
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
@@ -56,7 +56,6 @@ const MarkdownPreviewCard = ({
   projectTitle,
   upvotes,
   downvotes,
-  comments,
   markdown,
   onMarkdownClick,
 }) => {
@@ -66,6 +65,32 @@ const MarkdownPreviewCard = ({
 
   // Apply the replaceHeightWithWidth function to the markdown content
   const processedMarkdown = replaceHeightWithWidth(markdown);
+
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(processedMarkdown)
+      .then(() => {
+        toast.success("Markdown copied to clipboard!", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      })
+      .catch((err) => {
+        toast.error("Failed to copy markdown!", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        console.error("Copy to clipboard failed:", err);
+      });
+  };
 
   return (
     <Box
@@ -160,12 +185,12 @@ const MarkdownPreviewCard = ({
 
         <HStack spacing={2}>
           <IconButton
-            aria-label="Comments"
-            icon={<FaComment />}
+            aria-label="Copy Markdown"
+            icon={<FaClipboard />}
             variant="outline"
             colorScheme="blue"
+            onClick={handleCopy} // Add the onClick event for the copy button
           />
-          <Text color={textColor}>{comments}</Text>
         </HStack>
       </HStack>
     </Box>
@@ -207,15 +232,14 @@ const EditorCardUnLogged = ({ onMarkdownClick }) => {
             {data.map((item, index) => (
               <MarkdownPreviewCard
                 key={index}
-                email={item.email}
+                // email={item.email}
                 username={item.username}
                 profilePic={item.profilePic}
                 projectTitle={item.projectTitle}
                 upvotes={item.upvotes}
                 downvotes={item.downvotes}
-                comments={item.comments}
                 markdown={item.markdown}
-                onMarkdownClick={handleMarkdownClick} // Pass the updated handler
+                onMarkdownClick={handleMarkdownClick}
               />
             ))}
           </SimpleGrid>
