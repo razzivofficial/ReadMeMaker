@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
-import MDEditor from "@uiw/react-md-editor";
+import MDEditor, { commands } from "@uiw/react-md-editor";
 import { BiHelpCircle } from "react-icons/bi";
 import "./ElementAdder.css";
 import elementData from "./elementData";
 import EditorCardUnLogged from "../EditorCardUnlogged/EditorCardUnlogged";
 import LoginModal from "../Navbar/LoginModal";
 import RegistrationModal from "../Navbar/RegistrationModal";
-import { useColorMode, Button } from "@chakra-ui/react";
+import { useColorMode, Button, Box } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
+
 
 const help = {
   name: "help",
@@ -32,15 +34,31 @@ export default function ElementAdder() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredElements, setFilteredElements] = useState(elementData);
 
-  // Modal state
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [isChangeMode, setChangeMode] = useState(false);
   const [name, setName] = useState("");
-  const [markdownContent, setMarkdownContent] = useState("");
 
   const { colorMode, toggleColorMode } = useColorMode();
+
+  const handleLoginOpen = () => setIsLoginOpen(true);
+  const handleLoginClose = () => setIsLoginOpen(false);
+  const handleRegistrationOpen = () => setIsRegistrationOpen(true);
+  const handleRegistrationClose = () => setIsRegistrationOpen(false);
+
   const navigate = useNavigate();
+  const goTempCompoPage = () => {
+    navigate("/templatecompo");
+  };
+
+  const handleSetChangeMode = (mode) => {
+    setChangeMode(mode);
+    if (mode) {
+      handleRegistrationOpen();
+    } else {
+      handleLoginOpen();
+    }
+  };
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
@@ -79,9 +97,7 @@ export default function ElementAdder() {
     setHasUnsavedChanges(true);
   };
 
-  const isElementSelected = (index) => {
-    return selectedElements.includes(index);
-  };
+  const isElementSelected = (index) => selectedElements.includes(index);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -142,20 +158,6 @@ export default function ElementAdder() {
     setValue(transformedText);
     setHasUnsavedChanges(true);
   };
-
-  const handleMarkdownClick = (content) => {
-    setMarkdownContent(content);
-    setValue(content); // Set the content to the editor when an element is clicked
-  };
-
-  const goTempCompoPage = () => {
-    navigate("/templatecompo");
-  };
-
-  const handleLoginOpen = () => setIsLoginOpen(true);
-  const handleLoginClose = () => setIsLoginOpen(false);
-  const handleRegistrationOpen = () => setIsRegistrationOpen(true);
-  const handleRegistrationClose = () => setIsRegistrationOpen(false);
 
   return (
     <>
@@ -225,14 +227,21 @@ export default function ElementAdder() {
                     colorMode === "dark" ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  <p className="font-medium">{item.title}</p>
-                  <p className="text-sm">{item.desc}</p>
+                  <p
+                    className={`text-xl font-medium ${
+                      colorMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {item.title}
+                  </p>
+                  <span className="text-xs font-light">{item.desc}</span>
                 </div>
+                <div className="flex-grow"></div>
                 <button
                   className={`flex h-8 w-8 items-center justify-center rounded-full ${
                     isElementSelected(index)
-                      ? "bg-green-500 hover:bg-green-600 text-white"
-                      : "bg-gray-200 hover:bg-gray-300"
+                      ? "bg-blue-600 hover:bg-blue-500 text-white"
+                      : "bg-blue-200 hover:bg-blue-300"
                   }`}
                   onClick={() => toggleAddRemove(index, item.code)}
                 >
@@ -273,7 +282,8 @@ export default function ElementAdder() {
           <MDEditor
             height={700}
             value={value}
-            onChange={handleValueChange} // Update the main value instead of markdownContent
+            onChange={handleValueChange}
+            commands={[commands.codePreview, help]}
           />
         </div>
       </div>
@@ -293,7 +303,7 @@ export default function ElementAdder() {
       ) : (
         <>
           <div className="editor-card-container">
-            <EditorCardUnLogged onMarkdownClick={handleMarkdownClick} />
+            <EditorCardUnLogged />
           </div>
           <div className="flex justify-center items-center h-20">
             <button
@@ -315,20 +325,20 @@ export default function ElementAdder() {
       )}
 
       {/* Add the modals here */}
-      {isChangeMode || isRegistrationOpen ? (
+      {isChangeMode ? (
         <RegistrationModal
-          isOpen={isRegistrationOpen}
+          isOpen={isRegistrationOpen || isChangeMode} // Show if in change mode
           onClose={() => {
-            setChangeMode(false);
+            setChangeMode(false); // Reset change mode when closing
             handleRegistrationClose();
           }}
           setChangeMode={setChangeMode}
         />
       ) : (
         <LoginModal
-          isOpen={isLoginOpen && !isChangeMode}
+          isOpen={isLoginOpen && !isChangeMode} // Show only if not in change mode
           onClose={() => {
-            setChangeMode(false);
+            setChangeMode(false); // Reset change mode when closing
             handleLoginClose();
           }}
           setChangeMode={setChangeMode}
