@@ -51,183 +51,103 @@ const fetchbyemail = async (req, res) => {
     }
 };
 
-const upvoteEditorplus = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const editor = await Editor.findById(id);
 
-        if (!editor) {
-            return res.status(404).json({
-                message: "Editor not found",
-            });
-        }
-
-        editor.upvotes += 1;  // Increment upvotes by 1
-        await editor.save();  // Save the updated editor
-
-        res.status(200).json({
-            message: "Upvote updated successfully"
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to update upvote",
-            error: error.message,
-        });
-    }
-};
-const upvoteEditorminus = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const editor = await Editor.findById(id);
-
-        if (!editor) {
-            return res.status(404).json({
-                message: "Editor not found",
-            });
-        }
-
-        editor.upvotes -= 1;  
-        await editor.save();  
-
-        res.status(200).json({
-            message: "Upvote updated successfully"
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to update upvote",
-            error: error.message,
-        });
-    }
-};
-
-// Increment downvotes for an editor
-const downvoteEditorplus = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const editor = await Editor.findById(id);
-
-        if (!editor) {
-            return res.status(404).json({
-                message: "Editor not found",
-            });
-        }
-
-        editor.downvotes += 1;  // Increment downvotes by 1
-        await editor.save();  // Save the updated editor
-
-        res.status(200).json({
-            message: "Downvote updated successfully"
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to update downvote",
-            error: error.message,
-        });
-    }
-};
-const downvoteEditorminus = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const editor = await Editor.findById(id);
-
-        if (!editor) {
-            return res.status(404).json({
-                message: "Editor not found",
-            });
-        }
-
-        editor.downvotes -= 1;  
-        await editor.save();  
-
-        res.status(200).json({
-            message: "Downvote updated successfully"
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to update downvote",
-            error: error.message,
-        });
-    }
-};
 
 
 const upvoteEditor = async (req, res) => {
     try {
-        const { userId, editorId } = req.body;
-
-        // Find the user and editor
-        const user = await User.findById(userId);
-        const editor = await Editor.findById(editorId);
-
-        if (!user || !editor) {
-            return res.status(404).json({ message: 'User or editor not found' });
-        }
-
-        // Check if user has already upvoted
-        if (user.upvoteIds.includes(editorId)) {
-            return res.status(400).json({ message: 'You have already upvoted this editor' });
-        }
-
+      const { userId, editorId } = req.body;
+  
+      const user = await User.findById(userId);
+      const editor = await Editor.findById(editorId);
+  
+      if (!user || !editor) {
+        return res.status(404).json({ message: 'User or editor not found' });
+      }
+  
+      // Toggle upvote
+      if (user.upvoteIds.includes(editorId)) {
+        // Remove upvote
+        user.upvoteIds = user.upvoteIds.filter(id => !id.equals(editorId));
+        await user.save();
+        await Editor.findByIdAndUpdate(editorId, { $inc: { upvotes: -1 } });
+        return res.status(200).json({ message: 'Upvote removed' });
+      } else {
         // Remove any existing downvote
         user.downvoteIds = user.downvoteIds.filter(id => !id.equals(editorId));
-
+  
         // Add upvote
         user.upvoteIds.push(editorId);
         await user.save();
-
-        // Increment upvote count on Editor
         await Editor.findByIdAndUpdate(editorId, { $inc: { upvotes: 1 } });
-
-        res.status(200).json({ message: 'Upvote recorded' });
+        return res.status(200).json({ message: 'Upvote recorded' });
+      }
     } catch (error) {
-        res.status(500).json({ message: 'Failed to record upvote', error: error.message });
+      res.status(500).json({ message: 'Failed to record upvote', error: error.message });
     }
-};
+  };
+  
 
-const downvoteEditor = async (req, res) => {
+  const downvoteEditor = async (req, res) => {
     try {
-        const { userId, editorId } = req.body;
-
-        // Find the user and editor
-        const user = await User.findById(userId);
-        const editor = await Editor.findById(editorId);
-
-        if (!user || !editor) {
-            return res.status(404).json({ message: 'User or editor not found' });
-        }
-
-        // Check if user has already downvoted
-        if (user.downvoteIds.includes(editorId)) {
-            return res.status(400).json({ message: 'You have already downvoted this editor' });
-        }
-
+      const { userId, editorId } = req.body;
+  
+      const user = await User.findById(userId);
+      const editor = await Editor.findById(editorId);
+  
+      if (!user || !editor) {
+        return res.status(404).json({ message: 'User or editor not found' });
+      }
+  
+      // Toggle downvote
+      if (user.downvoteIds.includes(editorId)) {
+        // Remove downvote
+        user.downvoteIds = user.downvoteIds.filter(id => !id.equals(editorId));
+        await user.save();
+        await Editor.findByIdAndUpdate(editorId, { $inc: { downvotes: -1 } });
+        return res.status(200).json({ message: 'Downvote removed' });
+      } else {
         // Remove any existing upvote
         user.upvoteIds = user.upvoteIds.filter(id => !id.equals(editorId));
-
+  
         // Add downvote
         user.downvoteIds.push(editorId);
         await user.save();
-
-        // Increment downvote count on Editor
         await Editor.findByIdAndUpdate(editorId, { $inc: { downvotes: 1 } });
-
-        res.status(200).json({ message: 'Downvote recorded' });
+        return res.status(200).json({ message: 'Downvote recorded' });
+      }
     } catch (error) {
-        res.status(500).json({ message: 'Failed to record downvote', error: error.message });
+      res.status(500).json({ message: 'Failed to record downvote', error: error.message });
     }
-};
+  };
+  
+
+  const checkVoteStatus = async (req, res) => {
+    try {
+      const { userId, editorId } = req.query;
+  
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      const hasUpvoted = user.upvoteIds.includes(editorId);
+      const hasDownvoted = user.downvoteIds.includes(editorId);
+  
+      res.status(200).json({ hasUpvoted, hasDownvoted });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to check vote status', error: error.message });
+    }
+  };
+  
 
 
 module.exports = {
     addEditor,
     fetcheditors,
     fetchbyemail,
-    upvoteEditorplus,
-    upvoteEditorminus,
-    downvoteEditorplus,
-    downvoteEditorminus,
-
     upvoteEditor,
-    downvoteEditor
-
+    downvoteEditor,
+    checkVoteStatus
 }
