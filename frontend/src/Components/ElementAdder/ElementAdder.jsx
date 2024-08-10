@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
-import MDEditor, { commands } from "@uiw/react-md-editor";
+import MDEditor from "@uiw/react-md-editor";
 import { BiHelpCircle } from "react-icons/bi";
 import "./ElementAdder.css";
 import elementData from "./elementData";
 import EditorCardUnLogged from "../EditorCardUnlogged/EditorCardUnlogged";
 import LoginModal from "../Navbar/LoginModal";
 import RegistrationModal from "../Navbar/RegistrationModal";
-import { useColorMode, Button, Box } from "@chakra-ui/react";
+import { useColorMode, Button } from "@chakra-ui/react";
 
 const help = {
   name: "help",
@@ -32,31 +32,15 @@ export default function ElementAdder() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredElements, setFilteredElements] = useState(elementData);
 
+  // Modal state
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [isChangeMode, setChangeMode] = useState(false);
   const [name, setName] = useState("");
+  const [markdownContent, setMarkdownContent] = useState("");
 
   const { colorMode, toggleColorMode } = useColorMode();
-
-  const handleLoginOpen = () => setIsLoginOpen(true);
-  const handleLoginClose = () => setIsLoginOpen(false);
-  const handleRegistrationOpen = () => setIsRegistrationOpen(true);
-  const handleRegistrationClose = () => setIsRegistrationOpen(false);
-
   const navigate = useNavigate();
-  const goTempCompoPage = () => {
-    navigate("/templatecompo");
-  };
-
-  const handleSetChangeMode = (mode) => {
-    setChangeMode(mode);
-    if (mode) {
-      handleRegistrationOpen();
-    } else {
-      handleLoginOpen();
-    }
-  };
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
@@ -95,7 +79,9 @@ export default function ElementAdder() {
     setHasUnsavedChanges(true);
   };
 
-  const isElementSelected = (index) => selectedElements.includes(index);
+  const isElementSelected = (index) => {
+    return selectedElements.includes(index);
+  };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -157,25 +143,30 @@ export default function ElementAdder() {
     setHasUnsavedChanges(true);
   };
 
-  const [markdownContent, setMarkdownContent] = useState("");
-
   const handleMarkdownClick = (content) => {
     setMarkdownContent(content);
+    setValue(content); // Set the content to the editor when an element is clicked
   };
+
+  const goTempCompoPage = () => {
+    navigate("/templatecompo");
+  };
+
+  const handleLoginOpen = () => setIsLoginOpen(true);
+  const handleLoginClose = () => setIsLoginOpen(false);
+  const handleRegistrationOpen = () => setIsRegistrationOpen(true);
+  const handleRegistrationClose = () => setIsRegistrationOpen(false);
 
   return (
     <>
-      <div className="editorHeading">
-        <span> ReadMeMaker Ultimate Editor </span>
-        <Button onClick={toggleColorMode} className="toggle-color-mode-btn">
-          {colorMode === "light" ? "🌙" : "🌞"}
-        </Button>
-      </div>
       <div
         className={`flex flex-col md:flex-row mx-2 md:mx-10 mt-32 md:mt-34 ${
           colorMode === "dark" ? "bg-gray-900" : "bg-white"
         }`}
       >
+        <div className="editorHeading">
+          <span> ReadMeMaker Ultimate Editor </span>
+        </div>
         <div
           className={`md:w-1/3 p-2 md:p-4 ${
             colorMode === "dark"
@@ -234,29 +225,21 @@ export default function ElementAdder() {
                     colorMode === "dark" ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  <p
-                    className={`text-xl font-medium ${
-                      colorMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  >
-                    {item.title}
-                  </p>
-                  <span className="text-xs font-light">{item.desc}</span>
+                  <p className="font-medium">{item.title}</p>
+                  <p className="text-sm">{item.desc}</p>
                 </div>
-                <div className="flex-grow"></div>
-                <button onClick={() => toggleAddRemove(index, item.code)}>
+                <button
+                  className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                    isElementSelected(index)
+                      ? "bg-green-500 hover:bg-green-600 text-white"
+                      : "bg-gray-200 hover:bg-gray-300"
+                  }`}
+                  onClick={() => toggleAddRemove(index, item.code)}
+                >
                   {isElementSelected(index) ? (
-                    <AiFillCheckCircle
-                      className={`text-3xl mx-3 ${
-                        colorMode === "dark" ? "text-green-400" : ""
-                      }`}
-                    />
+                    <AiFillCheckCircle className="text-3xl mx-3" />
                   ) : (
-                    <AiFillPlusCircle
-                      className={`text-3xl mx-3 ${
-                        colorMode === "dark" ? "text-blue-400" : ""
-                      }`}
-                    />
+                    <AiFillPlusCircle className="text-3xl mx-3" />
                   )}
                 </button>
               </div>
@@ -287,11 +270,10 @@ export default function ElementAdder() {
               </button>
             </div>
           </div>
-          {/* <EditorCardUnLogged onMarkdownClick={handleMarkdownClick} /> */}
           <MDEditor
             height={700}
-            value={markdownContent}
-            onChange={setMarkdownContent}
+            value={value}
+            onChange={handleValueChange} // Update the main value instead of markdownContent
           />
         </div>
       </div>
@@ -333,20 +315,20 @@ export default function ElementAdder() {
       )}
 
       {/* Add the modals here */}
-      {isChangeMode ? (
+      {isChangeMode || isRegistrationOpen ? (
         <RegistrationModal
-          isOpen={isRegistrationOpen || isChangeMode} // Show if in change mode
+          isOpen={isRegistrationOpen}
           onClose={() => {
-            setChangeMode(false); // Reset change mode when closing
+            setChangeMode(false);
             handleRegistrationClose();
           }}
           setChangeMode={setChangeMode}
         />
       ) : (
         <LoginModal
-          isOpen={isLoginOpen && !isChangeMode} // Show only if not in change mode
+          isOpen={isLoginOpen && !isChangeMode}
           onClose={() => {
-            setChangeMode(false); // Reset change mode when closing
+            setChangeMode(false);
             handleLoginClose();
           }}
           setChangeMode={setChangeMode}
