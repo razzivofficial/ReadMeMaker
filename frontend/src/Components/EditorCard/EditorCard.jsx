@@ -51,14 +51,17 @@ const MarkdownPreviewCard = ({
   downvotes,
   markdown,
 }) => {
-  const bg = useColorModeValue("white", "#2f3244");
-  const markdownBg = useColorModeValue("#f5f5f5", "#1e1e1e");
-  const textColor = useColorModeValue("black", "white");
+  const bg = useColorModeValue('white', '#2f3244');
+  const markdownBg = useColorModeValue('#f5f5f5', '#1e1e1e');
+  const textColor = useColorModeValue('black', 'white');
 
   const processedMarkdown = replaceHeightWithWidth(markdown);
 
   const [isLoading, setIsLoading] = useState(true);
- console.log(id)
+  const [selectedAvatar, setSelectedAvatar] = useState('');
+  const [upvoteClicked, setUpvoteClicked] = useState(false);
+  const [downvoteClicked, setDownvoteClicked] = useState(false);
+
   const avatars = [
     avatar1,
     avatar2,
@@ -70,12 +73,10 @@ const MarkdownPreviewCard = ({
     avatar8,
   ];
 
-  const [selectedAvatar, setSelectedAvatar] = useState("");
-  useEffect(()=>{
-    const avatarIndex = parseInt(profilePic.replace("avatar", "")) - 1;
+  useEffect(() => {
+    const avatarIndex = parseInt(profilePic.replace('avatar', '')) - 1;
     setSelectedAvatar(avatars[avatarIndex]);
-  })
-  
+  }, [profilePic]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -83,17 +84,37 @@ const MarkdownPreviewCard = ({
     }, 100);
   }, []);
 
+  const handleUpvote = async () => {
+    try {
+      await fetch(`https://readmemaker-backend.vercel.app/editor/upvoteplus/${id}`, { method: 'PATCH' });
+      setUpvoteClicked(true);
+      setDownvoteClicked(false);
+    } catch (error) {
+      console.error('Error upvoting:', error);
+    }
+  };
+
+  const handleDownvote = async () => {
+    try {
+      await fetch(`https://readmemaker-backend.vercel.app/editor/downvoteplus/${id}`, { method: 'PATCH' });
+      setDownvoteClicked(true);
+      setUpvoteClicked(false);
+    } catch (error) {
+      console.error('Error downvoting:', error);
+    }
+  };
+
   return (
     <Box
       className="card"
       w="100%"
-      maxW={{ base: "full", sm: "500px", md: "400px" }}
+      maxW={{ base: 'full', sm: '500px', md: '400px' }}
       boxShadow="lg"
       rounded="md"
       p={4}
       overflow="hidden"
       cursor="pointer"
-      _hover={{ boxShadow: "2xl" }}
+      _hover={{ boxShadow: '2xl' }}
       bg={bg}
       role="group"
       m={2}
@@ -101,7 +122,7 @@ const MarkdownPreviewCard = ({
       <HStack spacing={4} mb={4} align="start">
         <Image
           borderRadius="full"
-          boxSize={{ base: "40px", md: "50px" }}
+          boxSize={{ base: '40px', md: '50px' }}
           src={selectedAvatar}
           alt={`${username}'s profile`}
         />
@@ -110,7 +131,7 @@ const MarkdownPreviewCard = ({
             <Text
               fontWeight="bold"
               color={textColor}
-              fontSize={{ base: "sm", md: "md" }}
+              fontSize={{ base: 'sm', md: 'md' }}
             >
               {username}
             </Text>
@@ -119,7 +140,7 @@ const MarkdownPreviewCard = ({
       </HStack>
 
       <Text
-        fontSize={{ base: "md", md: "lg" }}
+        fontSize={{ base: 'md', md: 'lg' }}
         fontWeight="bold"
         mb={2}
         color={textColor}
@@ -134,7 +155,7 @@ const MarkdownPreviewCard = ({
         rounded="md"
         mt={4}
         bg={markdownBg}
-        height={{ base: "180px", md: "200px" }}
+        height={{ base: '180px', md: '200px' }}
         overflowY="auto"
         fontFamily="monospace"
         color={textColor}
@@ -158,8 +179,10 @@ const MarkdownPreviewCard = ({
           <IconButton
             aria-label="Upvote"
             icon={<FaThumbsUp />}
-            variant="outline"
+            variant={upvoteClicked ? 'solid' : 'outline'}
             colorScheme="green"
+            onClick={handleUpvote}
+            isDisabled={downvoteClicked}
           />
           <Text color={textColor}>{upvotes}</Text>
         </HStack>
@@ -168,8 +191,10 @@ const MarkdownPreviewCard = ({
           <IconButton
             aria-label="Downvote"
             icon={<FaThumbsDown />}
-            variant="outline"
+            variant={downvoteClicked ? 'solid' : 'outline'}
             colorScheme="red"
+            onClick={handleDownvote}
+            isDisabled={upvoteClicked}
           />
           <Text color={textColor}>{downvotes}</Text>
         </HStack>

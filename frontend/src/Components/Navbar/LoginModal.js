@@ -52,6 +52,7 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName }) => {
       navigate('/editor')
       localStorage.setItem("userEmail", logincredentials.email);
       localStorage.setItem("authToken", json.authToken);
+      localStorage.setItem("userId",json.userId)
       const email = localStorage.getItem('userEmail');
       if (email) {
         axios

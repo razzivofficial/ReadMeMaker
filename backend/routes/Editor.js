@@ -11,4 +11,7 @@ router.patch('/upvoteminus/:id',editordetails.upvoteEditorminus)
 router.patch('/downvoteplus/:id',editordetails.downvoteEditorplus)
 router.patch('/downvoteminus/:id',editordetails.downvoteEditorminus)
 
+
+router.patch('/upvoteeditor',editordetails.upvoteEditor)
+router.patch('/downvoteeditor',editordetails.downvoteEditor)
 module.exports = router;
