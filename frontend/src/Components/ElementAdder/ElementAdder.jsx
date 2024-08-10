@@ -10,6 +10,7 @@ import LoginModal from "../Navbar/LoginModal";
 import RegistrationModal from "../Navbar/RegistrationModal";
 import { useColorMode, Button, Box } from "@chakra-ui/react";
 import downloadIcon from "../../MediaFiles/downloadIcon.png";
+import PublishModal from "../PublishModal/PublishModal";
 
 const help = {
   name: "help",
@@ -32,7 +33,7 @@ export default function ElementAdder() {
   const [selectedElements, setSelectedElements] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredElements, setFilteredElements] = useState(elementData);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [isChangeMode, setChangeMode] = useState(false);
@@ -276,25 +277,34 @@ export default function ElementAdder() {
         >
           <div className="flex justify-between items-center mb-2 mt-8">
             <div className=" PubBtn absolute top-2 right-24">
-              <button onClick={downloadMarkdown}>
-                <div class="svg-wrapper-1">
-                  <div class="svg-wrapper">
+              <div>
+                {/* The button that opens the modal */}
+                <Button
+                  onClick={() => setIsModalOpen(true)}
+                  colorScheme="blue"
+                  variant="outline"
+                  leftIcon={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       width="24"
                       height="24"
+                      fill="currentColor"
                     >
                       <path fill="none" d="M0 0h24v24H0z"></path>
-                      <path
-                        fill="currentColor"
-                        d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
-                      ></path>
+                      <path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
                     </svg>
-                  </div>
-                </div>
-                <span>Publish</span>
-              </button>
+                  }
+                >
+                  Publish
+                </Button>
+
+                {/* Modal Component */}
+                <PublishModal
+                  isOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                />
+              </div>
             </div>
             <div
               className="absolute top-2 right-2"
