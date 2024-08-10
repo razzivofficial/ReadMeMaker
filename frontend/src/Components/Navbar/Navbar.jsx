@@ -236,7 +236,7 @@ function Navbar() {
       localStorage.setItem("userEmail", logincredentials.email);
       localStorage.setItem("authToken", json.authToken);
       localStorage.setItem("userId",json.userId)
-      console.log(localStorage.setItem("userId",json.userId))
+      console.log(json.userId)
       const email = localStorage.getItem("userEmail");
       if (email) {
         axios
