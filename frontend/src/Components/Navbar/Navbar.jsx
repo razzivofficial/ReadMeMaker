@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link as Navlink } from "react-router-dom";
+import { Link as Navlink, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {
@@ -81,6 +81,7 @@ const dropdownLinks = [
 ];
 
 function Navbar() {
+  const location = useLocation();
   const { colorMode, toggleColorMode } = useColorMode();
   const avatars = [
     avatar1,
@@ -93,6 +94,16 @@ function Navbar() {
     avatar8,
   ];
   const [selectedAvatar, setSelectedAvatar] = useState("");
+
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  useEffect(() => {
+    // Close the navbar menu when location changes (for mobile view)
+    if (isNavbarOpen) {
+      setIsNavbarOpen(false);
+    }
+  }, [location]); // 'location' needs to be included in dependencies
+
+  const toggleNavbar = () => setIsNavbarOpen(!isNavbarOpen);
 
   useEffect(() => {
     const fetchUserAvatar = async () => {
@@ -149,8 +160,6 @@ function Navbar() {
   }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
   const navigate = useNavigate();
   const initialRef = React.useRef(null);
@@ -328,14 +337,9 @@ function Navbar() {
           display={["inherit", "inherit", "none"]}
           onClick={() => setIsNavbarOpen(!isNavbarOpen)}
         />
-
         <HStack spacing={8} alignItems="center">
           <Link as={Navlink} to="/" w={{ base: "12rem", md: "18rem" }}>
-            <Image
-              alt="ReadMeMaker Logo"
-              src={logoImg}
-              rounded={50}
-            />
+            <Image alt="ReadMeMaker Logo" src={logoImg} rounded={50} />
           </Link>
           <Input
             display={"block"}
@@ -715,7 +719,11 @@ function Navbar() {
         <Box pb={4} display={["inherit", "inherit", "none"]}>
           <Stack as="nav" spacing={2}>
             {navLinks.map((link, index) => (
-              <NavLink key={index} {...link} onClose={onClose} />
+              <NavLink
+                key={index}
+                {...link}
+                onClose={isNavbarOpen ? onClose : undefined}
+              />
             ))}
           </Stack>
         </Box>
@@ -725,7 +733,12 @@ function Navbar() {
         <Box pb={4} display={{ md: "none" }}>
           <Stack as="nav" spacing={4}>
             {navLinks.map((link, index) => (
-              <NavLink key={index} to={link.to} {...link} />
+              <NavLink
+                key={index}
+                to={link.to}
+                {...link}
+                onClose={() => setIsNavbarOpen(false)}
+              />
             ))}
             {!localStorage.getItem("authToken") ? (
               <Button colorScheme="blue" onClick={onOpen}>
@@ -734,12 +747,7 @@ function Navbar() {
             ) : (
               <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
                 <MenuButton size="sm" onClick={toggleUserMenu}>
-                  <Avatar
-                    size="sm"
-                    // src={
-                    //   "https://media.images.yourquote.in/user/large/0/0/0/88/9aLa1749.jpg"
-                    // }
-                  />
+                  <Avatar size="sm" src={selectedAvatar} />
                 </MenuButton>
               </Menu>
             )}
@@ -750,7 +758,7 @@ function Navbar() {
   );
 }
 
-function NavLink({ name, path, to, onClose }) {
+function NavLink({ name, to, onClose }) {
   const link = {
     bg: useColorModeValue("gray.200", "gray.700"),
     color: useColorModeValue("blue.500", "blue.200"),
@@ -769,16 +777,16 @@ function NavLink({ name, path, to, onClose }) {
         bg: link.bg,
         color: link.color,
       }}
-      onClick={() => onClose()}
+      onClick={onClose}
     >
       {name}
     </Link>
   );
 }
 
-function MenuLink({ name, path, to, icon, onClose }) {
+function MenuLink({ name, to, icon, onClose }) {
   return (
-    <Link href={path} as={Navlink} to={to} onClick={() => onClose()}>
+    <Link as={Navlink} to={to} onClick={onClose}>
       <MenuItem
         _hover={{
           color: "blue.400",

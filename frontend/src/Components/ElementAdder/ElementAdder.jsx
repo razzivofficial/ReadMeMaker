@@ -9,6 +9,8 @@ import EditorCardUnLogged from "../EditorCardUnlogged/EditorCardUnlogged";
 import LoginModal from "../Navbar/LoginModal";
 import RegistrationModal from "../Navbar/RegistrationModal";
 import { useColorMode, Button, Box } from "@chakra-ui/react";
+import downloadIcon from "../../MediaFiles/downloadIcon.png";
+
 
 const help = {
   name: "help",
@@ -159,17 +161,14 @@ export default function ElementAdder() {
 
   return (
     <>
-      <div className="editorHeading">
-        <span> ReadMeMaker Ultimate Editor </span>
-        <Button onClick={toggleColorMode} className="toggle-color-mode-btn">
-          {colorMode === "light" ? "🌙" : "🌞"}
-        </Button>
-      </div>
       <div
         className={`flex flex-col md:flex-row mx-2 md:mx-10 mt-32 md:mt-34 ${
           colorMode === "dark" ? "bg-gray-900" : "bg-white"
         }`}
       >
+        <div className="editorHeading">
+          <span> ReadMeMaker Ultimate Editor </span>
+        </div>
         <div
           className={`md:w-1/3 p-2 md:p-4 ${
             colorMode === "dark"
@@ -238,19 +237,18 @@ export default function ElementAdder() {
                   <span className="text-xs font-light">{item.desc}</span>
                 </div>
                 <div className="flex-grow"></div>
-                <button onClick={() => toggleAddRemove(index, item.code)}>
+                <button
+                  className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                    isElementSelected(index)
+                      ? "bg-blue-600 hover:bg-blue-500 text-white"
+                      : "bg-blue-200 hover:bg-blue-300"
+                  }`}
+                  onClick={() => toggleAddRemove(index, item.code)}
+                >
                   {isElementSelected(index) ? (
-                    <AiFillCheckCircle
-                      className={`text-3xl mx-3 ${
-                        colorMode === "dark" ? "text-green-400" : ""
-                      }`}
-                    />
+                    <AiFillCheckCircle className="text-3xl mx-3" />
                   ) : (
-                    <AiFillPlusCircle
-                      className={`text-3xl mx-3 ${
-                        colorMode === "dark" ? "text-blue-400" : ""
-                      }`}
-                    />
+                    <AiFillPlusCircle className="text-3xl mx-3" />
                   )}
                 </button>
               </div>
@@ -266,19 +264,39 @@ export default function ElementAdder() {
           } border rounded-3xl relative`}
         >
           <div className="flex justify-between items-center mb-2 mt-8">
-            <div className="absolute top-2 right-2">
-              <button className="Btn" onClick={downloadMarkdown}>
-                <svg
-                  className="svgIcon"
-                  viewBox="0 0 384 512"
-                  height="1em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                </svg>
-                <span className="icon2"></span>
-                <span className="tooltip">Download</span>
+            <div className=" PubBtn absolute top-2 right-24">
+              <button onClick={downloadMarkdown}>
+                <div class="svg-wrapper-1">
+                  <div class="svg-wrapper">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path fill="none" d="M0 0h24v24H0z"></path>
+                      <path
+                        fill="currentColor"
+                        d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <span>Publish</span>
               </button>
+            </div>
+            <div
+              className="absolute top-2 right-2"
+              role="button"
+              tabIndex="0"
+              onClick={downloadMarkdown}
+            >
+              <div className="edit-post">
+                <span className="edit-tooltip">Download .md</span>
+                <span className="edit-icon">
+                  <img src={downloadIcon} alt="Download Icon" />
+                </span>
+              </div>
             </div>
           </div>
           <MDEditor
