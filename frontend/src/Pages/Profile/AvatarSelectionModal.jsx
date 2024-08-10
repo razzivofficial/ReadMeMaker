@@ -92,6 +92,20 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
           isClosable: true,
         });
       }
+
+    const eidtorAvatar = await fetch(
+      "https://readmemaker-backend.vercel.app/editor/updateavatar",
+      {
+        method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            avatar: `avatar${selectedAvatar.index + 1}`,
+          }),
+      }
+    )
     } catch (error) {
       toast({
         title: "Error",

@@ -255,18 +255,16 @@ const ProfilePage = () => {
 
   const handleUpdate = async (field) => {
     if (field === "username") {
-      console.log("Initial username:", username);
       let finalUsername = username;
-
+    
       if (username === "") {
         finalUsername = await checkAndGenerateUsername(email, username, name);
-        console.log("Generated username:", finalUsername);
         if (!finalUsername) {
           toast.error("Failed to generate a unique username.");
           return;
         }
       }
-
+    
       try {
         const response = await fetch(
           `https://readmemaker-backend.vercel.app/users/updateUsername/${email}`,
@@ -283,12 +281,29 @@ const ProfilePage = () => {
           setIsEditing(false);
         } else {
           toast.error(result.error);
+          return;  // Exit if the first update fails
+        }
+    
+        // Handle the second fetch call for updating the username in the Editor model
+        const editorResponse = await fetch(
+          `https://readmemaker-backend.vercel.app/editor/updateusername`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, username: finalUsername }),
+          }
+        );
+        const editorResult = await editorResponse.json();
+        if (editorResponse.ok) {
+          // toast.success("Username updated in the editor successfully");
+        } else {
+          toast.error(editorResult.error);
         }
       } catch (error) {
         toast.error("Failed to update Username");
       }
     }
-    // };
+    
     if (field === "name") {
       try {
         const response = await fetch(
