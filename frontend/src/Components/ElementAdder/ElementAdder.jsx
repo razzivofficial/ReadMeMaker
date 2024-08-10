@@ -10,7 +10,7 @@ import LoginModal from "../Navbar/LoginModal";
 import RegistrationModal from "../Navbar/RegistrationModal";
 import { useColorMode, Button, Box } from "@chakra-ui/react";
 import downloadIcon from "../../MediaFiles/downloadIcon.png";
-
+import PublishModal from "../PublishModal/PublishModal";
 
 const help = {
   name: "help",
@@ -33,11 +33,14 @@ export default function ElementAdder() {
   const [selectedElements, setSelectedElements] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredElements, setFilteredElements] = useState(elementData);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [isChangeMode, setChangeMode] = useState(false);
   const [name, setName] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("authToken")
+  );
 
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -131,6 +134,15 @@ export default function ElementAdder() {
       setValue(initialMkdStr);
     }
   };
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true); // Update authentication state on successful login
+    localStorage.setItem("authToken", "yourAuthToken"); // Replace with actual token logic
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false); // Update authentication state on logout
+    localStorage.removeItem("authToken");
+  };
 
   const downloadMarkdown = () => {
     const blob = new Blob([value], { type: "text/markdown" });
@@ -162,7 +174,7 @@ export default function ElementAdder() {
   return (
     <>
       <div
-        className={`flex flex-col md:flex-row mx-2 md:mx-10 mt-32 md:mt-34 ${
+        className={`flex flex-col overflow-hidden md:flex-row mx-2 md:mx-10 mt-32 md:mt-34 ${
           colorMode === "dark" ? "bg-gray-900" : "bg-white"
         }`}
       >
@@ -265,25 +277,34 @@ export default function ElementAdder() {
         >
           <div className="flex justify-between items-center mb-2 mt-8">
             <div className=" PubBtn absolute top-2 right-24">
-              <button onClick={downloadMarkdown}>
-                <div class="svg-wrapper-1">
-                  <div class="svg-wrapper">
+              <div>
+                {/* The button that opens the modal */}
+                <Button
+                  onClick={() => setIsModalOpen(true)}
+                  colorScheme="blue"
+                  variant="outline"
+                  leftIcon={
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       width="24"
                       height="24"
+                      fill="currentColor"
                     >
                       <path fill="none" d="M0 0h24v24H0z"></path>
-                      <path
-                        fill="currentColor"
-                        d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
-                      ></path>
+                      <path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
                     </svg>
-                  </div>
-                </div>
-                <span>Publish</span>
-              </button>
+                  }
+                >
+                  Publish
+                </Button>
+
+                {/* Modal Component */}
+                <PublishModal
+                  isOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                />
+              </div>
             </div>
             <div
               className="absolute top-2 right-2"
@@ -308,14 +329,17 @@ export default function ElementAdder() {
         </div>
       </div>
 
-      {!localStorage.getItem("authToken") ? (
+      {!isAuthenticated ? (
         <div className="editor-card-container">
           <div className="blurred-editor-card">
             <EditorCardUnLogged />
           </div>
           <div className="overlay">
             <p className="overlay-text">Login to view this content</p>
-            <button className="login-button" onClick={handleLoginOpen}>
+            <button
+              className="login-button"
+              onClick={() => setIsLoginOpen(true)}
+            >
               Login
             </button>
           </div>
@@ -347,22 +371,23 @@ export default function ElementAdder() {
       {/* Add the modals here */}
       {isChangeMode ? (
         <RegistrationModal
-          isOpen={isRegistrationOpen || isChangeMode} // Show if in change mode
+          isOpen={isRegistrationOpen || isChangeMode}
           onClose={() => {
-            setChangeMode(false); // Reset change mode when closing
+            setChangeMode(false);
             handleRegistrationClose();
           }}
           setChangeMode={setChangeMode}
         />
       ) : (
         <LoginModal
-          isOpen={isLoginOpen && !isChangeMode} // Show only if not in change mode
+          isOpen={isLoginOpen && !isChangeMode}
           onClose={() => {
-            setChangeMode(false); // Reset change mode when closing
+            setChangeMode(false);
             handleLoginClose();
           }}
           setChangeMode={setChangeMode}
           setName={setName}
+          onSuccess={handleLoginSuccess} // Pass success handler to modal
         />
       )}
     </>
