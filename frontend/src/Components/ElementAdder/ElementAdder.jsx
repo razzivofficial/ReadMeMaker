@@ -9,6 +9,8 @@ import EditorCardUnLogged from "../EditorCardUnlogged/EditorCardUnlogged";
 import LoginModal from "../Navbar/LoginModal";
 import RegistrationModal from "../Navbar/RegistrationModal";
 import { useColorMode, Button, Box } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
+import data from "../EditorCardUnlogged/EditorCardUnloggedData";
 
 const help = {
   name: "help",
@@ -27,6 +29,7 @@ const help = {
 export default function ElementAdder() {
   const initialMkdStr = "*LOGIN TO USE DIRECT TEMPLATES*";
   const [value, setValue] = useState(initialMkdStr);
+  const [processedMarkdown, setProcessedMarkdown] = useState(initialMkdStr);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [selectedElements, setSelectedElements] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -159,17 +162,14 @@ export default function ElementAdder() {
 
   return (
     <>
-      <div className="editorHeading">
-        <span> ReadMeMaker Ultimate Editor </span>
-        <Button onClick={toggleColorMode} className="toggle-color-mode-btn">
-          {colorMode === "light" ? "🌙" : "🌞"}
-        </Button>
-      </div>
       <div
         className={`flex flex-col md:flex-row mx-2 md:mx-10 mt-32 md:mt-34 ${
           colorMode === "dark" ? "bg-gray-900" : "bg-white"
         }`}
       >
+        <div className="editorHeading">
+          <span> ReadMeMaker Ultimate Editor </span>
+        </div>
         <div
           className={`md:w-1/3 p-2 md:p-4 ${
             colorMode === "dark"
@@ -238,19 +238,18 @@ export default function ElementAdder() {
                   <span className="text-xs font-light">{item.desc}</span>
                 </div>
                 <div className="flex-grow"></div>
-                <button onClick={() => toggleAddRemove(index, item.code)}>
+                <button
+                  className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                    isElementSelected(index)
+                      ? "bg-blue-600 hover:bg-blue-500 text-white"
+                      : "bg-blue-200 hover:bg-blue-300"
+                  }`}
+                  onClick={() => toggleAddRemove(index, item.code)}
+                >
                   {isElementSelected(index) ? (
-                    <AiFillCheckCircle
-                      className={`text-3xl mx-3 ${
-                        colorMode === "dark" ? "text-green-400" : ""
-                      }`}
-                    />
+                    <AiFillCheckCircle className="text-3xl mx-3" />
                   ) : (
-                    <AiFillPlusCircle
-                      className={`text-3xl mx-3 ${
-                        colorMode === "dark" ? "text-blue-400" : ""
-                      }`}
-                    />
+                    <AiFillPlusCircle className="text-3xl mx-3" />
                   )}
                 </button>
               </div>

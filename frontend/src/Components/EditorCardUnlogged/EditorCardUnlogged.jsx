@@ -11,14 +11,15 @@ import {
   SimpleGrid,
   Center,
   Container,
-  useBreakpointValue,
 } from "@chakra-ui/react";
-import { FaThumbsUp, FaThumbsDown, FaComment } from "react-icons/fa";
+import { FaThumbsUp, FaThumbsDown, FaClipboard } from "react-icons/fa"; // Import the Clipboard icon
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./EditorCardUnlogged.css";
-import data from "./EditorCardUnloggedData"; // Import data from external file
+import data from "./EditorCardUnloggedData";
 
 // Function to replace height with width in <img> tags
 const replaceHeightWithWidth = (inputText) => {
@@ -30,6 +31,24 @@ const replaceHeightWithWidth = (inputText) => {
   );
 };
 
+// Custom link component to prevent navigation
+const CustomLink = ({ href, children }) => {
+  const handleClick = (event) => {
+    event.preventDefault();
+    console.log("Link clicked:", href);
+  };
+
+  return (
+    <a
+      href={href}
+      onClick={handleClick}
+      style={{ color: "inherit", textDecoration: "none" }}
+    >
+      {children}
+    </a>
+  );
+};
+
 const MarkdownPreviewCard = ({
   email,
   username,
@@ -37,8 +56,8 @@ const MarkdownPreviewCard = ({
   projectTitle,
   upvotes,
   downvotes,
-  comments,
   markdown,
+  onMarkdownClick,
 }) => {
   const bg = useColorModeValue("white", "#2f3244");
   const markdownBg = useColorModeValue("#f5f5f5", "#1e1e1e");
@@ -46,6 +65,32 @@ const MarkdownPreviewCard = ({
 
   // Apply the replaceHeightWithWidth function to the markdown content
   const processedMarkdown = replaceHeightWithWidth(markdown);
+
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(processedMarkdown)
+      .then(() => {
+        toast.success("Markdown copied to clipboard!", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      })
+      .catch((err) => {
+        toast.error("Failed to copy markdown!", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        console.error("Copy to clipboard failed:", err);
+      });
+  };
 
   return (
     <Box
@@ -91,7 +136,7 @@ const MarkdownPreviewCard = ({
       >
         {projectTitle}
       </Text>
-      {/* Add on click transfer code */}
+
       <Box
         className="markdown-content"
         p={4}
@@ -104,8 +149,13 @@ const MarkdownPreviewCard = ({
         overflowY="auto"
         fontFamily="monospace"
         color={textColor}
+        onClick={() => onMarkdownClick(processedMarkdown)}
       >
-        <ReactMarkdown rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>
+        <ReactMarkdown
+          rehypePlugins={[rehypeRaw]}
+          remarkPlugins={[remarkGfm]}
+          components={{ a: CustomLink }} // Use the custom link component
+        >
           {processedMarkdown}
         </ReactMarkdown>
       </Box>
@@ -135,20 +185,34 @@ const MarkdownPreviewCard = ({
 
         <HStack spacing={2}>
           <IconButton
-            aria-label="Comments"
-            icon={<FaComment />}
+            aria-label="Copy Markdown"
+            icon={<FaClipboard />}
             variant="outline"
             colorScheme="blue"
+            onClick={handleCopy} // Add the onClick event for the copy button
           />
-          <Text color={textColor}>{comments}</Text>
         </HStack>
       </HStack>
     </Box>
   );
 };
 
-const EditorCardUnLogged = () => {
-  const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
+const EditorCardUnLogged = ({ onMarkdownClick }) => {
+  const handleMarkdownClick = (markdown) => {
+    // Show a professional notification
+    toast.success("Code successfully added to the ReadMeMaker code editor!", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    if (onMarkdownClick) {
+      onMarkdownClick(markdown); // Call the passed function if needed
+    }
+  };
 
   return (
     <Container maxW="7xl" p={{ base: 5, md: 10 }}>
@@ -164,23 +228,25 @@ const EditorCardUnLogged = () => {
             #Ready-Made-Templates-Of-ReadMeMaker!
           </Text>
 
-          <SimpleGrid columns={columns} spacing={4}>
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={4}>
             {data.map((item, index) => (
               <MarkdownPreviewCard
                 key={index}
-                email={item.email}
+                // email={item.email}
                 username={item.username}
                 profilePic={item.profilePic}
                 projectTitle={item.projectTitle}
                 upvotes={item.upvotes}
                 downvotes={item.downvotes}
-                comments={item.comments}
                 markdown={item.markdown}
+                onMarkdownClick={handleMarkdownClick}
               />
             ))}
           </SimpleGrid>
         </VStack>
       </Center>
+
+      <ToastContainer />
     </Container>
   );
 };

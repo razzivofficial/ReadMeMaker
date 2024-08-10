@@ -1,4 +1,4 @@
-// EditorCardData.js
+// EditorCardUnloggedData.js
 const data = [
   {
     email: "andyruwruw@gmail.com",
@@ -61,8 +61,8 @@ const data = [
     profilePic:
       "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGw3amNqOW1zcmlvN2t4ZzFqajJwd251eTJrbTlrYjlmc3plYzhxbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l3q2VZLzFKvFTbEzK/giphy.webp",
     projectTitle: "GitHub Template",
-    upvotes: 13,
-    downvotes: 0,
+    upvotes: 11,
+    downvotes: 1,
     comments: 0,
     markdown: `
 [![MasterHead](https://i.pinimg.com/originals/77/ca/a3/77caa32884d735d439ade45ba37feaf2.gif)](https://arjuncvinod.github.io)
@@ -109,7 +109,7 @@ const data = [
     profilePic:
       "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWlrNGlyMjl6dmEwNDEydTg4cWo4eWFnbHU1aWZ4eHdoZWF6dW95biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/57ZvMMkuBIVMlU88Yh/giphy.webp",
     projectTitle: "GitHub Component",
-    upvotes: 15,
+    upvotes: 17,
     downvotes: 2,
     comments: 5,
     markdown: `

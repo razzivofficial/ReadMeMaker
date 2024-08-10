@@ -93,21 +93,26 @@ const HeroSection = () => {
       mt={{ base: 12, md: 18 }}
     >
       <Stack direction="column" spacing={6} alignItems="center">
-        <Box
-          mt={10}
-          py={2}
-          px={3}
-          bg={useColorModeValue("teal.400", "teal.600")}
-          w="max-content"
-          color={useColorModeValue("white", "gray.200")}
-          rounded="md"
-          fontSize="md"
-        >
-          <Stack direction={{ base: "column", sm: "row" }}>
-            <Text fontWeight="bold">Ready, Set, Build! 🚀</Text>
-            <Text>Join the Community!</Text>
-          </Stack>
-        </Box>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          {" "}
+          {/* Ensure no underline on the Link */}
+          <Box
+            mt={10}
+            py={2}
+            px={3}
+            bg={useColorModeValue("teal.400", "teal.600")}
+            w="max-content"
+            color={useColorModeValue("white", "gray.200")}
+            rounded="md"
+            fontSize="md"
+            _hover={{ textDecoration: "none" }}
+          >
+            <Stack direction={{ base: "column", sm: "row" }}>
+              <Text fontWeight="bold">Ready, Set, Build! 🚀</Text>
+              <Text>Join the Community!</Text>
+            </Stack>
+          </Box>
+        </Link>
         <chakra.h1
           fontSize={{ base: "xl", sm: "3xl" }}
           fontWeight="bold"
