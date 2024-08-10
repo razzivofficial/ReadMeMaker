@@ -438,11 +438,13 @@ const ProfilePage = () => {
                             handleUpdate("name");
                             setIsEditing1(false);
                           }}
+                          isDisabled={name.replace(/\s/g, '').length < 6}
                         >
                           Update Name
                         </Button>
                       )}
                     </FormControl>
+
 
                     <FormControl id="username">
                       <FormLabel fontWeight="bold">
@@ -471,6 +473,7 @@ const ProfilePage = () => {
                             handleUpdate("username");
                             setIsEditing(false);
                           }}
+                          isDisabled={username.replace(/\s/g, '').length < 6}
                         >
                           Update Username
                         </Button>
