@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
+
 import {
   Box,
   VStack,
@@ -424,7 +425,7 @@ const ProfilePage = () => {
                         )}
                       </FormLabel>
                       <Input
-                        value={name}
+                        value={name || ''}  // Ensure value is always a string
                         isReadOnly={!isEditing1}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Enter your name"
@@ -438,12 +439,13 @@ const ProfilePage = () => {
                             handleUpdate("name");
                             setIsEditing1(false);
                           }}
-                          isDisabled={name.replace(/\s/g, '').length < 6}
+                          isDisabled={(name || '').replace(/\s/g, '').length < 6} // Handle undefined or null name
                         >
                           Update Name
                         </Button>
                       )}
                     </FormControl>
+
 
 
                     <FormControl id="username">
@@ -459,7 +461,7 @@ const ProfilePage = () => {
                         )}
                       </FormLabel>
                       <Input
-                        value={username}
+                        value={username || ''}  // Ensure value is always a string
                         isReadOnly={!isEditing}
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="Enter your username"
@@ -473,12 +475,13 @@ const ProfilePage = () => {
                             handleUpdate("username");
                             setIsEditing(false);
                           }}
-                          isDisabled={username.replace(/\s/g, '').length < 6}
+                          isDisabled={(username || '').replace(/\s/g, '').length < 6} // Handle undefined or null username
                         >
                           Update Username
                         </Button>
                       )}
                     </FormControl>
+
 
                     <FormControl id="email">
                       <FormLabel fontWeight="bold">Email</FormLabel>
