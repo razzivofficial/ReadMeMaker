@@ -53,11 +53,9 @@ const createuser = async (req, res) => {
 
 const loginuser = async (req, res) => {
     try {
-        const email = req.body.email;
-        const password = req.body.password;
+        const { email, password } = req.body;
 
         const error = validationResult(req);
-
         if (!error.isEmpty()) {
             return res.status(400).json({ error: error.array() });
         }
@@ -66,7 +64,7 @@ const loginuser = async (req, res) => {
             return res.status(400).json({ error: "Email is not valid" });
         }
 
-        let userdata = await User.findOne({ email });
+        const userdata = await User.findOne({ email });
         if (!userdata) {
             return res.status(400).json({ error: "User not found" });
         }
@@ -81,12 +79,16 @@ const loginuser = async (req, res) => {
                 id: userdata.id
             }
         };
+
         const token = jwt.sign(data, jwtSecret, { expiresIn: 3600 });
-        return res.json({ success: true, authToken: token });
+
+        // Return the user ID along with the auth token
+        return res.json({ success: true, authToken: token, userId: userdata.id });
     } catch (err) {
         res.status(500).json(err);
     }
 };
+
 
 const getNameByEmail = async (req, res) => {
     try {
