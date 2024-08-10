@@ -141,6 +141,45 @@ const upvoteEditor = async (req, res) => {
     }
   };
   
+  const updateAvatar = async (req, res) => {
+    const { email, avatar } = req.body;
+
+    try {
+        // Update all users with the specified email
+        const result = await Editor.updateMany(
+            { email: email },
+            { $set: { avatar: avatar } }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ message: 'No users found with the specified email' });
+        }
+
+        res.status(200).json({ message: 'Avatar updated successfully for all matching users' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+const updateUsername = async (req, res) => {
+    const { email, username } = req.body;
+
+    try {
+        // Update all users with the specified email
+        const result = await Editor.updateMany(
+            { email: email },
+            { $set: { username: username } }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ message: 'No users found with the specified email' });
+        }
+
+        res.status(200).json({ message: 'Username updated successfully for all matching users' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
 
 
 module.exports = {
@@ -149,5 +188,7 @@ module.exports = {
     fetchbyemail,
     upvoteEditor,
     downvoteEditor,
-    checkVoteStatus
+    checkVoteStatus,
+    updateAvatar,
+    updateUsername,
 }
