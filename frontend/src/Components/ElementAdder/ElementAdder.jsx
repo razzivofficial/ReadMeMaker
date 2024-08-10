@@ -11,7 +11,6 @@ import RegistrationModal from "../Navbar/RegistrationModal";
 import { useColorMode, Button, Box } from "@chakra-ui/react";
 import downloadIcon from "../../MediaFiles/downloadIcon.png";
 
-
 const help = {
   name: "help",
   keyCommand: "help",
@@ -38,6 +37,9 @@ export default function ElementAdder() {
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [isChangeMode, setChangeMode] = useState(false);
   const [name, setName] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("authToken")
+  );
 
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -130,6 +132,15 @@ export default function ElementAdder() {
     } else {
       setValue(initialMkdStr);
     }
+  };
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true); // Update authentication state on successful login
+    localStorage.setItem("authToken", "yourAuthToken"); // Replace with actual token logic
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false); // Update authentication state on logout
+    localStorage.removeItem("authToken");
   };
 
   const downloadMarkdown = () => {
@@ -308,14 +319,17 @@ export default function ElementAdder() {
         </div>
       </div>
 
-      {!localStorage.getItem("authToken") ? (
+      {!isAuthenticated ? (
         <div className="editor-card-container">
           <div className="blurred-editor-card">
             <EditorCardUnLogged />
           </div>
           <div className="overlay">
             <p className="overlay-text">Login to view this content</p>
-            <button className="login-button" onClick={handleLoginOpen}>
+            <button
+              className="login-button"
+              onClick={() => setIsLoginOpen(true)}
+            >
               Login
             </button>
           </div>
@@ -347,22 +361,23 @@ export default function ElementAdder() {
       {/* Add the modals here */}
       {isChangeMode ? (
         <RegistrationModal
-          isOpen={isRegistrationOpen || isChangeMode} // Show if in change mode
+          isOpen={isRegistrationOpen || isChangeMode}
           onClose={() => {
-            setChangeMode(false); // Reset change mode when closing
+            setChangeMode(false);
             handleRegistrationClose();
           }}
           setChangeMode={setChangeMode}
         />
       ) : (
         <LoginModal
-          isOpen={isLoginOpen && !isChangeMode} // Show only if not in change mode
+          isOpen={isLoginOpen && !isChangeMode}
           onClose={() => {
-            setChangeMode(false); // Reset change mode when closing
+            setChangeMode(false);
             handleLoginClose();
           }}
           setChangeMode={setChangeMode}
           setName={setName}
+          onSuccess={handleLoginSuccess} // Pass success handler to modal
         />
       )}
     </>

@@ -13,72 +13,92 @@ import {
   Button,
   Text,
   Flex,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
 const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
-  const [credentials, setcredentials] = useState({
+  const [credentials, setCredentials] = useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const handleregistration = async (e) => {
+  const handleRegistration = async (e) => {
     e.preventDefault();
-    setcredentials({ name: "", email: "", password: "" });
-    const response = await fetch(
-      "https://readmemaker-backend.vercel.app/users/createuser",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: credentials.name,
-          email: credentials.email,
-          password: credentials.password,
-        }),
+    setCredentials({ name: "", email: "", password: "" });
+    try {
+      const response = await fetch(
+        "https://readmemaker-backend.vercel.app/users/createuser",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: credentials.name,
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        }
+      );
+      const json = await response.json();
+      if (json.message !== "success") {
+        toast.error("Registration failed: " + json.error);
+      } else {
+        toast.success("Registration successful");
+        localStorage.setItem("name", credentials.name);
+        onClose();
       }
-    );
-    const json = await response.json();
-    if (json.message !== "success") {
-      toast.error("Registration failed: " + json.error);
-    } else {
-      toast.success("Registration successful");
-      localStorage.setItem("name", credentials.name);
-      onClose();
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
     }
   };
 
-  const onchange = (event) => {
-    setcredentials({ ...credentials, [event.target.id]: event.target.value });
+  const handleChange = (event) => {
+    setCredentials({ ...credentials, [event.target.id]: event.target.value });
   };
+
+  const modalContentBg = useColorModeValue("white", "gray.800");
+  const textColor = useColorModeValue("gray.700", "gray.200");
+  const buttonColor = useColorModeValue("blue", "blue");
+  const buttonHoverColor = useColorModeValue("blue.600", "blue.400");
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader textAlign="center">Create your account</ModalHeader>
+      <ModalContent
+        bg={modalContentBg}
+        color={textColor}
+        borderRadius="md"
+        maxW="md"
+        mx="auto"
+      >
+        <ModalHeader textAlign="center">Create Your Account</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <FormControl isRequired>
-            <FormLabel>Enter Your name</FormLabel>
+          <FormControl isRequired mb={4}>
+            <FormLabel>Enter Your Name</FormLabel>
             <Input
               placeholder="Enter your name"
               id="name"
               value={credentials.name}
-              onChange={onchange}
+              onChange={handleChange}
               required
+              bg={useColorModeValue("white", "gray.700")}
+              color={useColorModeValue("black", "white")}
             />
           </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Enter Your email</FormLabel>
+          <FormControl isRequired mb={4}>
+            <FormLabel>Enter Your Email</FormLabel>
             <Input
               placeholder="Enter your email"
               id="email"
               value={credentials.email}
-              onChange={onchange}
+              onChange={handleChange}
               required
+              bg={useColorModeValue("white", "gray.700")}
+              color={useColorModeValue("black", "white")}
             />
           </FormControl>
           <FormControl mt={4} isRequired>
@@ -88,37 +108,48 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
               type="password"
               id="password"
               value={credentials.password}
-              onChange={onchange}
+              onChange={handleChange}
               required
+              bg={useColorModeValue("white", "gray.700")}
+              color={useColorModeValue("black", "white")}
             />
           </FormControl>
-          <Flex alignItems="center" justify="center" my={5}>
-            <Button textAlign="center" justify="center">
-              Sign up using Google
+          <Flex direction="column" align="center" my={5}>
+            <Button
+              colorScheme={buttonColor}
+              _hover={{ bg: buttonHoverColor }}
+              mb={2}
+              w="full"
+              maxW="sm"
+            >
+              Sign Up with Google
             </Button>
-          </Flex>
-          <Flex alignItems="center" justify="center" my={5}>
-            <Button textAlign="center" justify="center">
-              Sign up using Github
+            <Button
+              colorScheme={buttonColor}
+              _hover={{ bg: buttonHoverColor }}
+              w="full"
+              maxW="sm"
+            >
+              Sign Up with GitHub
             </Button>
           </Flex>
           <Flex justify="center" alignItems="center">
-            <Text py={3} color="gray.700" textAlign="center">
-              Already Registered?
+            <Text py={3} color={textColor} textAlign="center">
+              Already Registered?{" "}
               <Button
                 color="red.400"
                 _hover={{ color: "red.700" }}
-                variant="none"
+                variant="link"
                 onClick={() => setChangeMode(false)}
               >
-                Log in
+                Log In
               </Button>
             </Text>
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleregistration}>
-            Sign up
+          <Button colorScheme="blue" mr={3} onClick={handleRegistration}>
+            Sign Up
           </Button>
           <Button onClick={onClose}>Cancel</Button>
         </ModalFooter>
