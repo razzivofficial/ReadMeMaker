@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import {
   Box,
   Text,
@@ -41,14 +41,16 @@ const replaceHeightWithWidth = (inputText) => {
   );
 };
 
+
+
 const MarkdownPreviewCard = ({
   email,
   id,
   username,
   profilePic,
   projectTitle,
-  upvotes,
-  downvotes,
+  upvotes: initialUpvotes,
+  downvotes: initialDownvotes,
   markdown,
 }) => {
   const bg = useColorModeValue('white', '#2f3244');
@@ -61,6 +63,8 @@ const MarkdownPreviewCard = ({
   const [selectedAvatar, setSelectedAvatar] = useState('');
   const [upvoteClicked, setUpvoteClicked] = useState(false);
   const [downvoteClicked, setDownvoteClicked] = useState(false);
+  const [upvotes, setUpvotes] = useState(initialUpvotes);
+  const [downvotes, setDownvotes] = useState(initialDownvotes);
 
   const avatars = [
     avatar1,
@@ -84,21 +88,74 @@ const MarkdownPreviewCard = ({
     }, 100);
   }, []);
 
+  const userId = localStorage.getItem('userId'); // Get the userId from local storage
+
+  useEffect(() => {
+    const checkVoteStatus = async () => {
+      try {
+        const response = await fetch(`https://readmemaker-backend.vercel.app/editor/checkvotestatus?userId=${userId}&editorId=${id}`);
+        const result = await response.json();
+        setUpvoteClicked(result.hasUpvoted);
+        setDownvoteClicked(result.hasDownvoted);
+      } catch (error) {
+        console.error('Error checking vote status:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    checkVoteStatus();
+  }, [id, userId]);
+
   const handleUpvote = async () => {
     try {
-      await fetch(`https://readmemaker-backend.vercel.app/editor/upvoteplus/${id}`, { method: 'PATCH' });
-      setUpvoteClicked(true);
-      setDownvoteClicked(false);
+      const response = await fetch(`https://readmemaker-backend.vercel.app/editor/upvoteeditor`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, editorId: id }),
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        if (result.message === 'Upvote removed') {
+          setUpvoteClicked(false);
+          setUpvotes(upvotes - 1);
+        } else if (result.message === 'Upvote recorded') {
+          setUpvoteClicked(true);
+          setDownvoteClicked(false);
+          setUpvotes(upvotes + 1);
+          if (downvoteClicked) setDownvotes(downvotes - 1);
+        }
+      }
     } catch (error) {
       console.error('Error upvoting:', error);
     }
   };
-
+  
   const handleDownvote = async () => {
     try {
-      await fetch(`https://readmemaker-backend.vercel.app/editor/downvoteplus/${id}`, { method: 'PATCH' });
-      setDownvoteClicked(true);
-      setUpvoteClicked(false);
+      const response = await fetch(`https://readmemaker-backend.vercel.app/editor/downvoteeditor`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, editorId: id }),
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        if (result.message === 'Downvote removed') {
+          setDownvoteClicked(false);
+          setDownvotes(downvotes - 1);
+        } else if (result.message === 'Downvote recorded') {
+          setDownvoteClicked(true);
+          setUpvoteClicked(false);
+          setDownvotes(downvotes + 1);
+          if (upvoteClicked) setUpvotes(upvotes - 1);
+        }
+      }
     } catch (error) {
       console.error('Error downvoting:', error);
     }
