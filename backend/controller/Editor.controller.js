@@ -51,9 +51,112 @@ const fetchbyemail = async (req, res) => {
     }
 };
 
+const upvoteEditorplus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const editor = await Editor.findById(id);
+
+        if (!editor) {
+            return res.status(404).json({
+                message: "Editor not found",
+            });
+        }
+
+        editor.upvotes += 1;  // Increment upvotes by 1
+        await editor.save();  // Save the updated editor
+
+        res.status(200).json({
+            message: "Upvote updated successfully"
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to update upvote",
+            error: error.message,
+        });
+    }
+};
+const upvoteEditorminus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const editor = await Editor.findById(id);
+
+        if (!editor) {
+            return res.status(404).json({
+                message: "Editor not found",
+            });
+        }
+
+        editor.upvotes -= 1;  
+        await editor.save();  
+
+        res.status(200).json({
+            message: "Upvote updated successfully"
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to update upvote",
+            error: error.message,
+        });
+    }
+};
+
+// Increment downvotes for an editor
+const downvoteEditorplus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const editor = await Editor.findById(id);
+
+        if (!editor) {
+            return res.status(404).json({
+                message: "Editor not found",
+            });
+        }
+
+        editor.downvotes += 1;  // Increment downvotes by 1
+        await editor.save();  // Save the updated editor
+
+        res.status(200).json({
+            message: "Downvote updated successfully"
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to update downvote",
+            error: error.message,
+        });
+    }
+};
+const downvoteEditorminus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const editor = await Editor.findById(id);
+
+        if (!editor) {
+            return res.status(404).json({
+                message: "Editor not found",
+            });
+        }
+
+        editor.downvotes -= 1;  
+        await editor.save();  
+
+        res.status(200).json({
+            message: "Downvote updated successfully"
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to update downvote",
+            error: error.message,
+        });
+    }
+};
+
 
 module.exports = {
     addEditor,
     fetcheditors,
     fetchbyemail,
+    upvoteEditorplus,
+    upvoteEditorminus,
+    downvoteEditorplus,
+    downvoteEditorminus,
 }
