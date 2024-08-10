@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Box,
   Text,
@@ -14,16 +15,23 @@ import {
   useBreakpointValue,
   Button,
 } from "@chakra-ui/react";
+
+import avatar1 from "../../MediaFiles/avatar1.jpg";
+import avatar2 from "../../MediaFiles/avatar2.jpg";
+import avatar3 from "../../MediaFiles/avatar3.jpg";
+import avatar4 from "../../MediaFiles/avatar4.jpg";
+import avatar5 from "../../MediaFiles/avatar5.jpg";
+import avatar6 from "../../MediaFiles/avatar6.jpg";
+import avatar7 from "../../MediaFiles/avatar7.jpg";
+import avatar8 from "../../MediaFiles/avatar8.jpg";
+
 import { FaThumbsUp, FaThumbsDown, FaComment } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import "./EditorCard.css";
-import ComponentData from "./ComponentData";
-import TemplateData from "./TemplateData";
 import TempCompoLoader from "../Loader/TempCompoLoader";
 
-// Function to replace height with width in <img> tags
 const replaceHeightWithWidth = (inputText) => {
   return inputText.replace(
     /<img\s+([^>]*)height="(\d+)"([^>]*)>/gi,
@@ -35,12 +43,12 @@ const replaceHeightWithWidth = (inputText) => {
 
 const MarkdownPreviewCard = ({
   email,
+  id,
   username,
   profilePic,
   projectTitle,
   upvotes,
   downvotes,
-  comments,
   markdown,
 }) => {
   const bg = useColorModeValue("white", "#2f3244");
@@ -49,8 +57,25 @@ const MarkdownPreviewCard = ({
 
   const processedMarkdown = replaceHeightWithWidth(markdown);
 
-  /* Loader */
   const [isLoading, setIsLoading] = useState(true);
+ console.log(id)
+  const avatars = [
+    avatar1,
+    avatar2,
+    avatar3,
+    avatar4,
+    avatar5,
+    avatar6,
+    avatar7,
+    avatar8,
+  ];
+
+  const [selectedAvatar, setSelectedAvatar] = useState("");
+  useEffect(()=>{
+    const avatarIndex = parseInt(profilePic.replace("avatar", "")) - 1;
+    setSelectedAvatar(avatars[avatarIndex]);
+  })
+  
 
   useEffect(() => {
     setTimeout(() => {
@@ -77,20 +102,19 @@ const MarkdownPreviewCard = ({
         <Image
           borderRadius="full"
           boxSize={{ base: "40px", md: "50px" }}
-          src={profilePic}
+          src={selectedAvatar}
           alt={`${username}'s profile`}
         />
         <VStack align="start" spacing={0}>
-          <Text
-            fontWeight="bold"
-            color={textColor}
-            fontSize={{ base: "sm", md: "md" }}
-          >
-            {username}
-          </Text>
-          <Text color={textColor} fontSize={{ base: "xs", md: "sm" }}>
-            {email}
-          </Text>
+          <Link to={`/profile/${email}`}>
+            <Text
+              fontWeight="bold"
+              color={textColor}
+              fontSize={{ base: "sm", md: "md" }}
+            >
+              {username}
+            </Text>
+          </Link>
         </VStack>
       </HStack>
 
@@ -157,7 +181,6 @@ const MarkdownPreviewCard = ({
             variant="outline"
             colorScheme="blue"
           />
-          <Text color={textColor}>{comments}</Text>
         </HStack>
       </HStack>
     </Box>
@@ -168,16 +191,43 @@ const EditorCard = () => {
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
   const [selected, setSelected] = useState("templates");
   const [isLoading, setIsLoading] = useState(false);
+  const [templates, setTemplates] = useState([]);
+  const [components, setComponents] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch("https://readmemaker-backend.vercel.app/editor/getalleditor");
+        const data = await response.json();
+        if (data.editors) {
+          const templateData = data.editors.filter(
+            (editor) => editor.type === "template"
+          );
+          const componentData = data.editors.filter(
+            (editor) => editor.type === "component"
+          );
+          setTemplates(templateData);
+          setComponents(componentData);
+        }
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleSelection = (type) => {
     setIsLoading(true);
     setTimeout(() => {
       setSelected(type);
       setIsLoading(false);
-    }, 100); // Simulate loading time
+    }, 100);
   };
 
-  const dataToDisplay = selected === "templates" ? TemplateData : ComponentData;
+  const dataToDisplay = selected === "templates" ? templates : components;
 
   return (
     <Container maxW="7xl" p={{ base: 5, md: 10 }}>
@@ -220,9 +270,9 @@ const EditorCard = () => {
               Templates
             </Button>
             <Button
-              onClick={() => handleSelection("component")}
-              colorScheme={selected === "component" ? "blue" : "gray"}
-              variant={selected === "component" ? "solid" : "outline"}
+              onClick={() => handleSelection("components")}
+              colorScheme={selected === "components" ? "blue" : "gray"}
+              variant={selected === "components" ? "solid" : "outline"}
               borderRadius="md"
               px={{ base: 4, md: 8 }}
               py={{ base: 2, md: 4 }}
@@ -241,13 +291,13 @@ const EditorCard = () => {
               {dataToDisplay.map((item, index) => (
                 <MarkdownPreviewCard
                   key={index}
+                  id={item._id}
                   email={item.email}
                   username={item.username}
-                  profilePic={item.profilePic}
-                  projectTitle={item.projectTitle}
+                  profilePic={item.avatar}
+                  projectTitle={item.title}
                   upvotes={item.upvotes}
                   downvotes={item.downvotes}
-                  comments={item.comments}
                   markdown={item.markdown}
                 />
               ))}
