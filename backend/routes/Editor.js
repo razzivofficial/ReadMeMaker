@@ -13,4 +13,8 @@ router.patch('/downvoteeditor',editordetails.downvoteEditor)
 
 router.get('/checkvotestatus', editordetails.checkVoteStatus);
 
+
+router.put('/updateavatar',editordetails.updateAvatar)
+router.put('/updateusername',editordetails.updateUsername)
+
 module.exports = router;
