@@ -11,6 +11,7 @@ import RegistrationModal from "../Navbar/RegistrationModal";
 import { useColorMode, Button, Box, Link } from "@chakra-ui/react";
 import downloadIcon from "../../MediaFiles/downloadIcon.png";
 import PublishModal from "../PublishModal/PublishModal";
+import { useLocation } from "react-router-dom";
 
 const help = {
   name: "help",
@@ -43,6 +44,19 @@ export default function ElementAdder() {
   );
 
   const { colorMode, toggleColorMode } = useColorMode();
+
+
+  // code for onclick adder button 
+  const location = useLocation();
+  const { markdown } = location.state || {}; // Extract the markdown state
+
+  useEffect(() => {
+    if (markdown) {
+      setValue(markdown)
+    }
+  }, [markdown]);
+
+
 
   const handleLoginOpen = () => setIsLoginOpen(true);
   const handleLoginClose = () => setIsLoginOpen(false);
@@ -174,34 +188,30 @@ export default function ElementAdder() {
   return (
     <>
       <div
-        className={`flex flex-col overflow-hidden md:flex-row mx-2 md:mx-10 mt-32 md:mt-34 ${
-          colorMode === "dark" ? "bg-gray-900" : "bg-white"
-        }`}
+        className={`flex flex-col overflow-hidden md:flex-row mx-2 md:mx-10 mt-32 md:mt-34 ${colorMode === "dark" ? "bg-gray-900" : "bg-white"
+          }`}
       >
         <div className="editorHeading">
           <span> ReadMeMaker Ultimate Editor </span>
         </div>
         <div
-          className={`md:w-1/3 p-2 md:p-4 ${
-            colorMode === "dark"
+          className={`md:w-1/3 p-2 md:p-4 ${colorMode === "dark"
               ? "bg-gray-800 border-gray-600"
               : "bg-slate-50 border-info"
-          } border rounded-3xl mb-8 md:mb-0`}
+            } border rounded-3xl mb-8 md:mb-0`}
         >
           <h4
-            className={`text-shadow text-2xl font-medium leading-tight ${
-              colorMode === "dark" ? "text-white" : "text-primary"
-            } mb-4`}
+            className={`text-shadow text-2xl font-medium leading-tight ${colorMode === "dark" ? "text-white" : "text-primary"
+              } mb-4`}
           >
             Shortcuts to Stardom: Ready-Made Readme Sections
           </h4>
           <div className="flex items-center w-full mb-4">
             <input
-              className={`border-2 w-full ${
-                colorMode === "dark"
+              className={`border-2 w-full ${colorMode === "dark"
                   ? "border-gray-600 bg-gray-700 text-white"
                   : "border-gray-300 bg-white"
-              } h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none`}
+                } h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none`}
               type="search"
               name="search"
               placeholder="Search Elements"
@@ -213,36 +223,31 @@ export default function ElementAdder() {
             {filteredElements.map((item, index) => (
               <div
                 key={item.slno}
-                className={`group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 ${
-                  colorMode === "dark"
+                className={`group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 ${colorMode === "dark"
                     ? "hover:bg-gray-700 text-white"
                     : "hover:bg-blue-100"
-                }`}
+                  }`}
               >
                 <div
-                  className={`flex h-12 w-12 items-center rounded-lg ${
-                    colorMode === "dark"
+                  className={`flex h-12 w-12 items-center rounded-lg ${colorMode === "dark"
                       ? "bg-gray-600 text-white"
                       : "bg-gray-200 text-black"
-                  } group-hover:bg-blue-200`}
+                    } group-hover:bg-blue-200`}
                 >
                   <span
-                    className={`tag w-full text-center text-2xl font-medium ${
-                      colorMode === "dark" ? "text-gray-300" : "text-gray-700"
-                    } group-hover:text-blue-900`}
+                    className={`tag w-full text-center text-2xl font-medium ${colorMode === "dark" ? "text-gray-300" : "text-gray-700"
+                      } group-hover:text-blue-900`}
                   >
                     {item.slno}
                   </span>
                 </div>
                 <div
-                  className={`flex flex-col items-start justify-between font-light ${
-                    colorMode === "dark" ? "text-gray-400" : "text-gray-600"
-                  }`}
+                  className={`flex flex-col items-start justify-between font-light ${colorMode === "dark" ? "text-gray-400" : "text-gray-600"
+                    }`}
                 >
                   <p
-                    className={`text-xl font-medium ${
-                      colorMode === "dark" ? "text-white" : "text-black"
-                    }`}
+                    className={`text-xl font-medium ${colorMode === "dark" ? "text-white" : "text-black"
+                      }`}
                   >
                     {item.title}
                   </p>
@@ -250,11 +255,10 @@ export default function ElementAdder() {
                 </div>
                 <div className="flex-grow"></div>
                 <button
-                  className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                    isElementSelected(index)
+                  className={`flex h-8 w-8 items-center justify-center rounded-full ${isElementSelected(index)
                       ? "bg-blue-600 hover:bg-blue-500 text-white"
                       : "bg-blue-200 hover:bg-blue-300"
-                  }`}
+                    }`}
                   onClick={() => toggleAddRemove(index, item.code)}
                 >
                   {isElementSelected(index) ? (
@@ -269,11 +273,10 @@ export default function ElementAdder() {
         </div>
         {/* Right Panel - Markdown Editor */}
         <div
-          className={`md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 ${
-            colorMode === "dark"
+          className={`md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 ${colorMode === "dark"
               ? "bg-gray-800 border-gray-600"
               : "bg-white border-gray-300"
-          } border rounded-3xl relative`}
+            } border rounded-3xl relative`}
         >
           <div className="flex justify-between items-center mb-2 mt-8">
             <div className=" PubBtn absolute top-2 right-24">
@@ -281,26 +284,26 @@ export default function ElementAdder() {
                 {/* The button that opens the modal */}
                 {localStorage.getItem('authToken') && (
                   <Button
-                  onClick={() => setIsModalOpen(true)}
-                  colorScheme="blue"
-                  variant="outline"
-                  leftIcon={
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      height="24"
-                      fill="currentColor"
-                    >
-                      <path fill="none" d="M0 0h24v24H0z"></path>
-                      <path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
-                    </svg>
-                  }
-                >
-                  Publish
-                </Button>
+                    onClick={() => setIsModalOpen(true)}
+                    colorScheme="blue"
+                    variant="outline"
+                    leftIcon={
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                      >
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                        <path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path>
+                      </svg>
+                    }
+                  >
+                    Publish
+                  </Button>
                 )}
-                
+
 
                 {/* Modal Component */}
                 <PublishModal
@@ -356,11 +359,10 @@ export default function ElementAdder() {
           <div className="flex justify-center items-center h-20">
             <Link onClick={goTempCompoPage}>
               <button
-                className={`border hover:scale-95 duration-300 relative group cursor-pointer ${
-                  colorMode === "dark"
+                className={`border hover:scale-95 duration-300 relative group cursor-pointer ${colorMode === "dark"
                     ? "text-sky-50 bg-sky-700 border-sky-600"
                     : "text-sky-50 bg-sky-200 border-sky-300"
-                } overflow-hidden h-16 w-64 rounded-md p-2 flex justify-center items-center font-extrabold text-lg font-sans`}
+                  } overflow-hidden h-16 w-64 rounded-md p-2 flex justify-center items-center font-extrabold text-lg font-sans`}
               >
                 <div className="absolute right-32 -top-4 group-hover:top-1 group-hover:right-2 z-10 w-40 h-40 rounded-full group-hover:scale-150 duration-500 bg-sky-900"></div>
                 <div className="absolute right-2 -top-4 group-hover:top-1 group-hover:right-2 z-10 w-32 h-32 rounded-full group-hover:scale-150 duration-500 bg-sky-800"></div>
