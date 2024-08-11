@@ -279,7 +279,8 @@ export default function ElementAdder() {
             <div className=" PubBtn absolute top-2 right-24">
               <div>
                 {/* The button that opens the modal */}
-                <Button
+                {localStorage.getItem('authToken') && (
+                  <Button
                   onClick={() => setIsModalOpen(true)}
                   colorScheme="blue"
                   variant="outline"
@@ -298,6 +299,8 @@ export default function ElementAdder() {
                 >
                   Publish
                 </Button>
+                )}
+                
 
                 {/* Modal Component */}
                 <PublishModal

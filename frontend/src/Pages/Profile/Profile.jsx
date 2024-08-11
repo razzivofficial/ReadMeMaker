@@ -29,6 +29,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import EditDescriptionModal from "./EditDescriptionModal";
 import AvatarSelectionModal from "./AvatarSelectionModal";
+import MyProjectsSection from "./MyProjects";
 import avatar1 from "../../MediaFiles/avatar1.jpg";
 import avatar2 from "../../MediaFiles/avatar2.jpg";
 import avatar3 from "../../MediaFiles/avatar3.jpg";
@@ -446,7 +447,7 @@ const ProfilePage = () => {
                         )}
                       </FormLabel>
                       <Input
-                        value={name || ''}  // Ensure value is always a string
+                        value={name || ""} // Ensure value is always a string
                         isReadOnly={!isEditing1}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Enter your name"
@@ -460,14 +461,14 @@ const ProfilePage = () => {
                             handleUpdate("name");
                             setIsEditing1(false);
                           }}
-                          isDisabled={(name || '').replace(/\s/g, '').length < 6} // Handle undefined or null name
+                          isDisabled={
+                            (name || "").replace(/\s/g, "").length < 6
+                          } // Handle undefined or null name
                         >
                           Update Name
                         </Button>
                       )}
                     </FormControl>
-
-
 
                     <FormControl id="username">
                       <FormLabel fontWeight="bold">
@@ -482,7 +483,7 @@ const ProfilePage = () => {
                         )}
                       </FormLabel>
                       <Input
-                        value={username || ''}  // Ensure value is always a string
+                        value={username || ""} // Ensure value is always a string
                         isReadOnly={!isEditing}
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="Enter your username"
@@ -496,13 +497,14 @@ const ProfilePage = () => {
                             handleUpdate("username");
                             setIsEditing(false);
                           }}
-                          isDisabled={(username || '').replace(/\s/g, '').length < 6} // Handle undefined or null username
+                          isDisabled={
+                            (username || "").replace(/\s/g, "").length < 6
+                          } // Handle undefined or null username
                         >
                           Update Username
                         </Button>
                       )}
                     </FormControl>
-
 
                     <FormControl id="email">
                       <FormLabel fontWeight="bold">Email</FormLabel>
@@ -598,7 +600,7 @@ const ProfilePage = () => {
                       Change Password
                     </Button>
                   </MotionBox>
-
+                  <MyProjectsSection />
                   <MotionBox
                     p={8}
                     bg={motionBoxBg3}
@@ -623,7 +625,6 @@ const ProfilePage = () => {
                       Delete My Account
                     </Button>
                   </MotionBox>
-
                   <AlertDialog
                     isOpen={isDeleteDialogOpen}
                     leastDestructiveRef={cancelRef}

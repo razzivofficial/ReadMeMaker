@@ -236,8 +236,16 @@ function Navbar() {
       onClose();
       localStorage.setItem("userEmail", logincredentials.email);
       localStorage.setItem("authToken", json.authToken);
+<<<<<<< HEAD
       localStorage.setItem("userId", json.userId);
       console.log(json.userId);
+=======
+      localStorage.setItem("userId",json.userId)
+      if (window.location.pathname === '/editor') {
+        window.location.reload();
+      }
+      
+>>>>>>> 4ed0e729a14512ab72eafb22613056f275be7ff3
       const email = localStorage.getItem("userEmail");
       if (email) {
         axios
