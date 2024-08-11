@@ -7,95 +7,76 @@ import {
   Button,
   useColorModeValue,
   HStack,
+  IconButton,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 
 const MotionBox = motion(Box);
 
-// Example data
-const exampleProjects = [
-  { id: 1, title: "Project One", description: "Description of Project One" },
-  { id: 2, title: "Project Two", description: "Description of Project Two" },
+// Example data with like and dislike counts
+const initialProjects = [
+  {
+    id: 1,
+    title: "Project One",
+    description: "Description of Project One",
+    likes: 0,
+    dislikes: 0,
+  },
+  {
+    id: 2,
+    title: "Project Two",
+    description: "Description of Project Two",
+    likes: 0,
+    dislikes: 0,
+  },
   {
     id: 3,
     title: "Project Three",
     description: "Description of Project Three",
+    likes: 0,
+    dislikes: 0,
   },
-  { id: 4, title: "Project Four", description: "Description of Project Four" },
-  { id: 5, title: "Project Five", description: "Description of Project Five" },
-  { id: 6, title: "Project Six", description: "Description of Project Six" },
+  {
+    id: 4,
+    title: "Project Four",
+    description: "Description of Project Four",
+    likes: 0,
+    dislikes: 0,
+  },
+  {
+    id: 5,
+    title: "Project Five",
+    description: "Description of Project Five",
+    likes: 0,
+    dislikes: 0,
+  },
+  {
+    id: 6,
+    title: "Project Five",
+    description: "Description of Project Five",
+    likes: 0,
+    dislikes: 0,
+  },
   {
     id: 7,
-    title: "Project Seven",
-    description: "Description of Project Seven",
+    title: "Project Five",
+    description: "Description of Project Five",
+    likes: 0,
+    dislikes: 0,
   },
-  {
-    id: 8,
-    title: "Project Eight",
-    description: "Description of Project Eight",
-  },
-  { id: 9, title: "Project Nine", description: "Description of Project Nine" },
-  { id: 10, title: "Project Ten", description: "Description of Project Ten" },
-  {
-    id: 11,
-    title: "Project Eleven",
-    description: "Description of Project Eleven",
-  },
-  {
-    id: 12,
-    title: "Project Twelve",
-    description: "Description of Project Twelve",
-  },
-  {
-    id: 13,
-    title: "Project Thirteen",
-    description: "Description of Project Thirteen",
-  },
-  {
-    id: 14,
-    title: "Project Fourteen",
-    description: "Description of Project Fourteen",
-  },
-  {
-    id: 15,
-    title: "Project Fifteen",
-    description: "Description of Project Fifteen",
-  },
-  {
-    id: 16,
-    title: "Project Sixteen",
-    description: "Description of Project Sixteen",
-  },
-  {
-    id: 17,
-    title: "Project Seventeen",
-    description: "Description of Project Seventeen",
-  },
-  {
-    id: 18,
-    title: "Project Eighteen",
-    description: "Description of Project Eighteen",
-  },
-  {
-    id: 19,
-    title: "Project Nineteen",
-    description: "Description of Project Nineteen",
-  },
-  {
-    id: 20,
-    title: "Project Twenty",
-    description: "Description of Project Twenty",
-  },
+  // Add more projects as needed...
 ];
 
 const ITEMS_PER_PAGE = 5;
 
 const MyProjectsSection = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [projects, setProjects] = useState(initialProjects);
 
-  const totalPages = Math.ceil(exampleProjects.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(projects.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentProjects = exampleProjects.slice(
+  const currentProjects = projects.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
@@ -104,17 +85,30 @@ const MyProjectsSection = () => {
     setCurrentPage(page);
   };
 
+  const handleLike = (id) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.id === id ? { ...project, likes: project.likes + 1 } : project
+      )
+    );
+  };
+
+  const handleDislike = (id) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.id === id
+          ? { ...project, dislikes: project.dislikes + 1 }
+          : project
+      )
+    );
+  };
+
   const motionBoxBg = useColorModeValue("gray.50", "gray.700");
   const boxBg = useColorModeValue("white", "gray.800");
   const textColor = useColorModeValue("gray.700", "gray.300");
 
   return (
-    <Box
-      width="100%"
-      minHeight="100vh"
-    //   mt={{ base: "1%", md: "0%" }}
-      px={{ base: 4, md: 0 }}
-    >
+    <Box width="100%" minHeight="100vh" px={{ base: 4, md: 0 }}>
       <VStack spacing={8}>
         <MotionBox
           p={8}
@@ -142,11 +136,34 @@ const MyProjectsSection = () => {
                 borderRadius="md"
                 shadow="md"
                 mb={4}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                <Heading size="md" mb={2}>
-                  {project.title}
-                </Heading>
-                <Text>{project.description}</Text>
+                <Box flex="1">
+                  <Heading size="md" mb={2}>
+                    {project.title}
+                  </Heading>
+                  <Text>{project.description}</Text>
+                </Box>
+                <HStack spacing={4} ml={4}>
+                  <HStack spacing={1} align="center">
+                    <IconButton
+                      aria-label="Like"
+                      icon={<FaThumbsUp />}
+                      onClick={() => handleLike(project.id)}
+                    />
+                    <Text>{project.likes}</Text>
+                  </HStack>
+                  <HStack spacing={1} align="center">
+                    <IconButton
+                      aria-label="Dislike"
+                      icon={<FaThumbsDown />}
+                      onClick={() => handleDislike(project.id)}
+                    />
+                    <Text>{project.dislikes}</Text>
+                  </HStack>
+                </HStack>
               </Box>
             ))
           ) : (
