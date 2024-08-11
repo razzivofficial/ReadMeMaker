@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { encodeEmail } from '../../utils/emailUtils'
 import {
   Box,
@@ -106,7 +106,7 @@ const MarkdownPreviewCard = ({
         setIsLoading(false);
       }
     };
-  
+
     checkVoteStatus();
   }, [id, userId]);
 
@@ -119,7 +119,7 @@ const MarkdownPreviewCard = ({
         },
         body: JSON.stringify({ userId, editorId: id }),
       });
-  
+
       const result = await response.json();
       if (response.ok) {
         if (result.message === 'Upvote removed') {
@@ -136,7 +136,7 @@ const MarkdownPreviewCard = ({
       console.error('Error upvoting:', error);
     }
   };
-  
+
   const handleDownvote = async () => {
     try {
       const response = await fetch(`https://readmemaker-backend.vercel.app/editor/downvoteeditor`, {
@@ -146,7 +146,7 @@ const MarkdownPreviewCard = ({
         },
         body: JSON.stringify({ userId, editorId: id }),
       });
-  
+
       const result = await response.json();
       if (response.ok) {
         if (result.message === 'Downvote removed') {
@@ -314,6 +314,12 @@ const EditorCard = () => {
 
   const dataToDisplay = selected === "templates" ? templates : components;
 
+  const sortedData = [...dataToDisplay].sort((a, b) => {
+    const totalVotesA = a.upvotes - a.downvotes;
+    const totalVotesB = b.upvotes - b.downvotes;
+    return totalVotesB - totalVotesA; // Descending order
+  });
+
   return (
     <Container maxW="7xl" p={{ base: 5, md: 10 }}>
       <Center>
@@ -373,7 +379,7 @@ const EditorCard = () => {
             <TempCompoLoader />
           ) : (
             <SimpleGrid columns={columns} spacing={4}>
-              {dataToDisplay.map((item, index) => (
+              {sortedData.map((item, index) => (
                 <MarkdownPreviewCard
                   key={index}
                   id={item._id}
