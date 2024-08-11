@@ -227,7 +227,7 @@ const getUserDetailsByEmail = async (req, res) => {
         }
 
         // Retrieve all user details except the password
-        const user = await User.findOne({ email }, 'name username description');
+        const user = await User.findOne({ email }, 'name username description avatar');
         if (!user) {
             return res.status(400).json({ error: "User not found" });
         }
