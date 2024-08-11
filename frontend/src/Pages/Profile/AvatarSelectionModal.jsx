@@ -81,7 +81,6 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
           isClosable: true,
         });
         onSelectAvatar(selectedAvatar.avatar);
-        navigate(`/profile/${email}`);
         onClose();
       } else {
         toast({
