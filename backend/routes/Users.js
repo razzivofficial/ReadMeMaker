@@ -15,4 +15,8 @@ router.post('/updateavatar',userdetails.updateAvatar)
 router.post('/getavatar',userdetails.getavatarbyemail)
 router.delete('/deleteaccount/:email',userdetails.deleteAccount)
 
+router.put('/follow/:userId/:followedUserId',userdetails.followUser)
+router.put('/removefollow/:userId/:followedUserId',userdetails.removeFollowedUser)
+router.get('/getfollowed/:userId',userdetails.getFollowedUsers)
+
 module.exports = router;
