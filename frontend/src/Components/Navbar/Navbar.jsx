@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link as Navlink, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { encodeEmail } from '../../utils/emailUtils'
+import { encodeEmail } from "../../utils/emailUtils";
 import {
   Box,
   Flex,
@@ -320,7 +320,6 @@ function Navbar() {
   const hashedmail = encodeEmail(email);
   // console.log(hashedmail);
 
-
   return (
     <Box
       px={4}
@@ -587,11 +586,13 @@ function Navbar() {
               <>
                 <Text
                   py={"4"}
-                  color="gray.700"
+                  color={colorMode === "dark" ? "white" : "gray.700"}
                   textAlign="center"
+                  cursor="pointer"
+                  _hover={{
+                    color: colorMode === "dark" ? "gray.300" : "gray.500",
+                  }}
                   justify="center"
-                  cursor={"pointer"}
-                  _hover={{ color: "gray.400" }}
                 >
                   Forgot password?
                 </Text>
@@ -600,12 +601,13 @@ function Navbar() {
               <>
                 <Text
                   py={"4"}
-                  color="gray.700"
+                  color={colorMode === "dark" ? "white" : "gray.700"}
                   textAlign="center"
+                  cursor="pointer"
+                  _hover={{
+                    color: colorMode === "dark" ? "gray.300" : "gray.500",
+                  }}
                   justify="center"
-                  cursor={"pointer"}
-                  _hover={{ color: "gray.400" }}
-                  display={"none"}
                 >
                   Forgot password?
                 </Text>
@@ -674,7 +676,7 @@ function Navbar() {
                 >
                   Already Registered?
                   <Button
-                    color={"red.400"}
+                    color={colorMode === "dark" ? "white" : "gray.700"}
                     _hover={{ color: "red.700" }}
                     variant="none"
                     onClick={() => setChangeMode(!changeMode)}
@@ -685,7 +687,7 @@ function Navbar() {
               ) : (
                 <Text
                   py={"3"}
-                  color="gray.700"
+                  color={colorMode === "dark" ? "white" : "gray.700"}
                   textAlign="center"
                   justify="center"
                 >
@@ -722,7 +724,7 @@ function Navbar() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
+      {/* Modal section ends */}
       {isOpen ? (
         <Box pb={4} display={["inherit", "inherit", "none"]}>
           <Stack as="nav" spacing={2}>

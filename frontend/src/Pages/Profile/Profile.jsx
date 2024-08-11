@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
-import {decodeEmail} from '../../utils/emailUtils'
+import { decodeEmail } from "../../utils/emailUtils";
 import {
   Box,
   VStack,
@@ -29,6 +29,7 @@ import { EditIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import EditDescriptionModal from "./EditDescriptionModal";
 import AvatarSelectionModal from "./AvatarSelectionModal";
+import MyProjectsSection from "./MyProjects";
 import avatar1 from "../../MediaFiles/avatar1.jpg";
 import avatar2 from "../../MediaFiles/avatar2.jpg";
 import avatar3 from "../../MediaFiles/avatar3.jpg";
@@ -94,8 +95,7 @@ const ProfilePage = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const cancelRef = useRef();
 
-
-  useremail = decodeEmail(useremail)
+  useremail = decodeEmail(useremail);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -222,10 +222,10 @@ const ProfilePage = () => {
   };
 
   const handleChangePassword = async () => {
-    if(currentPassword === newPassword){
-      toast.warning("new password and current password do not same")
+    if (currentPassword === newPassword) {
+      toast.warning("new password and current password do not same");
     }
-     if (newPassword === retypePassword) {
+    if (newPassword === retypePassword) {
       try {
         const response = await fetch(
           "https://readmemaker-backend.vercel.app/users/updatePassword",
@@ -262,7 +262,7 @@ const ProfilePage = () => {
   const handleUpdate = async (field) => {
     if (field === "username") {
       let finalUsername = username;
-    
+
       if (username === "") {
         finalUsername = await checkAndGenerateUsername(email, username, name);
         if (!finalUsername) {
@@ -270,7 +270,7 @@ const ProfilePage = () => {
           return;
         }
       }
-    
+
       try {
         const response = await fetch(
           `https://readmemaker-backend.vercel.app/users/updateUsername/${email}`,
@@ -287,9 +287,9 @@ const ProfilePage = () => {
           setIsEditing(false);
         } else {
           toast.error(result.error);
-          return;  // Exit if the first update fails
+          return; // Exit if the first update fails
         }
-    
+
         // Handle the second fetch call for updating the username in the Editor model
         const editorResponse = await fetch(
           `https://readmemaker-backend.vercel.app/editor/updateusername`,
@@ -309,7 +309,7 @@ const ProfilePage = () => {
         toast.error("Failed to update Username");
       }
     }
-    
+
     if (field === "name") {
       try {
         const response = await fetch(
@@ -446,7 +446,7 @@ const ProfilePage = () => {
                         )}
                       </FormLabel>
                       <Input
-                        value={name || ''}  // Ensure value is always a string
+                        value={name || ""} // Ensure value is always a string
                         isReadOnly={!isEditing1}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Enter your name"
@@ -460,14 +460,14 @@ const ProfilePage = () => {
                             handleUpdate("name");
                             setIsEditing1(false);
                           }}
-                          isDisabled={(name || '').replace(/\s/g, '').length < 6} // Handle undefined or null name
+                          isDisabled={
+                            (name || "").replace(/\s/g, "").length < 6
+                          } // Handle undefined or null name
                         >
                           Update Name
                         </Button>
                       )}
                     </FormControl>
-
-
 
                     <FormControl id="username">
                       <FormLabel fontWeight="bold">
@@ -482,7 +482,7 @@ const ProfilePage = () => {
                         )}
                       </FormLabel>
                       <Input
-                        value={username || ''}  // Ensure value is always a string
+                        value={username || ""} // Ensure value is always a string
                         isReadOnly={!isEditing}
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="Enter your username"
@@ -496,13 +496,14 @@ const ProfilePage = () => {
                             handleUpdate("username");
                             setIsEditing(false);
                           }}
-                          isDisabled={(username || '').replace(/\s/g, '').length < 6} // Handle undefined or null username
+                          isDisabled={
+                            (username || "").replace(/\s/g, "").length < 6
+                          } // Handle undefined or null username
                         >
                           Update Username
                         </Button>
                       )}
                     </FormControl>
-
 
                     <FormControl id="email">
                       <FormLabel fontWeight="bold">Email</FormLabel>
@@ -598,7 +599,7 @@ const ProfilePage = () => {
                       Change Password
                     </Button>
                   </MotionBox>
-
+                    <MyProjectsSection />
                   <MotionBox
                     p={8}
                     bg={motionBoxBg3}
@@ -623,7 +624,6 @@ const ProfilePage = () => {
                       Delete My Account
                     </Button>
                   </MotionBox>
-
                   <AlertDialog
                     isOpen={isDeleteDialogOpen}
                     leastDestructiveRef={cancelRef}
