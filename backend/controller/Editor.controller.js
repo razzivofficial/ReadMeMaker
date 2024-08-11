@@ -29,26 +29,28 @@ const fetcheditors = async (req, res) => {
 }
 
 const fetchbyemail = async (req, res) => {
-    try {
-        const { email } = req.params;
-        const editor = await Editor.findOne({ email: email });
-        
-        if (!editor) {
-            return res.status(404).json({
-                message: "Editor not found",
-            });
-        }
+  try {
+      const { email } = req.params;
+      
+      // Use find to get multiple documents with the given email
+      const editors = await Editor.find({ email: email });
+      
+      if (editors.length === 0) {
+          return res.status(404).json({
+              message: "No editors found with this email",
+          });
+      }
 
-        res.status(200).json({
-            message: "Editor fetched successfully",
-            editor: editor,
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to fetch editor data",
-            error: error.message,
-        });
-    }
+      res.status(200).json({
+          message: "Editors fetched successfully",
+          editors: editors,
+      });
+  } catch (error) {
+      res.status(500).json({
+          message: "Failed to fetch editor data",
+          error: error.message,
+      });
+  }
 };
 
 
