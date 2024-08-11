@@ -23,7 +23,9 @@ const editorSchema = mongoose.Schema({
     description:{
         type:String,
     },
-    
+    tag:{
+        type:String,
+    },
     upvotes:{
         type:Number,
         default:0,

@@ -1,4 +1,3 @@
-// ProjectModal.js
 import React, { useState } from "react";
 import {
   Modal,
@@ -17,12 +16,15 @@ import {
   Tag,
   TagLabel,
   TagCloseButton,
+  RadioGroup,
+  Radio,
 } from "@chakra-ui/react";
 
 const PublishModal = ({ isOpen, onClose }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState([]);
+  const [type, setType] = useState("component"); // State for the selected type
 
   const handleTagInput = (e) => {
     if ((e.key === "Enter" || e.key === " ") && tags.length < 4) {
@@ -42,6 +44,7 @@ const PublishModal = ({ isOpen, onClose }) => {
     console.log("Project Title:", title);
     console.log("Description:", description);
     console.log("Tags:", tags);
+    console.log("Type:", type); // Log the selected type
     onClose();
   };
 
@@ -101,6 +104,23 @@ const PublishModal = ({ isOpen, onClose }) => {
                 />
               )}
             </Box>
+          </FormControl>
+          <FormControl mb={4}>
+            <FormLabel>Type</FormLabel>
+            <RadioGroup value={type} onChange={setType}>
+              <Box d="flex" flexDirection="column">
+                <Box mb={2}> {/* Add space between radio buttons */}
+                  <Radio value="component">
+                    Component
+                  </Radio>
+                </Box>
+                <Box>
+                  <Radio value="template">
+                    Template
+                  </Radio>
+                </Box>
+              </Box>
+            </RadioGroup>
           </FormControl>
         </ModalBody>
         <ModalFooter>
