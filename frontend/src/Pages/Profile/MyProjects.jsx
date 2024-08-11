@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import {
   Box,
   VStack,
@@ -21,7 +22,7 @@ const MyProjectsSection = ({ email }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [voteStatus, setVoteStatus] = useState({});
-
+  const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
 
   // Fetch data from the API
@@ -192,6 +193,12 @@ const MyProjectsSection = ({ email }) => {
       console.error("Error downvoting:", error);
     }
   };
+  
+  const handleTitleClick = (project) => {
+    navigate("/editor", {
+      state: { markdown: project.markdown },
+    });
+  };
 
   const motionBoxBg = useColorModeValue("gray.50", "gray.700");
   const boxBg = useColorModeValue("white", "gray.800");
@@ -233,10 +240,16 @@ const MyProjectsSection = ({ email }) => {
               >
                 {/* <Box flex="1" mb={{ base: 4, md: 0 }}> */}
                 <Box flex="1">
-                  <Heading size="md" mb={2}>
+                  <Heading
+                   size="md" 
+                  mb={2}
+                  cursor='pointer'
+                  onClick={() => handleTitleClick(project)}
+                  >
                     {project.title}
                   </Heading>
-                  <Text m={1}>{project.description}</Text>
+                  <Text m={1} cursor='pointer'
+                  onClick={() => handleTitleClick(project)}>{project.description}</Text>
                 </Box>
                 <HStack
                   spacing={{ base: 2, md: 4 }} // Adjust spacing for different screen sizes
