@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
 import { decodeEmail } from "../../utils/emailUtils";
+import FollowedUsersModal from './FollowedUsersModal';
 import {
   Box,
   VStack,
@@ -94,6 +95,16 @@ const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const cancelRef = useRef();
+
+  const {
+    isOpen: isFollowedUsersModalOpen,
+    onOpen: openFollowedUsersModal,
+    onClose: closeFollowedUsersModal,
+  } = useDisclosure();
+
+  const userId = localStorage.getItem("userId");
+
+  const [followedUserId, setFollowedId] = useState("")
 
   useremail = decodeEmail(useremail);
 
@@ -204,6 +215,7 @@ const ProfilePage = () => {
           `https://readmemaker-backend.vercel.app/users/getdetailbyemail/${email}`
         )
         .then((response) => {
+          setFollowedId(response.data._id)
           setName(response.data.name);
           setUsername(response.data.username);
           setDescription(response.data.description);
@@ -213,7 +225,6 @@ const ProfilePage = () => {
         });
     }
   }, [email]);
-
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
@@ -361,6 +372,38 @@ const ProfilePage = () => {
     }, 100);
   }, []);
 
+  const [isFollowed, setIsFollowed] = useState(false);
+
+  useEffect(() => {
+    const checkFollowStatus = async () => {
+      try {
+        const response = await fetch(`https://readmemaker-backend.vercel.app/users/getfollowed/${userId}`);
+        const followedUsers = await response.json();
+        const isFollowing = followedUsers.some(user => user._id === followedUserId);
+        setIsFollowed(isFollowing);
+      } catch (error) {
+        console.error('Error checking follow status:', error);
+      }
+    };
+
+    checkFollowStatus();
+  }, [userId, followedUserId]);
+
+
+  const handleFollowToggle = async () => {
+    try {
+      const url = isFollowed
+        ? `https://readmemaker-backend.vercel.app/users/removefollow/${userId}/${followedUserId}`
+        : `https://readmemaker-backend.vercel.app/users/follow/${userId}/${followedUserId}`;
+      await fetch(url, { method: 'PUT' });
+
+      setIsFollowed(!isFollowed);
+    } catch (error) {
+      console.error('Error toggling follow status:', error);
+    }
+  };
+
+
   const motionBoxBg1 = useColorModeValue("blue.50", "blue.800");
   const motionBoxBg2 = useColorModeValue("teal.50", "teal.800");
   const motionBoxBg3 = useColorModeValue("red.50", "red.800");
@@ -426,6 +469,28 @@ const ProfilePage = () => {
                     <Text fontSize="lg" fontWeight="bold" textAlign="center">
                       {name}
                     </Text>
+                    <Button
+                      mt={4}
+                      colorScheme={isFollowed ? 'red' : 'blue'}
+                      onClick={handleFollowToggle}
+                    >
+                      {isFollowed ? 'Unfollow' : 'Follow'}
+                    </Button>
+                    {localStorage.getItem('authToken') && (
+                      <Button
+                      mt={4}
+                      ml={2}
+                      colorScheme="teal"
+                      onClick={openFollowedUsersModal}
+                    >
+                      View Followed Users
+                    </Button>
+                    )}
+                    <FollowedUsersModal
+                      userId={userId}
+                      isOpen={isFollowedUsersModalOpen}
+                      onClose={closeFollowedUsersModal}
+                    />
                     <AvatarSelectionModal
                       isOpen={isModalOpen}
                       onClose={() => setIsModalOpen(false)}
@@ -542,7 +607,7 @@ const ProfilePage = () => {
                   </VStack>
                 </HStack>
               </MotionBox>
-              <MyProjectsSection email={useremail}/>
+              <MyProjectsSection email={useremail} />
               {localmail === email && (
                 <>
                   <MotionBox
