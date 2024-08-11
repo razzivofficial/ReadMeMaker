@@ -299,6 +299,50 @@ const deleteAccount = async (req, res) => {
     }
 };
 
+const followUser = async (req, res) => {
+    try {
+        const { userId, followedUserId } = req.params;
+        await User.findByIdAndUpdate(userId, {
+            $addToSet: { followedIds: followedUserId } // Ensure the ID is added only once
+        });
+        res.status(200).json({ message: 'User followed successfully' });
+    } catch (error) {
+        console.error('Error following user:', error);
+        res.status(500).json({ message: 'Error following user', error });
+    }
+};
+
+const removeFollowedUser = async (req, res) => {
+    try {
+        const { userId, followedUserId } = req.params;
+        await User.findByIdAndUpdate(userId, {
+            $pull: { followedIds: followedUserId } // Remove the ID from the array
+        });
+        res.status(200).json({ message: 'User unfollowed successfully' });
+    } catch (error) {
+        console.error('Error unfollowing user:', error);
+        res.status(500).json({ message: 'Error unfollowing user', error });
+    }
+};
+
+const getFollowedUsers = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId).populate({
+            path: 'followedIds',
+            select: 'name username' // Only select the name and username fields
+        });
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+        res.status(200).json(user.followedIds);
+    } catch (error) {
+        console.error('Error fetching followed users:', error);
+        res.status(500).json({ message: 'Error fetching followed users', error });
+    }
+};
+
 module.exports = {
     createuser,
     loginuser,
@@ -310,5 +354,8 @@ module.exports = {
     getUserDetailsByEmail,
     updateAvatar,
     getavatarbyemail,
-    deleteAccount
+    deleteAccount,
+    followUser,
+    removeFollowedUser,
+    getFollowedUsers
 };

@@ -34,6 +34,10 @@ const userSchema = mongoose.Schema({
     downvoteIds: [{
         type: mongoose.Schema.Types.ObjectId,  // Use ObjectId for referencing editors
         ref: 'Editor'  // Reference to the Editor model
+    }],
+    followedIds: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'  // Reference to the User model
     }]
 });
 
