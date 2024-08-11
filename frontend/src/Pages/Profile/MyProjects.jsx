@@ -16,19 +16,21 @@ const MotionBox = motion(Box);
 
 const ITEMS_PER_PAGE = 5;
 
-const MyProjectsSection = ({email}) => {
+const MyProjectsSection = ({ email }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [voteStatus, setVoteStatus] = useState({});
 
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem("userId");
 
   // Fetch data from the API
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch(`https://readmemaker-backend.vercel.app/editor/geteditorbyemail/${email}`);
+        const response = await fetch(
+          `https://readmemaker-backend.vercel.app/editor/geteditorbyemail/${email}`
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -37,12 +39,12 @@ const MyProjectsSection = ({email}) => {
 
         // Initialize voteStatus for each project
         const initialVoteStatus = {};
-        data.editors.forEach(project => {
+        data.editors.forEach((project) => {
           initialVoteStatus[project._id] = {
             upvoteClicked: false,
             downvoteClicked: false,
             upvotes: project.upvotes,
-            downvotes: project.downvotes
+            downvotes: project.downvotes,
           };
         });
         setVoteStatus(initialVoteStatus);
@@ -62,19 +64,21 @@ const MyProjectsSection = ({email}) => {
     const checkVoteStatus = async () => {
       try {
         for (const project of projects) {
-          const response = await fetch(`https://readmemaker-backend.vercel.app/editor/checkvotestatus?userId=${userId}&editorId=${project._id}`);
+          const response = await fetch(
+            `https://readmemaker-backend.vercel.app/editor/checkvotestatus?userId=${userId}&editorId=${project._id}`
+          );
           const result = await response.json();
-          setVoteStatus(prevState => ({
+          setVoteStatus((prevState) => ({
             ...prevState,
             [project._id]: {
               ...prevState[project._id],
               upvoteClicked: result.hasUpvoted,
-              downvoteClicked: result.hasDownvoted
-            }
+              downvoteClicked: result.hasDownvoted,
+            },
           }));
         }
       } catch (error) {
-        console.error('Error checking vote status:', error);
+        console.error("Error checking vote status:", error);
       } finally {
         setLoading(false);
       }
@@ -94,7 +98,10 @@ const MyProjectsSection = ({email}) => {
 
   const totalPages = Math.ceil(sortedProjects.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentProjects = sortedProjects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentProjects = sortedProjects.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -102,63 +109,87 @@ const MyProjectsSection = ({email}) => {
 
   const handleUpvote = async (projectId) => {
     try {
-      const response = await fetch(`https://readmemaker-backend.vercel.app/editor/upvoteeditor`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, editorId: projectId }),
-      });
+      const response = await fetch(
+        `https://readmemaker-backend.vercel.app/editor/upvoteeditor`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, editorId: projectId }),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
-        setVoteStatus(prevState => {
+        setVoteStatus((prevState) => {
           const project = prevState[projectId];
           return {
             ...prevState,
             [projectId]: {
               ...project,
-              upvoteClicked: result.message === 'Upvote recorded',
-              downvoteClicked: result.message === 'Upvote recorded' ? false : project.downvoteClicked,
-              upvotes: result.message === 'Upvote recorded' ? project.upvotes + 1 : project.upvotes - 1,
-              downvotes: project.downvoteClicked && result.message === 'Upvote recorded' ? project.downvotes - 1 : project.downvotes
-            }
+              upvoteClicked: result.message === "Upvote recorded",
+              downvoteClicked:
+                result.message === "Upvote recorded"
+                  ? false
+                  : project.downvoteClicked,
+              upvotes:
+                result.message === "Upvote recorded"
+                  ? project.upvotes + 1
+                  : project.upvotes - 1,
+              downvotes:
+                project.downvoteClicked && result.message === "Upvote recorded"
+                  ? project.downvotes - 1
+                  : project.downvotes,
+            },
           };
         });
       }
     } catch (error) {
-      console.error('Error upvoting:', error);
+      console.error("Error upvoting:", error);
     }
   };
 
   const handleDownvote = async (projectId) => {
     try {
-      const response = await fetch(`https://readmemaker-backend.vercel.app/editor/downvoteeditor`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, editorId: projectId }),
-      });
+      const response = await fetch(
+        `https://readmemaker-backend.vercel.app/editor/downvoteeditor`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, editorId: projectId }),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
-        setVoteStatus(prevState => {
+        setVoteStatus((prevState) => {
           const project = prevState[projectId];
           return {
             ...prevState,
             [projectId]: {
               ...project,
-              downvoteClicked: result.message === 'Downvote recorded',
-              upvoteClicked: result.message === 'Downvote recorded' ? false : project.upvoteClicked,
-              downvotes: result.message === 'Downvote recorded' ? project.downvotes + 1 : project.downvotes - 1,
-              upvotes: project.upvoteClicked && result.message === 'Downvote recorded' ? project.upvotes - 1 : project.upvotes
-            }
+              downvoteClicked: result.message === "Downvote recorded",
+              upvoteClicked:
+                result.message === "Downvote recorded"
+                  ? false
+                  : project.upvoteClicked,
+              downvotes:
+                result.message === "Downvote recorded"
+                  ? project.downvotes + 1
+                  : project.downvotes - 1,
+              upvotes:
+                project.upvoteClicked && result.message === "Downvote recorded"
+                  ? project.upvotes - 1
+                  : project.upvotes,
+            },
           };
         });
       }
     } catch (error) {
-      console.error('Error downvoting:', error);
+      console.error("Error downvoting:", error);
     }
   };
 
@@ -167,7 +198,7 @@ const MyProjectsSection = ({email}) => {
   const textColor = useColorModeValue("gray.700", "gray.300");
 
   return (
-    <Box width="100%" minHeight="100vh" px={{ base: 4, md: 0 }}>
+    <Box width="100%" px={{ base: 4, md: 0 }}>
       <VStack spacing={8}>
         <MotionBox
           p={8}
@@ -196,41 +227,58 @@ const MyProjectsSection = ({email}) => {
                 shadow="md"
                 mb={4}
                 display="flex"
+                flexDirection={{ base: "column", md: "row" }} // Stack vertically on small screens
                 justifyContent="space-between"
                 alignItems="center"
               >
+                {/* <Box flex="1" mb={{ base: 4, md: 0 }}> */}
                 <Box flex="1">
                   <Heading size="md" mb={2}>
                     {project.title}
                   </Heading>
-                  <Text>{project.description}</Text>
-                  {/* <Text mt={2} fontSize="sm" color="gray.500">
-                    Tag: {project.tag}
-                  </Text> */}
+                  <Text m={1}>{project.description}</Text>
                 </Box>
-                <HStack spacing={4} ml={4}>
+                <HStack
+                  spacing={{ base: 2, md: 4 }} // Adjust spacing for different screen sizes
+                  ml={{ base: 0, md: 4 }} // No margin on small screens
+                  wrap="wrap" // Allow items to wrap on small screens
+                >
                   <HStack spacing={2}>
                     <IconButton
                       aria-label="Upvote"
                       icon={<FaThumbsUp />}
-                      variant={voteStatus[project._id]?.upvoteClicked ? 'solid' : 'outline'}
+                      variant={
+                        voteStatus[project._id]?.upvoteClicked
+                          ? "solid"
+                          : "outline"
+                      }
                       colorScheme="green"
                       onClick={() => handleUpvote(project._id)}
                       isDisabled={voteStatus[project._id]?.downvoteClicked}
+                      size={{ base: "sm", md: "md" }} // Responsive size
                     />
-                    <Text color={textColor}>{voteStatus[project._id]?.upvotes || 0}</Text>
+                    <Text color={textColor}>
+                      {voteStatus[project._id]?.upvotes || 0}
+                    </Text>
                   </HStack>
 
                   <HStack spacing={2}>
                     <IconButton
                       aria-label="Downvote"
                       icon={<FaThumbsDown />}
-                      variant={voteStatus[project._id]?.downvoteClicked ? 'solid' : 'outline'}
+                      variant={
+                        voteStatus[project._id]?.downvoteClicked
+                          ? "solid"
+                          : "outline"
+                      }
                       colorScheme="red"
                       onClick={() => handleDownvote(project._id)}
                       isDisabled={voteStatus[project._id]?.upvoteClicked}
+                      size={{ base: "sm", md: "md" }} // Responsive size
                     />
-                    <Text color={textColor}>{voteStatus[project._id]?.downvotes || 0}</Text>
+                    <Text color={textColor}>
+                      {voteStatus[project._id]?.downvotes || 0}
+                    </Text>
                   </HStack>
                 </HStack>
               </Box>
