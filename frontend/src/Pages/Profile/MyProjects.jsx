@@ -9,9 +9,10 @@ import {
   useColorModeValue,
   HStack,
   IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { FaThumbsUp, FaThumbsDown, FaRegEdit } from "react-icons/fa";
 
 const MotionBox = motion(Box);
 
@@ -193,7 +194,7 @@ const MyProjectsSection = ({ email }) => {
       console.error("Error downvoting:", error);
     }
   };
-  
+
   const handleTitleClick = (project) => {
     navigate("/editor", {
       state: { markdown: project.markdown },
@@ -241,15 +242,20 @@ const MyProjectsSection = ({ email }) => {
                 {/* <Box flex="1" mb={{ base: 4, md: 0 }}> */}
                 <Box flex="1">
                   <Heading
-                   size="md" 
-                  mb={2}
-                  cursor='pointer'
-                  onClick={() => handleTitleClick(project)}
+                    size="md"
+                    mb={2}
+                    cursor="pointer"
+                    onClick={() => handleTitleClick(project)}
                   >
                     {project.title}
                   </Heading>
-                  <Text m={1} cursor='pointer'
-                  onClick={() => handleTitleClick(project)}>{project.description}</Text>
+                  <Text
+                    m={1}
+                    cursor="pointer"
+                    onClick={() => handleTitleClick(project)}
+                  >
+                    {project.description}
+                  </Text>
                 </Box>
                 <HStack
                   spacing={{ base: 2, md: 4 }} // Adjust spacing for different screen sizes
@@ -292,6 +298,18 @@ const MyProjectsSection = ({ email }) => {
                     <Text color={textColor}>
                       {voteStatus[project._id]?.downvotes || 0}
                     </Text>
+                  </HStack>
+
+                  <HStack spacing={2}>
+                    <Tooltip label="Edit Project" aria-label="Edit tooltip">
+                      <IconButton
+                        aria-label="Edit"
+                        icon={<FaRegEdit />}
+                        variant="outline"
+                        colorScheme="blue"
+                        size={{ base: "sm", md: "md" }}
+                      />
+                    </Tooltip>
                   </HStack>
                 </HStack>
               </Box>
