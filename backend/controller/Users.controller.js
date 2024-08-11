@@ -330,7 +330,7 @@ const getFollowedUsers = async (req, res) => {
         const { userId } = req.params;
         const user = await User.findById(userId).populate({
             path: 'followedIds',
-            select: 'name username' // Only select the name and username fields
+            select: 'name username email' // Only select the name and username fields
         });
         if (!user) {
             res.status(404).json({ message: 'User not found' });
