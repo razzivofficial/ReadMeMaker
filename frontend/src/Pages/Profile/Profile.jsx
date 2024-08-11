@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
-
+import {decodeEmail} from '../../utils/emailUtils'
 import {
   Box,
   VStack,
@@ -87,12 +87,15 @@ const ProfilePage = () => {
   const [retypePassword, setRetypePassword] = useState("");
   const [email, setEmail] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { useremail } = useParams();
+  let { useremail } = useParams();
   const [localmail, setlocalmail] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const cancelRef = useRef();
+
+
+  useremail = decodeEmail(useremail)
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -219,6 +222,9 @@ const ProfilePage = () => {
   };
 
   const handleChangePassword = async () => {
+    if(currentPassword === newPassword){
+      toast.warning("new password and current password do not same")
+    }
     if (newPassword === retypePassword) {
       try {
         const response = await fetch(

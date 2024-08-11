@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link as Navlink, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { encodeEmail } from '../../utils/emailUtils'
 import {
   Box,
   Flex,
@@ -313,6 +314,10 @@ function Navbar() {
     navigate("/");
   };
 
+  const hashedmail = encodeEmail(email);
+  // console.log(hashedmail);
+
+
   return (
     <Box
       px={4}
@@ -435,7 +440,7 @@ function Navbar() {
                   </MenuItem>
                 </Link>
                 <MenuDivider />
-                <MenuItem as={Navlink} to={`/profile/${email}`}>
+                <MenuItem as={Navlink} to={`/profile/${hashedmail}`}>
                   <Text fontWeight="500">Profile</Text>
                 </MenuItem>
                 <MenuItem>
