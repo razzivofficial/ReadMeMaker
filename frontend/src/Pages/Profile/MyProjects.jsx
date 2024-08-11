@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   VStack,
@@ -14,93 +14,152 @@ import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 
 const MotionBox = motion(Box);
 
-// Example data with like and dislike counts
-const initialProjects = [
-  {
-    id: 1,
-    title: "Project One",
-    description: "Description of Project One",
-    likes: 0,
-    dislikes: 0,
-  },
-  {
-    id: 2,
-    title: "Project Two",
-    description: "Description of Project Two",
-    likes: 0,
-    dislikes: 0,
-  },
-  {
-    id: 3,
-    title: "Project Three",
-    description: "Description of Project Three",
-    likes: 0,
-    dislikes: 0,
-  },
-  {
-    id: 4,
-    title: "Project Four",
-    description: "Description of Project Four",
-    likes: 0,
-    dislikes: 0,
-  },
-  {
-    id: 5,
-    title: "Project Five",
-    description: "Description of Project Five",
-    likes: 0,
-    dislikes: 0,
-  },
-  {
-    id: 6,
-    title: "Project Five",
-    description: "Description of Project Five",
-    likes: 0,
-    dislikes: 0,
-  },
-  {
-    id: 7,
-    title: "Project Five",
-    description: "Description of Project Five",
-    likes: 0,
-    dislikes: 0,
-  },
-  // Add more projects as needed...
-];
-
 const ITEMS_PER_PAGE = 5;
 
-const MyProjectsSection = () => {
+const MyProjectsSection = ({email}) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [projects, setProjects] = useState(initialProjects);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [voteStatus, setVoteStatus] = useState({});
 
-  const totalPages = Math.ceil(projects.length / ITEMS_PER_PAGE);
+  const userId = localStorage.getItem('userId');
+
+  // Fetch data from the API
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch(`https://readmemaker-backend.vercel.app/editor/geteditorbyemail/${email}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setProjects(data.editors || []); // Ensure projects is always an array
+
+        // Initialize voteStatus for each project
+        const initialVoteStatus = {};
+        data.editors.forEach(project => {
+          initialVoteStatus[project._id] = {
+            upvoteClicked: false,
+            downvoteClicked: false,
+            upvotes: project.upvotes,
+            downvotes: project.downvotes
+          };
+        });
+        setVoteStatus(initialVoteStatus);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+        setProjects([]); // Ensure projects is set to an empty array on error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, [email]);
+
+  // Check vote status for each project
+  useEffect(() => {
+    const checkVoteStatus = async () => {
+      try {
+        for (const project of projects) {
+          const response = await fetch(`https://readmemaker-backend.vercel.app/editor/checkvotestatus?userId=${userId}&editorId=${project._id}`);
+          const result = await response.json();
+          setVoteStatus(prevState => ({
+            ...prevState,
+            [project._id]: {
+              ...prevState[project._id],
+              upvoteClicked: result.hasUpvoted,
+              downvoteClicked: result.hasDownvoted
+            }
+          }));
+        }
+      } catch (error) {
+        console.error('Error checking vote status:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (projects.length > 0) {
+      checkVoteStatus();
+    }
+  }, [userId, projects]);
+
+  // Sort projects by the difference between upvotes and downvotes
+  const sortedProjects = projects.slice().sort((a, b) => {
+    const diffA = a.upvotes - a.downvotes;
+    const diffB = b.upvotes - b.downvotes;
+    return diffB - diffA; // Descending order
+  });
+
+  const totalPages = Math.ceil(sortedProjects.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentProjects = projects.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
+  const currentProjects = sortedProjects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  const handleLike = (id) => {
-    setProjects((prevProjects) =>
-      prevProjects.map((project) =>
-        project.id === id ? { ...project, likes: project.likes + 1 } : project
-      )
-    );
+  const handleUpvote = async (projectId) => {
+    try {
+      const response = await fetch(`https://readmemaker-backend.vercel.app/editor/upvoteeditor`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, editorId: projectId }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        setVoteStatus(prevState => {
+          const project = prevState[projectId];
+          return {
+            ...prevState,
+            [projectId]: {
+              ...project,
+              upvoteClicked: result.message === 'Upvote recorded',
+              downvoteClicked: result.message === 'Upvote recorded' ? false : project.downvoteClicked,
+              upvotes: result.message === 'Upvote recorded' ? project.upvotes + 1 : project.upvotes - 1,
+              downvotes: project.downvoteClicked && result.message === 'Upvote recorded' ? project.downvotes - 1 : project.downvotes
+            }
+          };
+        });
+      }
+    } catch (error) {
+      console.error('Error upvoting:', error);
+    }
   };
 
-  const handleDislike = (id) => {
-    setProjects((prevProjects) =>
-      prevProjects.map((project) =>
-        project.id === id
-          ? { ...project, dislikes: project.dislikes + 1 }
-          : project
-      )
-    );
+  const handleDownvote = async (projectId) => {
+    try {
+      const response = await fetch(`https://readmemaker-backend.vercel.app/editor/downvoteeditor`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, editorId: projectId }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        setVoteStatus(prevState => {
+          const project = prevState[projectId];
+          return {
+            ...prevState,
+            [projectId]: {
+              ...project,
+              downvoteClicked: result.message === 'Downvote recorded',
+              upvoteClicked: result.message === 'Downvote recorded' ? false : project.upvoteClicked,
+              downvotes: result.message === 'Downvote recorded' ? project.downvotes + 1 : project.downvotes - 1,
+              upvotes: project.upvoteClicked && result.message === 'Downvote recorded' ? project.upvotes - 1 : project.upvotes
+            }
+          };
+        });
+      }
+    } catch (error) {
+      console.error('Error downvoting:', error);
+    }
   };
 
   const motionBoxBg = useColorModeValue("gray.50", "gray.700");
@@ -130,7 +189,7 @@ const MyProjectsSection = () => {
           {currentProjects.length > 0 ? (
             currentProjects.map((project) => (
               <Box
-                key={project.id}
+                key={project._id}
                 p={4}
                 bg={boxBg}
                 borderRadius="md"
@@ -145,23 +204,33 @@ const MyProjectsSection = () => {
                     {project.title}
                   </Heading>
                   <Text>{project.description}</Text>
+                  {/* <Text mt={2} fontSize="sm" color="gray.500">
+                    Tag: {project.tag}
+                  </Text> */}
                 </Box>
                 <HStack spacing={4} ml={4}>
-                  <HStack spacing={1} align="center">
+                  <HStack spacing={2}>
                     <IconButton
-                      aria-label="Like"
+                      aria-label="Upvote"
                       icon={<FaThumbsUp />}
-                      onClick={() => handleLike(project.id)}
+                      variant={voteStatus[project._id]?.upvoteClicked ? 'solid' : 'outline'}
+                      colorScheme="green"
+                      onClick={() => handleUpvote(project._id)}
+                      isDisabled={voteStatus[project._id]?.downvoteClicked}
                     />
-                    <Text>{project.likes}</Text>
+                    <Text color={textColor}>{voteStatus[project._id]?.upvotes || 0}</Text>
                   </HStack>
-                  <HStack spacing={1} align="center">
+
+                  <HStack spacing={2}>
                     <IconButton
-                      aria-label="Dislike"
+                      aria-label="Downvote"
                       icon={<FaThumbsDown />}
-                      onClick={() => handleDislike(project.id)}
+                      variant={voteStatus[project._id]?.downvoteClicked ? 'solid' : 'outline'}
+                      colorScheme="red"
+                      onClick={() => handleDownvote(project._id)}
+                      isDisabled={voteStatus[project._id]?.upvoteClicked}
                     />
-                    <Text>{project.dislikes}</Text>
+                    <Text color={textColor}>{voteStatus[project._id]?.downvotes || 0}</Text>
                   </HStack>
                 </HStack>
               </Box>

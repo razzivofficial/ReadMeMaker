@@ -336,7 +336,7 @@ const ProfilePage = () => {
   const handleDeleteAccount = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/users/deleteaccount/${email}`,
+        `https://readmemaker-backend.vercel.app/users/deleteaccount/${email}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -542,7 +542,7 @@ const ProfilePage = () => {
                   </VStack>
                 </HStack>
               </MotionBox>
-
+              <MyProjectsSection email={useremail}/>
               {localmail === email && (
                 <>
                   <MotionBox
@@ -599,7 +599,6 @@ const ProfilePage = () => {
                       Change Password
                     </Button>
                   </MotionBox>
-                    <MyProjectsSection />
                   <MotionBox
                     p={8}
                     bg={motionBoxBg3}
