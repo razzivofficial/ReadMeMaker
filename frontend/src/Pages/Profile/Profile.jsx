@@ -225,7 +225,7 @@ const ProfilePage = () => {
     if(currentPassword === newPassword){
       toast.warning("new password and current password do not same")
     }
-    if (newPassword === retypePassword) {
+     if (newPassword === retypePassword) {
       try {
         const response = await fetch(
           "https://readmemaker-backend.vercel.app/users/updatePassword",

@@ -20,8 +20,9 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
+import { toast } from "react-toastify";
 
-const PublishModal = ({ isOpen, onClose }) => {
+const PublishModal = ({ isOpen, onClose,markdownContent }) => {
   const email = localStorage.getItem("userEmail");
   const [type, setType] = useState("component"); 
   const [username,setUsername] = useState("");
@@ -30,10 +31,6 @@ const PublishModal = ({ isOpen, onClose }) => {
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState([]);
 
-
-  
-
-
   useEffect(() => {
     if (email) {
       axios
@@ -41,7 +38,6 @@ const PublishModal = ({ isOpen, onClose }) => {
           `https://readmemaker-backend.vercel.app/users/getdetailbyemail/${email}`
         )
         .then((response) => {
-          console.log(response.data);
           setUsername(response.data.username);
           setAvatar(response.data.avatar);
         })
@@ -65,15 +61,53 @@ const PublishModal = ({ isOpen, onClose }) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
-  const handleSubmit = () => {
-    console.log("Project Title:", title);
-    console.log("Description:", description);
-    console.log("Tags:", tags);
-    console.log("Type:", type); 
-    console.log("Username:", username);
-    console.log("Avatar:", avatar);
-    onClose();
+  const convertMarkdownToJsonFormat = (markdownContent) => {
+    // Replace new lines with `\n\n` for 
+    return markdownContent.replace(/\n/g, '\\n\\n');
   };
+  
+
+  const handleSubmit = async () => {
+    try {
+      const data = {
+        type:type,
+        username:username,
+        email:email,
+        avatar:avatar,
+        title:title,
+        description:description,
+        tag:tags,
+        markdown: markdownContent, // Use the formatted markdown content
+      };
+      setTitle("")
+      setDescription("")
+      setTags([])
+      
+      const response = await fetch(
+        "https://readmemaker-backend.vercel.app/editor/addeditor",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if(response.ok){
+        toast.success("Published successfully")
+      }
+      else{
+        toast.error("Failed to publish")
+      }
+      
+      onClose();
+    } catch (error) {
+      console.error("Error adding data:", error);
+    }
+  };
+
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
