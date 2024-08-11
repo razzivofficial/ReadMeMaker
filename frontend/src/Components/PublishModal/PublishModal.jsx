@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import axios from "axios";
 import {
   Modal,
   ModalOverlay,
@@ -21,10 +22,34 @@ import {
 } from "@chakra-ui/react";
 
 const PublishModal = ({ isOpen, onClose }) => {
+  const email = localStorage.getItem("userEmail");
+  const [type, setType] = useState("component"); 
+  const [username,setUsername] = useState("");
+  const [avatar,setAvatar] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState([]);
-  const [type, setType] = useState("component"); // State for the selected type
+
+
+  
+
+
+  useEffect(() => {
+    if (email) {
+      axios
+        .get(
+          `https://readmemaker-backend.vercel.app/users/getdetailbyemail/${email}`
+        )
+        .then((response) => {
+          console.log(response.data);
+          setUsername(response.data.username);
+          setAvatar(response.data.avatar);
+        })
+        .catch((error) => {
+          console.error("There was an error fetching the user details!", error);
+        });
+    }
+  }, [email]);
 
   const handleTagInput = (e) => {
     if ((e.key === "Enter" || e.key === " ") && tags.length < 4) {
@@ -44,7 +69,9 @@ const PublishModal = ({ isOpen, onClose }) => {
     console.log("Project Title:", title);
     console.log("Description:", description);
     console.log("Tags:", tags);
-    console.log("Type:", type); // Log the selected type
+    console.log("Type:", type); 
+    console.log("Username:", username);
+    console.log("Avatar:", avatar);
     onClose();
   };
 
