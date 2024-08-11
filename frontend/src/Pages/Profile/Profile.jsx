@@ -469,22 +469,25 @@ const ProfilePage = () => {
                     <Text fontSize="lg" fontWeight="bold" textAlign="center">
                       {name}
                     </Text>
-                    <Button
+                    {followedUserId !== userId &&(
+                      <Button
                       mt={4}
                       colorScheme={isFollowed ? 'red' : 'blue'}
                       onClick={handleFollowToggle}
                     >
                       {isFollowed ? 'Unfollow' : 'Follow'}
                     </Button>
-                    {localStorage.getItem('authToken') && (
+                     )} 
+                    
+                    {localStorage.getItem('authToken') && followedUserId === userId && (
                       <Button
-                      mt={4}
-                      ml={2}
-                      colorScheme="teal"
-                      onClick={openFollowedUsersModal}
-                    >
-                      View Followed Users
-                    </Button>
+                        mt={4}
+                        ml={2}
+                        colorScheme="teal"
+                        onClick={openFollowedUsersModal}
+                      >
+                        View Followed Users
+                      </Button>
                     )}
                     <FollowedUsersModal
                       userId={userId}

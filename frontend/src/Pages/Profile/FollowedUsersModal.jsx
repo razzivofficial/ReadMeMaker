@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { encodeEmail } from "../../utils/emailUtils";
+import { Link } from 'react-router-dom';
+import { useDisclosure } from '@chakra-ui/react';
 import {
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody,
   ModalCloseButton, Text, Spinner, VStack, Divider
@@ -25,6 +28,12 @@ const FollowedUsersModal = ({ userId, isOpen, onClose }) => {
       fetchFollowedUsers();
     }
   }, [userId, isOpen]);
+
+  const handleLinkClick = () => {
+    if (onClose) {
+      onClose(); // Close the modal
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
@@ -54,8 +63,12 @@ const FollowedUsersModal = ({ userId, isOpen, onClose }) => {
                     borderColor="gray.200"
                     backgroundColor="gray.50"
                   >
-                    <Text fontWeight="bold">{user.name}</Text>
-                    <Text color="gray.600">@{user.username}</Text>
+                    <Link to={`/profile/${encodeEmail(user.email)}`} onClick={handleLinkClick}>
+                      <Text fontWeight="bold">{user.name}</Text>
+                    </Link>
+                    <Link to={`/profile/${encodeEmail(user.email)}`} onClick={handleLinkClick}>
+                      <Text color="gray.600">@{user.username}</Text>
+                    </Link>
                     <Divider />
                   </VStack>
                 ))
