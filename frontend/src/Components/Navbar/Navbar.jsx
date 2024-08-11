@@ -236,11 +236,11 @@ function Navbar() {
       onClose();
       localStorage.setItem("userEmail", logincredentials.email);
       localStorage.setItem("authToken", json.authToken);
-      localStorage.setItem("userId",json.userId)
-      if (window.location.pathname === '/editor') {
+      localStorage.setItem("userId", json.userId);
+      if (window.location.pathname === "/editor") {
         window.location.reload();
       }
-      
+
       const email = localStorage.getItem("userEmail");
       if (email) {
         axios
@@ -344,7 +344,7 @@ function Navbar() {
           display={["inherit", "inherit", "none"]}
           onClick={() => setIsNavbarOpen(!isNavbarOpen)}
         />
-        <HStack spacing={8} alignItems="center">
+        <HStack spacing={4} alignItems="center">
           <Link as={Navlink} to="/" w={{ base: "12rem", md: "18rem" }}>
             <Image alt="ReadMeMaker Logo" src={logoImg} rounded={50} />
           </Link>
@@ -357,6 +357,12 @@ function Navbar() {
             d={{ base: "none", md: "block" }}
           />
           <Spacer />
+          <IconButton
+            aria-label="Color Switcher"
+            icon={colorMode === "light" ? <FiMoon /> : <FiSun />}
+            onClick={toggleColorMode}
+            display={{ base: "inline-flex", md: "none" }}
+          />
           <HStack
             as="nav"
             spacing={1}
@@ -422,10 +428,14 @@ function Navbar() {
               )}
             </Menu>
           </HStack>
-          {/* Menu rajiv */}
+          {/* In Mobile Screen */}
           {localStorage.getItem("authToken") && (
             <Menu isLazy isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
-              <MenuButton size="sm" onClick={toggleUserMenu}>
+              <MenuButton
+                size="sm"
+                onClick={toggleUserMenu}
+                display={{ base: "none", md: "inline-flex" }}
+              >
                 <Avatar size="sm" name={name} src={selectedAvatar} />
               </MenuButton>
               <MenuList
@@ -446,13 +456,21 @@ function Navbar() {
                   <Text fontWeight="500">Profile</Text>
                 </MenuItem>
                 <MenuItem>
-                  <Text fontWeight="500">Create Post</Text>
+                  <Text fontWeight="500" as={Navlink} to="/editor">
+                    Create Post
+                  </Text>
                 </MenuItem>
-                <MenuItem>
+                {/* <MenuItem>
                   <Text fontWeight="500">Bookmarks</Text>
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem>
-                  <Text fontWeight="500">Settings</Text>
+                  <Text
+                    fontWeight="500"
+                    as={Navlink}
+                    to={`/profile/${hashedmail}`}
+                  >
+                    My Projects
+                  </Text>
                 </MenuItem>
                 <MenuDivider />
                 <MenuItem>
@@ -474,6 +492,7 @@ function Navbar() {
           aria-label="Color Switcher"
           icon={colorMode === "light" ? <FiMoon /> : <FiSun />}
           onClick={toggleColorMode}
+          display={{ base: "none", md: "inline-flex" }}
         />
 
         {!localStorage.getItem("authToken") && (
