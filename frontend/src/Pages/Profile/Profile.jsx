@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
-import {decodeEmail} from '../../utils/emailUtils'
+import { decodeEmail } from "../../utils/emailUtils";
 import {
   Box,
   VStack,
@@ -95,8 +95,7 @@ const ProfilePage = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const cancelRef = useRef();
 
-
-  useremail = decodeEmail(useremail)
+  useremail = decodeEmail(useremail);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -223,10 +222,10 @@ const ProfilePage = () => {
   };
 
   const handleChangePassword = async () => {
-    if(currentPassword === newPassword){
-      toast.warning("new password and current password do not same")
+    if (currentPassword === newPassword) {
+      toast.warning("new password and current password do not same");
     }
-     if (newPassword === retypePassword) {
+    if (newPassword === retypePassword) {
       try {
         const response = await fetch(
           "https://readmemaker-backend.vercel.app/users/updatePassword",
@@ -263,7 +262,7 @@ const ProfilePage = () => {
   const handleUpdate = async (field) => {
     if (field === "username") {
       let finalUsername = username;
-    
+
       if (username === "") {
         finalUsername = await checkAndGenerateUsername(email, username, name);
         if (!finalUsername) {
@@ -271,7 +270,7 @@ const ProfilePage = () => {
           return;
         }
       }
-    
+
       try {
         const response = await fetch(
           `https://readmemaker-backend.vercel.app/users/updateUsername/${email}`,
@@ -288,9 +287,9 @@ const ProfilePage = () => {
           setIsEditing(false);
         } else {
           toast.error(result.error);
-          return;  // Exit if the first update fails
+          return; // Exit if the first update fails
         }
-    
+
         // Handle the second fetch call for updating the username in the Editor model
         const editorResponse = await fetch(
           `https://readmemaker-backend.vercel.app/editor/updateusername`,
@@ -310,7 +309,7 @@ const ProfilePage = () => {
         toast.error("Failed to update Username");
       }
     }
-    
+
     if (field === "name") {
       try {
         const response = await fetch(
@@ -600,7 +599,7 @@ const ProfilePage = () => {
                       Change Password
                     </Button>
                   </MotionBox>
-                  <MyProjectsSection />
+                    <MyProjectsSection />
                   <MotionBox
                     p={8}
                     bg={motionBoxBg3}
