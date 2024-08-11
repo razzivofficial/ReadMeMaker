@@ -303,6 +303,7 @@ export default function ElementAdder() {
                 <PublishModal
                   isOpen={isModalOpen}
                   onClose={() => setIsModalOpen(false)}
+                  markdownContent={value}
                 />
               </div>
             </div>
