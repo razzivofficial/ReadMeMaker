@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import {
@@ -23,11 +23,11 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
-const PublishModal = ({ isOpen, onClose,markdownContent }) => {
+const PublishModal = ({ isOpen, onClose, markdownContent }) => {
   const email = localStorage.getItem("userEmail");
-  const [type, setType] = useState("component"); 
-  const [username,setUsername] = useState("");
-  const [avatar,setAvatar] = useState("");
+  const [type, setType] = useState("component");
+  const [username, setUsername] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState([]);
@@ -42,7 +42,7 @@ const PublishModal = ({ isOpen, onClose,markdownContent }) => {
       setTags(projectTag);
       setType(projectType);
     }
-  },[projectId,projectTitle,projectDescription,projectTag,projectType])
+  }, [projectId, projectTitle, projectDescription, projectTag, projectType])
 
   useEffect(() => {
     if (email) {
@@ -77,76 +77,76 @@ const PublishModal = ({ isOpen, onClose,markdownContent }) => {
   const convertMarkdownToJsonFormat = (markdownContent) => {
     return markdownContent.replace(/\n/g, '\\n\\n');
   };
-  
+
 
   const handleSubmit = async () => {
     try {
-      if(projectId !== undefined){
+      if (projectId !== undefined) {
         const dataid = {
-          title:title,
-          description:description,
-          tag:tags,
+          title: title,
+          description: description,
+          tag: tags,
           type: type,
           markdown: markdownContent,
         }
         setTitle("")
         setDescription("")
         setTags([])
-      const res = await fetch(
-        `https://readmemaker-backend.vercel.app/editor/updateeditor/${projectId}`,
-        {
-          method:"POST",
-          headers:{
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataid),
+        const res = await fetch(
+          `https://readmemaker-backend.vercel.app/editor/updateeditor/${projectId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dataid),
+          }
+        )
+        if (res.ok) {
+          toast.success("Edit successfully")
         }
-      )
-      if(res.ok){
-        toast.success("Edit successfully")
-      }
-      else{
-        toast.error("Failed to Edit")
-      }
-      
-      onClose();
-      }
-      else{
-      const data = {
-        type:type,
-        username:username,
-        email:email,
-        avatar:avatar,
-        title:title,
-        description:description,
-        tag:tags,
-        markdown: markdownContent, 
-      };
-      setTitle("")
-      setDescription("")
-      setTags([])
-      
-      const response = await fetch(
-        "https://readmemaker-backend.vercel.app/editor/addeditor",
-        {
-          method:"POST",
-          headers:{
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+        else {
+          toast.error("Failed to Edit")
         }
-      );
 
-      if(response.ok){
-        toast.success("Published successfully")
+        onClose();
       }
-      else{
-        toast.error("Failed to publish")
+      else {
+        const data = {
+          type: type,
+          username: username,
+          email: email,
+          avatar: avatar,
+          title: title,
+          description: description,
+          tag: tags,
+          markdown: markdownContent,
+        };
+        setTitle("")
+        setDescription("")
+        setTags([])
+
+        const response = await fetch(
+          "https://readmemaker-backend.vercel.app/editor/addeditor",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+
+        if (response.ok) {
+          toast.success("Published successfully")
+        }
+        else {
+          toast.error("Failed to publish")
+        }
+
+        onClose();
       }
-      
-      onClose();
-    } 
-  }
+    }
     catch (error) {
       console.error("Error adding data:", error);
     }
@@ -231,9 +231,18 @@ const PublishModal = ({ isOpen, onClose,markdownContent }) => {
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
-            Submit
-          </Button>
+          {projectId === undefined ? (
+            <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+              Publish
+            </Button>
+          ) :
+            (
+              <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+                Edit
+              </Button>
+            )
+          }
+
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
