@@ -48,7 +48,7 @@ export default function ElementAdder() {
 
   // code for onclick adder button 
   const location = useLocation();
-  const { markdown } = location.state || {}; // Extract the markdown state
+  const { projectId, markdown } = location.state || {}; // Extract the markdown state
   
   useEffect(() => {
     if (markdown) {
@@ -283,6 +283,7 @@ export default function ElementAdder() {
               <div>
                 {/* The button that opens the modal */}
                 {localStorage.getItem('authToken') && (
+                  
                   <Button
                     onClick={() => setIsModalOpen(true)}
                     colorScheme="blue"
@@ -300,7 +301,7 @@ export default function ElementAdder() {
                       </svg>
                     }
                   >
-                    Publish
+                    {projectId === undefined ? 'Publish' : 'Edit'}
                   </Button>
                 )}
 

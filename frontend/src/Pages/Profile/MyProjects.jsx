@@ -22,6 +22,7 @@ import {
 import { motion } from "framer-motion";
 import { FaThumbsUp, FaThumbsDown, FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
+import { toast } from "react-toastify";
 
 const MotionBox = motion(Box);
 
@@ -232,13 +233,14 @@ const MyProjectsSection = ({ email }) => {
       );
 
       if (response.ok) {
+        toast.success("Deleted project successfully")
         setProjects((prevProjects) =>
           prevProjects.filter((project) => project._id !== projectId)
         );
         onClose();
       }
     } catch (error) {
-      console.error("Error deleting project:", error);
+      toast.error("Error deleting project:", error);
     }
   };
 
@@ -363,8 +365,8 @@ const MyProjectsSection = ({ email }) => {
                         colorScheme={deleteBtnClr}
                         size={{ base: "sm", md: "md" }}
                         onClick={() => {
-                          setProjectToDelete(project._id); // Set project to delete
-                          onOpen(); // Open modal
+                          setProjectToDelete(project._id); 
+                          onOpen(); 
                         }}
                       />
                     </Tooltip>
