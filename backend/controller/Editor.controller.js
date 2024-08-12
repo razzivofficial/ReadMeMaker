@@ -183,6 +183,41 @@ const updateUsername = async (req, res) => {
     }
 };
 
+const updateEditor = async (req, res) => {
+  const { editorId } = req.params; // Assuming the ID is passed as a route parameter
+  const { title, description, tag, type, markdown } = req.body;
+
+  try {
+
+    const updatedEditor = await Editor.findByIdAndUpdate(
+      editorId, 
+      {
+        $set: {
+          title: title,
+          description: description,
+          tag: tag,
+          type: type,
+          markdown: markdown
+        }
+      },
+      { new: true } // This option returns the updated document
+    );
+
+    // If no editor is found with the given ID
+    if (!updatedEditor) {
+      return res.status(404).json({ message: 'Editor not found' });
+    }
+
+    // Successfully updated
+    res.status(200).json({
+      message: 'Editor updated successfully',
+      editor: updatedEditor
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update editor', error: error.message });
+  }
+};
+
 
 module.exports = {
     addEditor,
@@ -193,4 +228,5 @@ module.exports = {
     checkVoteStatus,
     updateAvatar,
     updateUsername,
+    updateEditor
 }

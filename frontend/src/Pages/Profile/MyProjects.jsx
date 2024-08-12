@@ -200,6 +200,20 @@ const MyProjectsSection = ({ email }) => {
       state: { markdown: project.markdown },
     });
   };
+  const handleEdit = (project) => {
+    navigate("/editor", {
+      state: { 
+        markdown: project.markdown ,
+        projectId: project._id, 
+        projectTitle: project.title, 
+        projectDescription: project.description,  
+        projectTag: project.tag, 
+        projectType: project.type
+      },
+    });
+    console.log(project._id)
+  };
+  
 
   const motionBoxBg = useColorModeValue("gray.50", "gray.700");
   const boxBg = useColorModeValue("white", "gray.800");
@@ -308,6 +322,7 @@ const MyProjectsSection = ({ email }) => {
                         variant="outline"
                         colorScheme="blue"
                         size={{ base: "sm", md: "md" }}
+                        onClick={() => handleEdit(project)}
                       />
                     </Tooltip>
                   </HStack>
