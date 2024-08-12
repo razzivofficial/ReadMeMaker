@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
-import { decodeEmail } from "../../utils/emailUtils";
+// import { decodeEmail } from "../../utils/emailUtils";
 import FollowedUsersModal from "./FollowedUsersModal";
 import {
   Box,
@@ -93,7 +93,7 @@ const ProfilePage = () => {
   const [retypePassword, setRetypePassword] = useState("");
   const [email, setEmail] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  let { useremail } = useParams();
+  const { useremail } = useParams();
   const [localmail, setlocalmail] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -111,7 +111,7 @@ const ProfilePage = () => {
 
   const [followedUserId, setFollowedId] = useState("");
 
-  useremail = decodeEmail(useremail);
+  // useremail = decodeEmail(useremail);
 
   const [isLoading, setIsLoading] = useState(true);
 

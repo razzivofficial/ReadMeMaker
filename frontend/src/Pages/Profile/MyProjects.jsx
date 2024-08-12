@@ -342,19 +342,21 @@ const MyProjectsSection = ({ email }) => {
                       {voteStatus[project._id]?.downvotes || 0}
                     </Text>
                   </HStack>
+                  {userId !== undefined && (
+                    <HStack spacing={2}>
+                      <Tooltip label="Edit Project" aria-label="Edit tooltip">
+                        <IconButton
+                          aria-label="Edit"
+                          icon={<FaRegEdit />}
+                          variant="outline"
+                          colorScheme="blue"
+                          size={{ base: "sm", md: "md" }}
+                          onClick={() => handleEdit(project)}
+                        />
+                      </Tooltip>
+                    </HStack>
+                  )}
 
-                  <HStack spacing={2}>
-                    <Tooltip label="Edit Project" aria-label="Edit tooltip">
-                      <IconButton
-                        aria-label="Edit"
-                        icon={<FaRegEdit />}
-                        variant="outline"
-                        colorScheme="blue"
-                        size={{ base: "sm", md: "md" }}
-                        onClick={() => handleEdit(project)}
-                      />
-                    </Tooltip>
-                  </HStack>
 
                   <HStack spacing={2}>
                     <Tooltip label="Delete Project" aria-label="Delete tooltip">
@@ -365,8 +367,8 @@ const MyProjectsSection = ({ email }) => {
                         colorScheme={deleteBtnClr}
                         size={{ base: "sm", md: "md" }}
                         onClick={() => {
-                          setProjectToDelete(project._id); 
-                          onOpen(); 
+                          setProjectToDelete(project._id);
+                          onOpen();
                         }}
                       />
                     </Tooltip>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { encodeEmail } from "../../utils/emailUtils";
+// import { encodeEmail } from "../../utils/emailUtils";
 import {
   Box,
   Text,
@@ -68,7 +68,7 @@ const MarkdownPreviewCard = ({
   const [upvotes, setUpvotes] = useState(initialUpvotes);
   const [downvotes, setDownvotes] = useState(initialDownvotes);
 
-  const encodedmail = encodeEmail(email);
+  // const encodedmail = encodeEmail(email);
 
   const avatars = [
     avatar1,
@@ -247,7 +247,7 @@ const MarkdownPreviewCard = ({
           alt={`${username}'s profile`}
         />
         <VStack align="start" spacing={0}>
-          <Link to={`/profile/${encodedmail}`}>
+          <Link to={`/profile/${email}`}>
             <Text
               fontWeight="bold"
               color={textColor}
