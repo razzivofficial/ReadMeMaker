@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { encodeEmail } from "../../utils/emailUtils";
+// import { encodeEmail } from "../../utils/emailUtils";
 import { Link } from "react-router-dom";
 import {
   useColorMode,
@@ -126,7 +126,7 @@ const FollowedUsersModal = ({ userId, isOpen, onClose }) => {
                 >
                   <Flex direction="column" align="start">
                     <Link
-                      to={`/profile/${encodeEmail(user.email)}`}
+                      to={`/profile/${user.email}`}
                       onClick={handleLinkClick}
                     >
                       <Text
@@ -137,7 +137,7 @@ const FollowedUsersModal = ({ userId, isOpen, onClose }) => {
                       </Text>
                     </Link>
                     <Link
-                      to={`/profile/${encodeEmail(user.email)}`}
+                      to={`/profile/${user.email}`}
                       onClick={handleLinkClick}
                     >
                       <Text
