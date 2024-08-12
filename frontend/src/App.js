@@ -9,7 +9,7 @@ import Editor from "./Pages/Editor/Editor";
 import ErrorPage from "./Pages/Error/ErrorPage";
 import ScrollToTop from "./Components/ScrollToTop/ScrollToTop";
 import Profile from "./Pages/Profile/Profile";
-import TempCompoPage from "./Pages/TempCompoPage/TempCompoPage"
+import TempCompoPage from "./Pages/TempCompoPage/TempCompoPage";
 
 function App() {
   return (
