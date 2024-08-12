@@ -689,7 +689,7 @@ function Navbar() {
               {changeMode ? (
                 <Text
                   py={"3"}
-                  color="gray.700"
+                  color={colorMode === "dark" ? "white" : "gray.700"}
                   textAlign="center"
                   justify="center"
                 >
