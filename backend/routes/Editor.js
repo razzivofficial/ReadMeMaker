@@ -19,4 +19,6 @@ router.put('/updateusername',editordetails.updateUsername)
 
 router.post('/updateeditor/:editorId',editordetails.updateEditor)
 
+router.delete('/deleteeditor/:editorId',editordetails.deleteEditor)
+
 module.exports = router;
