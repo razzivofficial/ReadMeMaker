@@ -15,6 +15,7 @@ import {
   Container,
   useBreakpointValue,
   Button,
+  Tag,
 } from "@chakra-ui/react";
 import { ToastContainer, toast } from "react-toastify";
 import avatar1 from "../../MediaFiles/avatar1.jpg";
@@ -52,7 +53,7 @@ const MarkdownPreviewCard = ({
   downvotes: initialDownvotes,
   markdown,
   description,
-  tags
+  tags,
 }) => {
   const bg = useColorModeValue("white", "#2f3244");
   const markdownBg = useColorModeValue("#f5f5f5", "#1e1e1e");
@@ -251,13 +252,13 @@ const MarkdownPreviewCard = ({
               fontWeight="bold"
               color={textColor}
               fontSize={{ base: "sm", md: "md" }}
+              mt={2.5}
             >
               {username}
             </Text>
           </Link>
         </VStack>
       </HStack>
-
       <Text
         fontSize={{ base: "md", md: "lg" }}
         fontWeight="bold"
@@ -266,7 +267,6 @@ const MarkdownPreviewCard = ({
       >
         {projectTitle}
       </Text>
-      {/* Tushar yaha h wo markdown display */}
       <Box
         className="markdown-content"
         p={4}
@@ -293,9 +293,7 @@ const MarkdownPreviewCard = ({
           </ReactMarkdown>
         )}
       </Box>
-
       <Divider my={4} />
-
       <HStack spacing={4} justify="space-between" wrap="wrap">
         <HStack spacing={2}>
           <IconButton
@@ -330,13 +328,25 @@ const MarkdownPreviewCard = ({
             onClick={handleCopy}
           />
         </HStack>
-
       </HStack>
-
-      {/* Description and tags  */}
-      
-      <Text >{description}</Text>
-      <Text>{tags}</Text>
+      {/* Description and Tags */}
+      <Box mt={4}>
+        <HStack spacing={2}>
+          {tags.map((tag, index) => (
+            <Tag key={index} size="sm" variant="subtle" colorScheme="blue">
+              {tag.trim()}
+            </Tag>
+          ))}
+        </HStack>
+        <Text
+          fontSize={{ base: "sm", md: "md" }}
+          color={textColor}
+          mb={2}
+          fontWeight="medium"
+        >
+          {description}
+        </Text>
+      </Box>
     </Box>
   );
 };
@@ -462,7 +472,7 @@ const EditorCard = () => {
                   downvotes={item.downvotes}
                   markdown={item.markdown}
                   description={item.description}
-                  tags = {item.tag}
+                  tags={item.tag}
                 />
               ))}
             </SimpleGrid>
