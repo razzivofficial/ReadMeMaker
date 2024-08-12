@@ -51,6 +51,8 @@ const MarkdownPreviewCard = ({
   upvotes: initialUpvotes,
   downvotes: initialDownvotes,
   markdown,
+  description,
+  tags
 }) => {
   const bg = useColorModeValue("white", "#2f3244");
   const markdownBg = useColorModeValue("#f5f5f5", "#1e1e1e");
@@ -328,7 +330,13 @@ const MarkdownPreviewCard = ({
             onClick={handleCopy}
           />
         </HStack>
+
       </HStack>
+
+      {/* Description and tags  */}
+      
+      <Text >{description}</Text>
+      <Text>{tags}</Text>
     </Box>
   );
 };
@@ -453,6 +461,8 @@ const EditorCard = () => {
                   upvotes={item.upvotes}
                   downvotes={item.downvotes}
                   markdown={item.markdown}
+                  description={item.description}
+                  tags = {item.tag}
                 />
               ))}
             </SimpleGrid>
