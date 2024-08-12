@@ -35,7 +35,7 @@ const replaceHeightWithWidth = (inputText) => {
 const CustomLink = ({ href, children }) => {
   const handleClick = (event) => {
     event.preventDefault();
-    console.log("Link clicked:", href);
+    // console.log("Link clicked:", href);
   };
 
   return (
