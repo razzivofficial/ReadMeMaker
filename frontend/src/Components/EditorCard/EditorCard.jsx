@@ -16,7 +16,7 @@ import {
   useBreakpointValue,
   Button,
 } from "@chakra-ui/react";
-
+import { ToastContainer, toast } from "react-toastify";
 import avatar1 from "../../MediaFiles/avatar1.jpg";
 import avatar2 from "../../MediaFiles/avatar2.jpg";
 import avatar3 from "../../MediaFiles/avatar3.jpg";
@@ -26,7 +26,7 @@ import avatar6 from "../../MediaFiles/avatar6.jpg";
 import avatar7 from "../../MediaFiles/avatar7.jpg";
 import avatar8 from "../../MediaFiles/avatar8.jpg";
 
-import { FaThumbsUp, FaThumbsDown, FaComment } from "react-icons/fa";
+import { FaThumbsUp, FaThumbsDown, FaClipboard } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
@@ -78,6 +78,7 @@ const MarkdownPreviewCard = ({
     avatar8,
   ];
 
+  const navigate = useNavigate();
   useEffect(() => {
     const avatarIndex = parseInt(profilePic.replace("avatar", "")) - 1;
     setSelectedAvatar(avatars[avatarIndex]);
@@ -90,6 +91,8 @@ const MarkdownPreviewCard = ({
   }, []);
 
   const userId = localStorage.getItem("userId"); // Get the userId from local storage
+
+  
 
   useEffect(() => {
     const checkVoteStatus = async () => {
@@ -171,8 +174,36 @@ const MarkdownPreviewCard = ({
   };
 
   function openInEditor() {
-    window.open(`/test`, "_blank");
+    navigate("/editor", {
+      state: { markdown: markdown },
+    });
   }
+
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(markdown)
+      .then(() => {
+        toast.success("Markdown copied to clipboard!", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      })
+      .catch((err) => {
+        toast.error("Failed to copy markdown!", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        console.error("Copy to clipboard failed:", err);
+      });
+  };
 
   return (
     <Box
@@ -272,11 +303,12 @@ const MarkdownPreviewCard = ({
         </HStack>
 
         <HStack spacing={2}>
-          <IconButton
-            aria-label="Comments"
-            icon={<FaComment />}
+        <IconButton
+            aria-label="Copy Markdown"
+            icon={<FaClipboard />}
             variant="outline"
             colorScheme="blue"
+            onClick={handleCopy} 
           />
         </HStack>
       </HStack>
