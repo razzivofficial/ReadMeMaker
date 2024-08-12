@@ -503,7 +503,7 @@ const ProfilePage = () => {
                             leftIcon={<MdGroupAdd />}
                             onClick={openFollowedUsersModal}
                           >
-                            View Followed Users
+                            Following
                           </Button>
                         )}
                     </Flex>
