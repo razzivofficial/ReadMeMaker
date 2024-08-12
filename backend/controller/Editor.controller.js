@@ -218,6 +218,25 @@ const updateEditor = async (req, res) => {
   }
 };
 
+const deleteEditor = async (req, res) => {
+  const { editorId } = req.params; // Assuming the ID is passed as a route parameter
+
+  try {
+    const deletedEditor = await Editor.findByIdAndDelete(editorId);
+
+    // If no editor is found with the given ID
+    if (!deletedEditor) {
+      return res.status(404).json({ message: 'Editor not found' });
+    }
+
+    // Successfully deleted
+    res.status(200).json({
+      message: 'Editor deleted successfully'
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete editor', error: error.message });
+  }
+};
 
 module.exports = {
     addEditor,
@@ -228,5 +247,6 @@ module.exports = {
     checkVoteStatus,
     updateAvatar,
     updateUsername,
-    updateEditor
+    updateEditor,
+    deleteEditor
 }
