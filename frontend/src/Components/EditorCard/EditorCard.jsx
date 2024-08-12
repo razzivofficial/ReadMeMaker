@@ -92,8 +92,6 @@ const MarkdownPreviewCard = ({
 
   const userId = localStorage.getItem("userId"); // Get the userId from local storage
 
-  
-
   useEffect(() => {
     const checkVoteStatus = async () => {
       try {
@@ -205,6 +203,24 @@ const MarkdownPreviewCard = ({
       });
   };
 
+  // Custom link component to prevent navigation
+  const CustomLink = ({ href, children }) => {
+    const handleClick = (event) => {
+      event.preventDefault();
+      console.log("Link clicked:", href);
+    };
+
+    return (
+      <a
+        href={href}
+        onClick={handleClick}
+        style={{ color: "inherit", textDecoration: "none" }}
+      >
+        {children}
+      </a>
+    );
+  };
+
   return (
     <Box
       className="card"
@@ -269,6 +285,7 @@ const MarkdownPreviewCard = ({
           <ReactMarkdown
             rehypePlugins={[rehypeRaw]}
             remarkPlugins={[remarkGfm]}
+            components={{ a: CustomLink }}
           >
             {processedMarkdown}
           </ReactMarkdown>
@@ -303,12 +320,12 @@ const MarkdownPreviewCard = ({
         </HStack>
 
         <HStack spacing={2}>
-        <IconButton
+          <IconButton
             aria-label="Copy Markdown"
             icon={<FaClipboard />}
             variant="outline"
             colorScheme="blue"
-            onClick={handleCopy} 
+            onClick={handleCopy}
           />
         </HStack>
       </HStack>
