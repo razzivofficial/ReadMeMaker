@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { encodeEmail } from '../../utils/emailUtils'
+import { encodeEmail } from "../../utils/emailUtils";
 import {
   Box,
   Text,
@@ -42,8 +42,6 @@ const replaceHeightWithWidth = (inputText) => {
   );
 };
 
-
-
 const MarkdownPreviewCard = ({
   email,
   id,
@@ -54,20 +52,20 @@ const MarkdownPreviewCard = ({
   downvotes: initialDownvotes,
   markdown,
 }) => {
-  const bg = useColorModeValue('white', '#2f3244');
-  const markdownBg = useColorModeValue('#f5f5f5', '#1e1e1e');
-  const textColor = useColorModeValue('black', 'white');
+  const bg = useColorModeValue("white", "#2f3244");
+  const markdownBg = useColorModeValue("#f5f5f5", "#1e1e1e");
+  const textColor = useColorModeValue("black", "white");
 
   const processedMarkdown = replaceHeightWithWidth(markdown);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedAvatar, setSelectedAvatar] = useState('');
+  const [selectedAvatar, setSelectedAvatar] = useState("");
   const [upvoteClicked, setUpvoteClicked] = useState(false);
   const [downvoteClicked, setDownvoteClicked] = useState(false);
   const [upvotes, setUpvotes] = useState(initialUpvotes);
   const [downvotes, setDownvotes] = useState(initialDownvotes);
 
-  const encodedmail = encodeEmail(email)
+  const encodedmail = encodeEmail(email);
 
   const avatars = [
     avatar1,
@@ -81,7 +79,7 @@ const MarkdownPreviewCard = ({
   ];
 
   useEffect(() => {
-    const avatarIndex = parseInt(profilePic.replace('avatar', '')) - 1;
+    const avatarIndex = parseInt(profilePic.replace("avatar", "")) - 1;
     setSelectedAvatar(avatars[avatarIndex]);
   }, [profilePic]);
 
@@ -91,17 +89,19 @@ const MarkdownPreviewCard = ({
     }, 100);
   }, []);
 
-  const userId = localStorage.getItem('userId'); // Get the userId from local storage
+  const userId = localStorage.getItem("userId"); // Get the userId from local storage
 
   useEffect(() => {
     const checkVoteStatus = async () => {
       try {
-        const response = await fetch(`https://readmemaker-backend.vercel.app/editor/checkvotestatus?userId=${userId}&editorId=${id}`);
+        const response = await fetch(
+          `https://readmemaker-backend.vercel.app/editor/checkvotestatus?userId=${userId}&editorId=${id}`
+        );
         const result = await response.json();
         setUpvoteClicked(result.hasUpvoted);
         setDownvoteClicked(result.hasDownvoted);
       } catch (error) {
-        console.error('Error checking vote status:', error);
+        console.error("Error checking vote status:", error);
       } finally {
         setIsLoading(false);
       }
@@ -112,20 +112,23 @@ const MarkdownPreviewCard = ({
 
   const handleUpvote = async () => {
     try {
-      const response = await fetch(`https://readmemaker-backend.vercel.app/editor/upvoteeditor`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, editorId: id }),
-      });
+      const response = await fetch(
+        `https://readmemaker-backend.vercel.app/editor/upvoteeditor`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, editorId: id }),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
-        if (result.message === 'Upvote removed') {
+        if (result.message === "Upvote removed") {
           setUpvoteClicked(false);
           setUpvotes(upvotes - 1);
-        } else if (result.message === 'Upvote recorded') {
+        } else if (result.message === "Upvote recorded") {
           setUpvoteClicked(true);
           setDownvoteClicked(false);
           setUpvotes(upvotes + 1);
@@ -133,26 +136,29 @@ const MarkdownPreviewCard = ({
         }
       }
     } catch (error) {
-      console.error('Error upvoting:', error);
+      console.error("Error upvoting:", error);
     }
   };
 
   const handleDownvote = async () => {
     try {
-      const response = await fetch(`https://readmemaker-backend.vercel.app/editor/downvoteeditor`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, editorId: id }),
-      });
+      const response = await fetch(
+        `https://readmemaker-backend.vercel.app/editor/downvoteeditor`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, editorId: id }),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
-        if (result.message === 'Downvote removed') {
+        if (result.message === "Downvote removed") {
           setDownvoteClicked(false);
           setDownvotes(downvotes - 1);
-        } else if (result.message === 'Downvote recorded') {
+        } else if (result.message === "Downvote recorded") {
           setDownvoteClicked(true);
           setUpvoteClicked(false);
           setDownvotes(downvotes + 1);
@@ -160,21 +166,25 @@ const MarkdownPreviewCard = ({
         }
       }
     } catch (error) {
-      console.error('Error downvoting:', error);
+      console.error("Error downvoting:", error);
     }
   };
+
+  function openInEditor() {
+    window.open(`/test`, "_blank");
+  }
 
   return (
     <Box
       className="card"
       w="100%"
-      maxW={{ base: 'full', sm: '500px', md: '400px' }}
+      maxW={{ base: "full", sm: "500px", md: "400px" }}
       boxShadow="lg"
       rounded="md"
       p={4}
       overflow="hidden"
       cursor="pointer"
-      _hover={{ boxShadow: '2xl' }}
+      _hover={{ boxShadow: "2xl" }}
       bg={bg}
       role="group"
       m={2}
@@ -182,7 +192,7 @@ const MarkdownPreviewCard = ({
       <HStack spacing={4} mb={4} align="start">
         <Image
           borderRadius="full"
-          boxSize={{ base: '40px', md: '50px' }}
+          boxSize={{ base: "40px", md: "50px" }}
           src={selectedAvatar}
           alt={`${username}'s profile`}
         />
@@ -191,7 +201,7 @@ const MarkdownPreviewCard = ({
             <Text
               fontWeight="bold"
               color={textColor}
-              fontSize={{ base: 'sm', md: 'md' }}
+              fontSize={{ base: "sm", md: "md" }}
             >
               {username}
             </Text>
@@ -200,13 +210,14 @@ const MarkdownPreviewCard = ({
       </HStack>
 
       <Text
-        fontSize={{ base: 'md', md: 'lg' }}
+        fontSize={{ base: "md", md: "lg" }}
         fontWeight="bold"
         mb={2}
         color={textColor}
       >
         {projectTitle}
       </Text>
+      {/* Tushar yaha h wo markdown display */}
       <Box
         className="markdown-content"
         p={4}
@@ -215,10 +226,11 @@ const MarkdownPreviewCard = ({
         rounded="md"
         mt={4}
         bg={markdownBg}
-        height={{ base: '180px', md: '200px' }}
+        height={{ base: "180px", md: "200px" }}
         overflowY="auto"
         fontFamily="monospace"
         color={textColor}
+        onClick={openInEditor}
       >
         {isLoading ? (
           <TempCompoLoader />
@@ -239,7 +251,7 @@ const MarkdownPreviewCard = ({
           <IconButton
             aria-label="Upvote"
             icon={<FaThumbsUp />}
-            variant={upvoteClicked ? 'solid' : 'outline'}
+            variant={upvoteClicked ? "solid" : "outline"}
             colorScheme="green"
             onClick={handleUpvote}
             isDisabled={downvoteClicked}
@@ -251,7 +263,7 @@ const MarkdownPreviewCard = ({
           <IconButton
             aria-label="Downvote"
             icon={<FaThumbsDown />}
-            variant={downvoteClicked ? 'solid' : 'outline'}
+            variant={downvoteClicked ? "solid" : "outline"}
             colorScheme="red"
             onClick={handleDownvote}
             isDisabled={upvoteClicked}
@@ -283,7 +295,9 @@ const EditorCard = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch("https://readmemaker-backend.vercel.app/editor/getalleditor");
+        const response = await fetch(
+          "https://readmemaker-backend.vercel.app/editor/getalleditor"
+        );
         const data = await response.json();
         if (data.editors) {
           const templateData = data.editors.filter(

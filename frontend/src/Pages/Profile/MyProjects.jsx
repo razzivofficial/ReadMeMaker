@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { FaThumbsUp, FaThumbsDown, FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin2Line } from "react-icons/ri";
 
 const MotionBox = motion(Box);
 
@@ -202,22 +203,22 @@ const MyProjectsSection = ({ email }) => {
   };
   const handleEdit = (project) => {
     navigate("/editor", {
-      state: { 
-        markdown: project.markdown ,
-        projectId: project._id, 
-        projectTitle: project.title, 
-        projectDescription: project.description,  
-        projectTag: project.tag, 
-        projectType: project.type
+      state: {
+        markdown: project.markdown,
+        projectId: project._id,
+        projectTitle: project.title,
+        projectDescription: project.description,
+        projectTag: project.tag,
+        projectType: project.type,
       },
     });
-    console.log(project._id)
+    console.log(project._id);
   };
-  
 
   const motionBoxBg = useColorModeValue("gray.50", "gray.700");
   const boxBg = useColorModeValue("white", "gray.800");
   const textColor = useColorModeValue("gray.700", "gray.300");
+  const deleteBtnClr = useColorModeValue("black", "white");
 
   return (
     <Box width="100%" px={{ base: 4, md: 0 }}>
@@ -323,6 +324,19 @@ const MyProjectsSection = ({ email }) => {
                         colorScheme="blue"
                         size={{ base: "sm", md: "md" }}
                         onClick={() => handleEdit(project)}
+                      />
+                    </Tooltip>
+                  </HStack>
+
+                  <HStack spacing={2}>
+                    <Tooltip label="Delete Project" aria-label="Delete tooltip">
+                      <IconButton
+                        aria-label="Delete"
+                        icon={<RiDeleteBin2Line />}
+                        variant="outline"
+                        colorScheme={deleteBtnClr}
+                        size={{ base: "sm", md: "md" }}
+                        // onClick={() => handleEdit(project)}
                       />
                     </Tooltip>
                   </HStack>
