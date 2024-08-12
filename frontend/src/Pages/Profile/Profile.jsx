@@ -349,6 +349,7 @@ const ProfilePage = () => {
     }
   };
 
+
   const handleDeleteAccount = async () => {
     try {
       const response = await fetch(
