@@ -17,4 +17,6 @@ router.get('/checkvotestatus', editordetails.checkVoteStatus);
 router.put('/updateavatar',editordetails.updateAvatar)
 router.put('/updateusername',editordetails.updateUsername)
 
+router.post('/updateeditor/:editorId',editordetails.updateEditor)
+
 module.exports = router;

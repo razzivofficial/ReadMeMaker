@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 import {
   Modal,
   ModalOverlay,
@@ -30,6 +31,18 @@ const PublishModal = ({ isOpen, onClose,markdownContent }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState([]);
+
+  const location = useLocation();
+  const { projectId, projectTitle, projectDescription, projectTag, projectType } = location.state || {};
+
+  useEffect(() => {
+    if (projectId) {
+      setTitle(projectTitle);
+      setDescription(projectDescription);
+      setTags(projectTag);
+      setType(projectType);
+    }
+  },[projectId,projectTitle,projectDescription,projectTag,projectType])
 
   useEffect(() => {
     if (email) {
@@ -62,7 +75,6 @@ const PublishModal = ({ isOpen, onClose,markdownContent }) => {
   };
 
   const convertMarkdownToJsonFormat = (markdownContent) => {
-    // Replace new lines with `\n\n` for 
     return markdownContent.replace(/\n/g, '\\n\\n');
   };
   
