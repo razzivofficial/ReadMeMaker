@@ -81,6 +81,37 @@ const PublishModal = ({ isOpen, onClose,markdownContent }) => {
 
   const handleSubmit = async () => {
     try {
+      if(projectId !== undefined){
+        const dataid = {
+          title:title,
+          description:description,
+          tag:tags,
+          type: type,
+          markdown: markdownContent,
+        }
+        setTitle("")
+        setDescription("")
+        setTags([])
+      const res = await fetch(
+        `https://readmemaker-backend.vercel.app/editor/updateeditor/${projectId}`,
+        {
+          method:"POST",
+          headers:{
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataid),
+        }
+      )
+      if(res.ok){
+        toast.success("Edit successfully")
+      }
+      else{
+        toast.error("Failed to Edit")
+      }
+      
+      onClose();
+      }
+      else{
       const data = {
         type:type,
         username:username,
@@ -89,7 +120,7 @@ const PublishModal = ({ isOpen, onClose,markdownContent }) => {
         title:title,
         description:description,
         tag:tags,
-        markdown: markdownContent, // Use the formatted markdown content
+        markdown: markdownContent, 
       };
       setTitle("")
       setDescription("")
@@ -114,9 +145,12 @@ const PublishModal = ({ isOpen, onClose,markdownContent }) => {
       }
       
       onClose();
-    } catch (error) {
+    } 
+  }
+    catch (error) {
       console.error("Error adding data:", error);
     }
+
   };
 
 
