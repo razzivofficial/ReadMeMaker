@@ -13,7 +13,7 @@ import {
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+
 import avatar1 from "../../MediaFiles/avatar1.jpg";
 import avatar2 from "../../MediaFiles/avatar2.jpg";
 import avatar3 from "../../MediaFiles/avatar3.jpg";
@@ -26,7 +26,6 @@ import avatar8 from "../../MediaFiles/avatar8.jpg";
 const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const toast = useToast();
-  const navigate = useNavigate();
 
   const avatars = [
     avatar1,

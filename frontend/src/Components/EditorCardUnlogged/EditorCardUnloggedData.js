@@ -34,10 +34,8 @@ const data = [
 <h1>I once interned as a frontend developer at Chess.com ♟️</h1>
 
 <p align="center">
-  <a href="https://www.chess.com/member/andyruwruw">
-    <!-- Check out my chess games! -->
-    <img src="https://andyruwruw.vercel.app/api/chess-games">
-  </a>
+<img
+width="15px" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnVuNHF1ajUwY2drMmk0dGZvZGE1aDRzZHV6ZXg1ajI4Z3FpOWp4aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6FtnOqF29XUHFmNbbH/giphy.webp">
 </p>
 
 <p align="center">

@@ -88,7 +88,7 @@ const MarkdownPreviewCard = ({
           pauseOnHover: true,
           draggable: true,
         });
-        console.error("Copy to clipboard failed:", err);
+        //console.error("Copy to clipboard failed:", err);
       });
   };
 
