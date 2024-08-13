@@ -233,7 +233,7 @@ const MyProjectsSection = ({ email }) => {
       );
 
       if (response.ok) {
-        toast.success("Deleted project successfully")
+        toast.success("Deleted project successfully");
         setProjects((prevProjects) =>
           prevProjects.filter((project) => project._id !== projectId)
         );
@@ -249,181 +249,197 @@ const MyProjectsSection = ({ email }) => {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const deleteBtnClr = useColorModeValue("black", "white");
 
-  return (
-    <Box width="100%" px={{ base: 4, md: 0 }}>
-      <VStack spacing={8}>
-        <MotionBox
-          p={8}
-          bg={motionBoxBg}
-          borderRadius="xl"
-          boxShadow="xl"
-          w={{ base: "100%", md: "80%" }}
-          maxW="6xl"
-          mx="auto"
-          zIndex="1"
-          position="relative"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Heading as="h2" size="lg" mb={6} color={textColor}>
-            My Projects
-          </Heading>
-          {currentProjects.length > 0 ? (
-            currentProjects.map((project) => (
+return (
+  <Box width="100%" px={{ base: 4, md: 0 }}>
+    <VStack spacing={8}>
+      <MotionBox
+        p={8}
+        bg={motionBoxBg}
+        borderRadius="xl"
+        boxShadow="xl"
+        w={{ base: "100%", md: "80%" }}
+        maxW="6xl"
+        mx="auto"
+        zIndex="1"
+        position="relative"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Heading as="h2" size="lg" mb={6} color={textColor}>
+          My Projects
+        </Heading>
+        {currentProjects.length > 0 ? (
+          currentProjects.map((project) => (
+            <Box
+              key={project._id}
+              p={4}
+              bg={boxBg}
+              borderRadius="md"
+              shadow="md"
+              mb={4}
+              display="flex"
+              flexDirection={{ base: "column", md: "row" }}
+              justifyContent="space-between"
+              alignItems="flex-start"
+              maxWidth="100%" // Ensure box doesn't exceed its container
+              overflow="hidden" // Hide any overflow content
+            >
               <Box
-                key={project._id}
-                p={4}
-                bg={boxBg}
-                borderRadius="md"
-                shadow="md"
-                mb={4}
-                display="flex"
-                flexDirection={{ base: "column", md: "row" }}
-                justifyContent="space-between"
-                alignItems="center"
+                flex="1"
+                mb={{ base: 4, md: 0 }}
+                overflow="hidden"
+                px={{ base: 2, md: 4 }}
+                maxWidth={{ base: "100%", md: "calc(100% - 100px)" }} // Adjust for responsive design
               >
-                <Box flex="1">
-                  <Heading
-                    size="md"
-                    mb={2}
-                    cursor="pointer"
-                    onClick={() => handleTitleClick(project)}
-                  >
-                    {project.title}
-                  </Heading>
-                  <Text
-                    m={1}
-                    cursor="pointer"
-                    onClick={() => handleTitleClick(project)}
-                  >
-                    {project.description}
-                  </Text>
-                </Box>
-                <HStack
-                  spacing={{ base: 2, md: 4 }}
-                  ml={{ base: 0, md: 4 }}
-                  wrap="wrap"
+                <Heading
+                  size="md"
+                  mb={2}
+                  cursor="pointer"
+                  onClick={() => handleTitleClick(project)}
+                  fontSize={{ base: "lg", md: "xl" }} // Adjust font size for responsiveness
+                  noOfLines={1} // Limit title to one line
                 >
-                  <HStack spacing={2}>
-                    <IconButton
-                      aria-label="Upvote"
-                      icon={<FaThumbsUp />}
-                      variant={
-                        voteStatus[project._id]?.upvoteClicked
-                          ? "solid"
-                          : "outline"
-                      }
-                      colorScheme="green"
-                      onClick={() => handleUpvote(project._id)}
-                      isDisabled={voteStatus[project._id]?.downvoteClicked}
-                      size={{ base: "sm", md: "md" }}
-                    />
-                    <Text color={textColor}>
-                      {voteStatus[project._id]?.upvotes || 0}
-                    </Text>
-                  </HStack>
+                  {project.title}
+                </Heading>
+                <Text
+                  cursor="pointer"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  whiteSpace="pre-wrap"
+                  fontSize={{ base: "sm", md: "md" }}
+                  lineHeight={{ base: "short", md: "normal" }}
+                  noOfLines={{ base: 3, md: 3 }} // Limit number of lines to prevent overflow
+                >
+                  {project.description}
+                </Text>
+              </Box>
+              <HStack
+                spacing={{ base: 2, md: 4 }}
+                ml={{ base: 0, md: 4 }}
+                wrap="wrap"
+              >
+                <HStack spacing={2} align="center">
+                  <IconButton
+                    aria-label="Upvote"
+                    icon={<FaThumbsUp />}
+                    variant={
+                      voteStatus[project._id]?.upvoteClicked
+                        ? "solid"
+                        : "outline"
+                    }
+                    colorScheme="green"
+                    onClick={() => handleUpvote(project._id)}
+                    isDisabled={voteStatus[project._id]?.downvoteClicked}
+                    size={{ base: "sm", md: "md" }}
+                  />
+                  <Text color={textColor} fontSize={{ base: "sm", md: "md" }}>
+                    {voteStatus[project._id]?.upvotes || 0}
+                  </Text>
+                </HStack>
 
-                  <HStack spacing={2}>
-                    <IconButton
-                      aria-label="Downvote"
-                      icon={<FaThumbsDown />}
-                      variant={
-                        voteStatus[project._id]?.downvoteClicked
-                          ? "solid"
-                          : "outline"
-                      }
-                      colorScheme="red"
-                      onClick={() => handleDownvote(project._id)}
-                      isDisabled={voteStatus[project._id]?.upvoteClicked}
-                      size={{ base: "sm", md: "md" }}
-                    />
-                    <Text color={textColor}>
-                      {voteStatus[project._id]?.downvotes || 0}
-                    </Text>
-                  </HStack>
-                  {userId !== undefined && (
-                    <HStack spacing={2}>
-                      <Tooltip label="Edit Project" aria-label="Edit tooltip">
-                        <IconButton
-                          aria-label="Edit"
-                          icon={<FaRegEdit />}
-                          variant="outline"
-                          colorScheme="blue"
-                          size={{ base: "sm", md: "md" }}
-                          onClick={() => handleEdit(project)}
-                        />
-                      </Tooltip>
-                    </HStack>
-                  )}
+                <HStack spacing={2} align="center">
+                  <IconButton
+                    aria-label="Downvote"
+                    icon={<FaThumbsDown />}
+                    variant={
+                      voteStatus[project._id]?.downvoteClicked
+                        ? "solid"
+                        : "outline"
+                    }
+                    colorScheme="red"
+                    onClick={() => handleDownvote(project._id)}
+                    isDisabled={voteStatus[project._id]?.upvoteClicked}
+                    size={{ base: "sm", md: "md" }}
+                  />
+                  <Text color={textColor} fontSize={{ base: "sm", md: "md" }}>
+                    {voteStatus[project._id]?.downvotes || 0}
+                  </Text>
+                </HStack>
 
-
+                {userId !== undefined && (
                   <HStack spacing={2}>
-                    <Tooltip label="Delete Project" aria-label="Delete tooltip">
+                    <Tooltip label="Edit Project" aria-label="Edit tooltip">
                       <IconButton
-                        aria-label="Delete"
-                        icon={<RiDeleteBin2Line />}
+                        aria-label="Edit"
+                        icon={<FaRegEdit />}
                         variant="outline"
-                        colorScheme={deleteBtnClr}
+                        colorScheme="blue"
                         size={{ base: "sm", md: "md" }}
-                        onClick={() => {
-                          setProjectToDelete(project._id);
-                          onOpen();
-                        }}
+                        onClick={() => handleEdit(project)}
                       />
                     </Tooltip>
                   </HStack>
-                </HStack>
-              </Box>
-            ))
-          ) : (
-            <Text>No projects available.</Text>
-          )}
-          <HStack spacing={4} mt={6} justify="center">
-            <Button
-              onClick={() => handlePageChange(currentPage - 1)}
-              isDisabled={currentPage === 1}
-            >
-              Previous
-            </Button>
-            <Text>
-              Page {currentPage} of {totalPages}
-            </Text>
-            <Button
-              onClick={() => handlePageChange(currentPage + 1)}
-              isDisabled={currentPage === totalPages}
-            >
-              Next
-            </Button>
-          </HStack>
-        </MotionBox>
-      </VStack>
+                )}
 
-      {/* Delete Confirmation Modal */}
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Confirm Deletion</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>Are you sure you want to delete this project?</Text>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="blue"
-              mr={3}
-              onClick={() => handleDelete(projectToDelete)}
-            >
-              Confirm
-            </Button>
-            <Button variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </Box>
-  );
+                <HStack spacing={2}>
+                  <Tooltip label="Delete Project" aria-label="Delete tooltip">
+                    <IconButton
+                      aria-label="Delete"
+                      icon={<RiDeleteBin2Line />}
+                      variant="outline"
+                      colorScheme={deleteBtnClr}
+                      size={{ base: "sm", md: "md" }}
+                      onClick={() => {
+                        setProjectToDelete(project._id);
+                        onOpen();
+                      }}
+                    />
+                  </Tooltip>
+                </HStack>
+              </HStack>
+            </Box>
+          ))
+        ) : (
+          <Text>No projects available.</Text>
+        )}
+        <HStack spacing={4} mt={6} justify="center">
+          <Button
+            onClick={() => handlePageChange(currentPage - 1)}
+            isDisabled={currentPage === 1}
+            size={{ base: "sm", md: "md" }}
+          >
+            Previous
+          </Button>
+          <Text fontSize={{ base: "sm", md: "md" }}>
+            Page {currentPage} of {totalPages}
+          </Text>
+          <Button
+            onClick={() => handlePageChange(currentPage + 1)}
+            isDisabled={currentPage === totalPages}
+            size={{ base: "sm", md: "md" }}
+          >
+            Next
+          </Button>
+        </HStack>
+      </MotionBox>
+    </VStack>
+
+    {/* Delete Confirmation Modal */}
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Confirm Deletion</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Text>Are you sure you want to delete this project?</Text>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={() => handleDelete(projectToDelete)}
+          >
+            Confirm
+          </Button>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  </Box>
+);
 };
 
 export default MyProjectsSection;

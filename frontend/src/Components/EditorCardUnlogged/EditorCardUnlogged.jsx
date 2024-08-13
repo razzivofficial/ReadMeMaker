@@ -119,6 +119,7 @@ const MarkdownPreviewCard = ({
             fontWeight="bold"
             color={textColor}
             fontSize={{ base: "sm", md: "md" }}
+            mt={3}
           >
             {username}
           </Text>
@@ -200,15 +201,15 @@ const MarkdownPreviewCard = ({
 const EditorCardUnLogged = ({ onMarkdownClick }) => {
   const handleMarkdownClick = (markdown) => {
     // Show a professional notification
-    toast.success("Code successfully added to the ReadMeMaker code editor!", {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    // toast.success("Code successfully added to the ReadMeMaker code editor!", {
+    //   position: "bottom-center",
+    //   autoClose: 5000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    // });
     if (onMarkdownClick) {
       onMarkdownClick(markdown); // Call the passed function if needed
     }

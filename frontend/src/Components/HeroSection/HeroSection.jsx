@@ -153,8 +153,9 @@ const HeroSection = () => {
         </Text>
         <Stack
           direction={{ base: "column", sm: "row" }}
+          spacing={{ base: 4, sm: 6 }}
+          align="center"
           w={{ base: "100%", sm: "auto" }}
-          spacing={5}
         >
           <Link as={Navlink} to="/editor">
             <Button
@@ -163,11 +164,12 @@ const HeroSection = () => {
               rounded="md"
               size="lg"
               height="3.5rem"
-              fontSize="1.2rem"
+              fontSize={{ base: "md", sm: "lg" }}
             >
               Get Started
             </Button>
           </Link>
+
           <Button
             leftIcon={<GiCoffeeCup />}
             colorScheme="gray"
@@ -175,7 +177,7 @@ const HeroSection = () => {
             rounded="md"
             size="lg"
             height="3.5rem"
-            fontSize="1rem"
+            fontSize={{ base: "sm", sm: "md" }}
             borderColor={useColorModeValue("gray.500", "gray.400")}
           >
             Buy me a coffee
