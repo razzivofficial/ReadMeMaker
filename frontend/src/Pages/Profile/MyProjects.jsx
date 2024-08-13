@@ -38,6 +38,8 @@ const MyProjectsSection = ({ email }) => {
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
 
+
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -342,7 +344,7 @@ const MyProjectsSection = ({ email }) => {
                       {voteStatus[project._id]?.downvotes || 0}
                     </Text>
                   </HStack>
-                  {userId !== undefined && (
+                  {localStorage.getItem('userEmail') === email && (
                     <HStack spacing={2}>
                       <Tooltip label="Edit Project" aria-label="Edit tooltip">
                         <IconButton
@@ -356,23 +358,27 @@ const MyProjectsSection = ({ email }) => {
                       </Tooltip>
                     </HStack>
                   )}
+                  {localStorage.getItem('userEmail') === email && (
+                    <HStack spacing={2}>
+                      <Tooltip label="Delete Project" aria-label="Delete tooltip">
+                        <IconButton
+                          aria-label="Delete"
+                          icon={<RiDeleteBin2Line />}
+                          variant="outline"
+                          colorScheme={deleteBtnClr}
+                          size={{ base: "sm", md: "md" }}
+                          onClick={() => {
+                            setProjectToDelete(project._id);
+                            onOpen();
+                          }}
+                        />
+                      </Tooltip>
+                    </HStack>
+                  )}
 
 
-                  <HStack spacing={2}>
-                    <Tooltip label="Delete Project" aria-label="Delete tooltip">
-                      <IconButton
-                        aria-label="Delete"
-                        icon={<RiDeleteBin2Line />}
-                        variant="outline"
-                        colorScheme={deleteBtnClr}
-                        size={{ base: "sm", md: "md" }}
-                        onClick={() => {
-                          setProjectToDelete(project._id);
-                          onOpen();
-                        }}
-                      />
-                    </Tooltip>
-                  </HStack>
+
+
                 </HStack>
               </Box>
             ))
