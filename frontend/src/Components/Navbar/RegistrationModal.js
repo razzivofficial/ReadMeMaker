@@ -19,14 +19,14 @@ import { toast } from "react-toastify";
 
 const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
   const [credentials, setCredentials] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
   });
 
   const handleRegistration = async (e) => {
     e.preventDefault();
-    setCredentials({ name: "", email: "", password: "" });
+    setCredentials({ username: "", email: "", password: "" });
     try {
       const response = await fetch(
         "https://readmemaker-backend.vercel.app/users/createuser",
@@ -36,7 +36,7 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: credentials.name,
+            username: credentials.username,
             email: credentials.email,
             password: credentials.password,
           }),
@@ -47,7 +47,6 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
         toast.error("Registration failed: " + json.error);
       } else {
         toast.success("Registration successful");
-        localStorage.setItem("name", credentials.name);
         onClose();
       }
     } catch (error) {
@@ -78,11 +77,11 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl isRequired mb={4}>
-            <FormLabel>Enter Your Name</FormLabel>
+            <FormLabel>Enter Your username</FormLabel>
             <Input
-              placeholder="Enter your name"
-              id="name"
-              value={credentials.name}
+              placeholder="Enter your username"
+              id="username"
+              value={credentials.username}
               onChange={handleChange}
               required
               bg={useColorModeValue("white", "gray.700")}

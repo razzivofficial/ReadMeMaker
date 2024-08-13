@@ -15,12 +15,13 @@ const checkUniqueUsername = async (username) => {
     return !user;
 };
 
+
+
 const createuser = async (req, res) => {
     try {
         const userdetails = new User(req.body);
 
         const error = validationResult(req);
-
         if (!error.isEmpty()) {
             return res.status(400).json({ error: error.array() });
         }
@@ -34,14 +35,23 @@ const createuser = async (req, res) => {
             return res.status(400).json({ error: "Email is not valid" });
         }
 
+        // Check if the email is already in use
         const existingUser = await User.findOne({ email: userdetails.email });
         if (existingUser) {
             return res.status(400).json({ error: "Email already exists, please try another" });
         }
 
+        // Check if the username is unique
+        const isUniqueUsername = await checkUniqueUsername(userdetails.username);
+        if (!isUniqueUsername) {
+            return res.status(400).json({ error: "Username already exists, please try another" });
+        }
+
+        // Hash the password
         const salt = await bcrypt.genSalt(10);
         userdetails.password = await bcrypt.hash(userdetails.password, salt);
 
+        // Save the user
         await userdetails.save();
 
         res.json({ message: "success", userdetails });
@@ -50,6 +60,7 @@ const createuser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 const loginuser = async (req, res) => {
     try {

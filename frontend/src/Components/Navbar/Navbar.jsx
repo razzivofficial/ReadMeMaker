@@ -266,14 +266,14 @@ function Navbar() {
 
   /* Signup */
   const [credentials, setcredentials] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
   });
 
   const handleregistration = async (e) => {
     e.preventDefault();
-    setcredentials({ name: "", email: "", password: "" });
+    setcredentials({ username: "", email: "", password: "" });
     const response = await fetch(
       "https://readmemaker-backend.vercel.app/users/createuser",
       {
@@ -282,7 +282,7 @@ function Navbar() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: credentials.name,
+          username: credentials.username,
           email: credentials.email,
           password: credentials.password,
         }),
@@ -294,7 +294,7 @@ function Navbar() {
       toast.error("Registration failed: " + json.error);
     } else {
       toast.success("Registration successful");
-      localStorage.setItem("name", credentials.name);
+      // localStorage.setItem("name", credentials.name);
       onClose();
     }
   };
@@ -549,13 +549,13 @@ function Navbar() {
             ) : (
               <>
                 <FormControl isRequired>
-                  <FormLabel>Enter Your name</FormLabel>
+                  <FormLabel>Enter Your username</FormLabel>
                   <Input
                     ref={initialRef}
-                    placeholder="Enter your name"
-                    name="name"
-                    id="name"
-                    value={credentials.name}
+                    placeholder="Enter your username"
+                    name="username"
+                    id="username"
+                    value={credentials.username}
                     onChange={onchange}
                     required
                   />

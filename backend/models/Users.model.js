@@ -25,7 +25,8 @@ const userSchema = mongoose.Schema({
     },
     avatar: {
         type: String,  // Store the avatar URL or image path
-        required: false
+        required: false,
+        default:"avatar1",
     },
     upvoteIds: [{
         type: mongoose.Schema.Types.ObjectId,  // Use ObjectId for referencing editors
