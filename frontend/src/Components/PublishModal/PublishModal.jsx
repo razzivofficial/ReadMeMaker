@@ -287,10 +287,10 @@ const PublishModal = ({ isOpen, onClose, markdownContent }) => {
             <RadioGroup value={type} onChange={setType}>
               <Box d="flex" flexDirection="column">
                 <Box mb={2}>
-                  <Radio value="component">Component</Radio>
+                  <Radio value="template">Template</Radio>
                 </Box>
                 <Box>
-                  <Radio value="template">Template</Radio>
+                  <Radio value="component">Component</Radio>
                 </Box>
               </Box>
             </RadioGroup>

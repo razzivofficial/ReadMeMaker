@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { GiCoffeeCup } from "react-icons/gi";
 import { Link as Navlink } from "react-router-dom";
+import CoffeePage from "../CoffeePage/CoffeePage";
 
 // Array of arrays, each containing words associated with the initial letters
 const wordsList = [
@@ -21,6 +22,7 @@ const wordsList = [
 const HeroSection = () => {
   const [currentWordSet, setCurrentWordSet] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [displayedWords, setDisplayedWords] = useState(() =>
     wordsList[0].map((word, index) => ({
       text: word.charAt(0),
@@ -34,6 +36,8 @@ const HeroSection = () => {
   const pauseDuration = 1000; // Duration to pause before moving to next word
   const finalWordPauseDuration = 1500; // Longer pause before the last word
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   useEffect(() => {
     const words = wordsList[currentWordSet];
     let timer;
@@ -178,10 +182,13 @@ const HeroSection = () => {
             size="lg"
             height="3.5rem"
             fontSize={{ base: "sm", sm: "md" }}
-            borderColor={useColorModeValue("gray.500", "gray.400")}
+            borderColor="gray.500"
+            onClick={openModal}
           >
             Buy me a coffee
           </Button>
+
+          <CoffeePage isOpen={isModalOpen} onClose={closeModal} />
         </Stack>
       </Stack>
     </Box>

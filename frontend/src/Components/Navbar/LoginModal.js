@@ -19,7 +19,8 @@ import {
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { FcGoogle } from "react-icons/fc";
+import { AiFillGithub } from "react-icons/ai";
 const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
@@ -145,17 +146,16 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
             Forgot password?
           </Text>
           <Flex direction="column" align="center" my={5}>
-            <Button
-              variant="outline"
-              colorScheme="blue"
-              mb={2}
-              w="full"
-              maxW="sm"
-            >
-              Log in with Google
+            <Button mt={4} textAlign="center" justify="center" leftIcon={<FcGoogle />}>
+              Sign up using Google
             </Button>
-            <Button variant="outline" colorScheme="gray" w="full" maxW="sm">
-              Log in with GitHub
+            <Button
+              mt={4}
+              textAlign="center"
+              justify="center"
+              leftIcon={<AiFillGithub />}
+            >
+              Log in with Github
             </Button>
           </Flex>
           <Flex direction="column" align="center">

@@ -16,6 +16,8 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
+import { FcGoogle } from "react-icons/fc";
+import { AiFillGithub } from "react-icons/ai";
 
 const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
   const [credentials, setCredentials] = useState({
@@ -120,21 +122,20 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
           </FormControl>
           <Flex direction="column" align="center" my={5}>
             <Button
-              colorScheme={buttonColor}
-              _hover={{ bg: buttonHoverColor }}
-              mb={2}
-              w="full"
-              maxW="sm"
+              mt={4}
+              textAlign="center"
+              justify="center"
+              leftIcon={<FcGoogle />}
             >
-              Sign Up with Google
+              Sign up using Google
             </Button>
             <Button
-              colorScheme={buttonColor}
-              _hover={{ bg: buttonHoverColor }}
-              w="full"
-              maxW="sm"
+              mt={4}
+              textAlign="center"
+              justify="center"
+              leftIcon={<AiFillGithub />}
             >
-              Sign Up with GitHub
+              Log in with Github
             </Button>
           </Flex>
           <Flex justify="center" alignItems="center">
