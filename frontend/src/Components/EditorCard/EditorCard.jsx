@@ -9,6 +9,7 @@ import {
   Image,
   IconButton,
   Divider,
+  Avatar,
   useColorModeValue,
   SimpleGrid,
   Center,
@@ -82,9 +83,12 @@ const MarkdownPreviewCard = ({
   ];
 
   const navigate = useNavigate();
+
   useEffect(() => {
-    const avatarIndex = parseInt(profilePic.replace("avatar", "")) - 1;
-    setSelectedAvatar(avatars[avatarIndex]);
+    if (profilePic !== undefined) {
+      const avatarIndex = parseInt(profilePic.replace("avatar", "")) - 1;
+      setSelectedAvatar(avatars[avatarIndex]);
+    }
   }, [profilePic]);
 
   useEffect(() => {
@@ -240,11 +244,21 @@ const MarkdownPreviewCard = ({
       m={2}
     >
       <HStack spacing={4} mb={4} align="start">
-        <Image
+        {/* <Image
           borderRadius="full"
           boxSize={{ base: "40px", md: "50px" }}
           src={selectedAvatar}
-          alt={`${username}'s profile`}
+        // name={username}
+        // alt={`${username}'s profile`} 
+        /> */}
+        <Avatar
+          size="2xl"
+          name={username}
+          src={selectedAvatar}
+          boxSize={{ base: "40px", md: "50px" }}
+          cursor="pointer"
+          // borderWidth={2}
+          boxShadow="lg"
         />
         <VStack align="start" spacing={0}>
           <Link to={`/profile/${encodedmail}`}>
