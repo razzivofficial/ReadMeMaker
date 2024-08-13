@@ -43,9 +43,14 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
         }
       );
       const json = await response.json();
+      // console.log(json);
       if (json.message !== "success") {
         toast.error("Registration failed: " + json.error);
-      } else {
+      }
+      else if(json.error){
+        toast.error(json.error)
+      } 
+      else {
         toast.success("Registration successful");
         onClose();
       }
