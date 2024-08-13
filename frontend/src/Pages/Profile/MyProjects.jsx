@@ -33,8 +33,8 @@ const MyProjectsSection = ({ email }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [voteStatus, setVoteStatus] = useState({});
-  const [projectToDelete, setProjectToDelete] = useState(null); // State for the project to delete
-  const { isOpen, onOpen, onClose } = useDisclosure(); // Chakra UI modal hooks
+  const [projectToDelete, setProjectToDelete] = useState(null); 
+  const { isOpen, onOpen, onClose } = useDisclosure(); 
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
 
@@ -357,7 +357,7 @@ return (
                   </Text>
                 </HStack>
 
-                {userId !== undefined && (
+                {email === localStorage.getItem("userEmail") && (
                   <HStack spacing={2}>
                     <Tooltip label="Edit Project" aria-label="Edit tooltip">
                       <IconButton
@@ -371,8 +371,8 @@ return (
                     </Tooltip>
                   </HStack>
                 )}
-
-                <HStack spacing={2}>
+                {email === localStorage.getItem("userEmail") && (
+                  <HStack spacing={2}>
                   <Tooltip label="Delete Project" aria-label="Delete tooltip">
                     <IconButton
                       aria-label="Delete"
@@ -387,6 +387,9 @@ return (
                     />
                   </Tooltip>
                 </HStack>
+                )}
+
+                
               </HStack>
             </Box>
           ))

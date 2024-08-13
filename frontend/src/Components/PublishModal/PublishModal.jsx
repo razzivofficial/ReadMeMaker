@@ -170,7 +170,11 @@ const PublishModal = ({ isOpen, onClose, markdownContent }) => {
 
         if (response.ok) {
           toast.success("Published successfully");
-        } else {
+        } 
+        else if(username === undefined) {
+          toast.error("Please add username to publish from profile");
+        }
+        else {
           toast.error("Failed to publish");
         }
 
