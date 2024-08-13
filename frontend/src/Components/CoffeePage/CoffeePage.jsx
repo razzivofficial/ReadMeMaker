@@ -1,4 +1,3 @@
-// MyModal.js
 import React from "react";
 import {
   Modal,
@@ -8,25 +7,27 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  Button,
   Image,
   Text,
   Box,
   VStack,
   useBreakpointValue,
+  chakra,
 } from "@chakra-ui/react";
 import QR from "../../MediaFiles/avatar1.jpg";
 import Gareebi from "../../MediaFiles/golmaal.jpg";
 
 const CoffeePage = ({ isOpen, onClose }) => {
-  // Responsive values
   const boxSize = useBreakpointValue({ base: "200px", md: "250px" });
   const fontSize = useBreakpointValue({ base: "sm", md: "md" });
   const padding = useBreakpointValue({ base: 2, md: 4 });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
-      <ModalOverlay />
+      <ModalOverlay
+        bg="blackAlpha.600" // Optional: add a semi-transparent background color
+        backdropFilter="blur(8px)" // Apply the blur effect
+      />
       <ModalContent>
         <ModalHeader
           textAlign="center"
@@ -52,12 +53,13 @@ const CoffeePage = ({ isOpen, onClose }) => {
               running smoothly? 🍵
             </Text>
             <Text fontSize={fontSize} textAlign="center">
-              Tu ek kaam kar, ye mera QR hai, tu mujhe thoda support de! (!Server ka kharcha pani) 🍁
-              🌿
+              Tu ek kaam kar, ye mera QR hai, tu mujhe thoda support de!
+              (!Server ka kharcha pani) 🍁 🌿
             </Text>
             <Text fontSize={fontSize} textAlign="center">
-              Not A Get Me 🍵 Page as Yaha Parle-G khana pad raha hai Kali Chai
-              mai dubokar 🥹
+              Not A Get Me 🍵 Page as Yaha Parle-G khana pad raha hai{" "}
+              <chakra.span fontWeight="bold">Kali Chai mai dubokar</chakra.span>{" "}
+              🥹
             </Text>
             <Box>
               <Image
@@ -71,7 +73,10 @@ const CoffeePage = ({ isOpen, onClose }) => {
               />
             </Box>
             <Text fontSize={fontSize} textAlign="center">
-              Me Receiving Payment Notification: Sanskar Umar Se Bade Hai Iske
+              Me Receiving Payment Notification{" "}
+              <chakra.span fontWeight="bold">
+                "Sanskar Umar Se Bade Hai Inke"
+              </chakra.span>
             </Text>
           </VStack>
         </ModalBody>
