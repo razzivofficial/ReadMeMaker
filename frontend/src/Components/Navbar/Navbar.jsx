@@ -347,7 +347,7 @@ function Navbar() {
           onClick={() => setIsNavbarOpen(!isNavbarOpen)}
         />
         <HStack spacing={4} alignItems="center">
-          <Link as={Navlink} to="/" w={{ base: "12rem", md: "18rem" }}>
+          <Link as={Navlink} to="/" w={{ base: "12rem", md: "14rem" }}>
             <Image alt="ReadMeMaker Logo" src={logoImg} rounded={50} />
           </Link>
           <Input
@@ -466,11 +466,7 @@ function Navbar() {
                   <Text fontWeight="500">Bookmarks</Text>
                 </MenuItem> */}
                 <MenuItem>
-                  <Text
-                    fontWeight="500"
-                    as={Navlink}
-                    to={`/profile/${email}`}
-                  >
+                  <Text fontWeight="500" as={Navlink} to={`/profile/${email}`}>
                     My Projects
                   </Text>
                 </MenuItem>
@@ -498,7 +494,12 @@ function Navbar() {
         />
 
         {!localStorage.getItem("authToken") && (
-          <Button className="ml-6" colorScheme="blue" onClick={onOpen}>
+          <Button
+            className="ml-6"
+            colorScheme="blue"
+            onClick={onOpen}
+            display={{ base: "none", md: "inline-flex" }}
+          >
             Signup
           </Button>
         )}
