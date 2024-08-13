@@ -629,7 +629,7 @@ const ProfilePage = () => {
                   </VStack>
                 </HStack>
               </MotionBox>
-              <MyProjectsSection email={useremail}/>
+              <MyProjectsSection email={email}/>
               {localmail === email && (
                 <>
                   <MotionBox
