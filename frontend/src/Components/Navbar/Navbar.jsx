@@ -121,7 +121,7 @@ function Navbar() {
       }
 
       try {
-        console.log(email);
+        // console.log(email);
         const response = await fetch(
           "https://readmemaker-backend.vercel.app/users/getavatar",
           {
@@ -228,7 +228,7 @@ function Navbar() {
       }
     );
     const json = await response.json();
-
+    // console.log(json)
     if (!json.success) {
       toast.error("Enter valid credentials");
     } else {
@@ -289,10 +289,14 @@ function Navbar() {
       }
     );
     const json = await response.json();
-    console.log(json.message);
+    // console.log(json);
     if (json.message !== "success") {
       toast.error("Registration failed: " + json.error);
-    } else {
+    }
+    else if(json.error){
+      toast.error(json.error)
+    }
+    else {
       toast.success("Registration successful");
       // localStorage.setItem("name", credentials.name);
       onClose();
