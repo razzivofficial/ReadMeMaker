@@ -357,7 +357,7 @@ return (
                   </Text>
                 </HStack>
 
-                {userId !== undefined && (
+                {email === localstorage.getItem("userEmail") && (
                   <HStack spacing={2}>
                     <Tooltip label="Edit Project" aria-label="Edit tooltip">
                       <IconButton
