@@ -1,15 +1,18 @@
-// import { Buffer } from 'buffer'; // Import Buffer from the buffer package
-
-// export function encodeEmail(email) {
-//   if (typeof email !== 'string') {
-//     throw new TypeError('encodeEmail expects a string');
-//   }
-//   return Buffer.from(email).toString('base64');
-// }
-
-// export function decodeEmail(encodedEmail) {
-//   if (typeof encodedEmail !== 'string') {
-//     throw new TypeError('decodeEmail expects a string');
-//   }
-//   return Buffer.from(encodedEmail, 'base64').toString('utf-8');
-// }
+// Function to encode the email to base64
+export function encodeEmail(email) {
+    if (typeof email !== 'string') {
+    //   console.error(`encodeEmail expects a string but received ${typeof email}`);
+      return null; // Return null or handle it as per your need
+    }
+    return btoa(unescape(encodeURIComponent(email)));
+  }
+  
+  // Function to decode the email from base64
+  export function decodeEmail(encodedEmail) {
+    if (typeof encodedEmail !== 'string') {
+    //   console.error(`decodeEmail expects a string but received ${typeof encodedEmail}`);
+      return null; // Return null or handle it as per your need
+    }
+    return decodeURIComponent(escape(atob(encodedEmail)));
+  }
+  
