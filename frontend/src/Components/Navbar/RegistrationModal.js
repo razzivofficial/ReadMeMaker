@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -14,10 +14,12 @@ import {
   Text,
   Flex,
   useColorModeValue,
+  Spinner,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
+import { CheckCircleIcon } from "@chakra-ui/icons"; // Import Chakra UI icon
 
 const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
   const [credentials, setCredentials] = useState({
@@ -25,6 +27,8 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
     email: "",
     password: "",
   });
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
 
   const handleRegistration = async (e) => {
     e.preventDefault();
@@ -45,14 +49,11 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
         }
       );
       const json = await response.json();
-      // console.log(json);
       if (json.message !== "success") {
         toast.error("Registration failed: " + json.error);
-      }
-      else if(json.error){
-        toast.error(json.error)
-      } 
-      else {
+      } else if (json.error) {
+        toast.error(json.error);
+      } else {
         toast.success("Registration successful");
         onClose();
       }
@@ -63,6 +64,29 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
 
   const handleChange = (event) => {
     setCredentials({ ...credentials, [event.target.id]: event.target.value });
+
+    if (event.target.id === "username") {
+      checkUsernameAvailability(event.target.value);
+    }
+  };
+
+  const checkUsernameAvailability = async (username) => {
+    if (username.length > 0) {
+      setIsCheckingUsername(true);
+      try {
+        const response = await fetch(
+          `https://readmemaker-backend.vercel.app/users/checkusername/${username}`
+        );
+        const json = await response.json();
+        setIsUsernameAvailable(json.available);
+      } catch (error) {
+        setIsUsernameAvailable(null);
+        toast.error("Error checking username availability.");
+      }
+      setIsCheckingUsername(false);
+    } else {
+      setIsUsernameAvailable(null);
+    }
   };
 
   const modalContentBg = useColorModeValue("white", "gray.800");
@@ -84,7 +108,7 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl isRequired mb={4}>
-            <FormLabel>Enter Your username</FormLabel>
+            <FormLabel>Enter Your Username</FormLabel>
             <Input
               placeholder="Enter your username"
               id="username"
@@ -94,6 +118,18 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
               bg={useColorModeValue("white", "gray.700")}
               color={useColorModeValue("black", "white")}
             />
+            {isCheckingUsername && <Spinner size="sm" mt={2} />}
+            {isUsernameAvailable !== null && (
+              <Text mt={2} color={isUsernameAvailable ? "green.500" : "red.500"}>
+                {isUsernameAvailable ? (
+                  <>
+                    Username is available <CheckCircleIcon color="green.500" />
+                  </>
+                ) : (
+                  "Username is taken"
+                )}
+              </Text>
+            )}
           </FormControl>
           <FormControl isRequired mb={4}>
             <FormLabel>Enter Your Email</FormLabel>
@@ -153,7 +189,12 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleRegistration}>
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={handleRegistration}
+            isDisabled={isUsernameAvailable === false}
+          >
             Sign Up
           </Button>
           <Button onClick={onClose}>Cancel</Button>
