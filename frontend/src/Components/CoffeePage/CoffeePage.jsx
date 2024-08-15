@@ -14,7 +14,7 @@ import {
   useBreakpointValue,
   chakra,
 } from "@chakra-ui/react";
-import QR from "../../MediaFiles/avatar1.jpg";
+import QR from "../../MediaFiles/QR.jpg";
 import Gareebi from "../../MediaFiles/golmaal.jpg";
 
 const CoffeePage = ({ isOpen, onClose }) => {
