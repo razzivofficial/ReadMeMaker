@@ -23,6 +23,7 @@ import {
   Input,
   Spacer,
   MenuDivider,
+  Spinner,
   VStack,
   Image,
 } from "@chakra-ui/react";
@@ -34,6 +35,7 @@ import { MdTimeline } from "react-icons/md";
 import { BsBook, BsGlobe2 } from "react-icons/bs";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
+import { CheckCircleIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import {
   Modal,
@@ -82,6 +84,8 @@ const dropdownLinks = [
 ];
 
 function Navbar() {
+  const inputBg = useColorModeValue("white", "gray.700");
+  const inputColor = useColorModeValue("black", "white");
   const location = useLocation();
   const { colorMode, toggleColorMode } = useColorMode();
   const avatars = [
@@ -265,12 +269,14 @@ function Navbar() {
   };
 
   /* Signup */
+
   const [credentials, setcredentials] = useState({
     username: "",
     email: "",
     password: "",
   });
-
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const handleregistration = async (e) => {
     e.preventDefault();
     setcredentials({ username: "", email: "", password: "" });
@@ -293,7 +299,7 @@ function Navbar() {
     if (json.message !== "success") {
       toast.error("Registration failed: " + json.error);
     }
-    else if(json.error){
+    else if (json.error) {
       toast.error(json.error)
     }
     else {
@@ -304,7 +310,31 @@ function Navbar() {
   };
   const onchange = (event) => {
     setcredentials({ ...credentials, [event.target.id]: event.target.value });
+    if (event.target.id === "username") {
+      checkUsernameAvailability(event.target.value);
+    }
   };
+
+  const checkUsernameAvailability = async (username) => {
+    if (username.length > 0) {
+      setIsCheckingUsername(true);
+      try {
+        const response = await fetch(
+          `https://readmemaker-backend.vercel.app/users/checkusername/${username}`
+        );
+        const json = await response.json();
+        setIsUsernameAvailable(json.available);
+      } catch (error) {
+        setIsUsernameAvailable(null);
+        toast.error("Error checking username availability.");
+      }
+      setIsCheckingUsername(false);
+    } else {
+      setIsUsernameAvailable(null);
+    }
+  };
+
+
 
   // const [email, setEmail] = useState('');
 
@@ -322,7 +352,7 @@ function Navbar() {
   };
 
 
-  
+
   const hashedmail = encodeEmail(email);
 
 
@@ -414,10 +444,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                    // boxShadow={useColorModeValue(
-                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                    // )}
+                  // boxShadow={useColorModeValue(
+                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                  // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -553,16 +583,28 @@ function Navbar() {
             ) : (
               <>
                 <FormControl isRequired>
-                  <FormLabel>Enter Your username</FormLabel>
+                  <FormLabel>Enter Your Username</FormLabel>
                   <Input
-                    ref={initialRef}
                     placeholder="Enter your username"
-                    name="username"
                     id="username"
                     value={credentials.username}
                     onChange={onchange}
                     required
+                    bg={inputBg}
+                    color={inputColor}
                   />
+                  {isCheckingUsername && <Spinner size="sm" mt={2} />}
+                  {isUsernameAvailable !== null && (
+                    <Text mt={2} color={isUsernameAvailable ? "green.500" : "red.500"}>
+                      {isUsernameAvailable ? (
+                        <>
+                          Username is available <CheckCircleIcon color="green.500" />
+                        </>
+                      ) : (
+                        "Username is taken"
+                      )}
+                    </Text>
+                  )}
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel>Enter Your email</FormLabel>
