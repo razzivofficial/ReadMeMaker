@@ -19,4 +19,6 @@ router.put('/follow/:userId/:followedUserId',userdetails.followUser)
 router.put('/removefollow/:userId/:followedUserId',userdetails.removeFollowedUser)
 router.get('/getfollowed/:userId',userdetails.getFollowedUsers)
 
+router.get('/checkusername/:username',userdetails.uniqueusername)
+
 module.exports = router;

@@ -16,6 +16,26 @@ const checkUniqueUsername = async (username) => {
 };
 
 
+const uniqueusername = async (req, res) => {
+    try {
+      const { username } = req.params;
+  
+      // Query the database to find a user with the provided username
+      const user = await User.findOne({ username });
+  
+      // If user is found, the username is not unique
+      if (user) {
+        return res.json({ available: false, message: "Username is already taken" });
+      }
+  
+      // If user is not found, the username is unique
+      return res.json({ available: true, message: "Username is available" });
+    } catch (error) {
+      console.error("Error checking username uniqueness:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+
 
 const createuser = async (req, res) => {
     try {
@@ -368,5 +388,6 @@ module.exports = {
     deleteAccount,
     followUser,
     removeFollowedUser,
-    getFollowedUsers
+    getFollowedUsers,
+    uniqueusername
 };
