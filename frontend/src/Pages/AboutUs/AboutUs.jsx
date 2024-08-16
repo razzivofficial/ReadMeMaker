@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import React, { useState } from 'react';
 import {
   FormControl,
   FormLabel,
@@ -18,12 +19,15 @@ import {
   Avatar,
   Divider,
   Heading,
+  useToast,
   Center,
 } from "@chakra-ui/react";
 import { FaGithub, FaDev, FaLinkedin, FaTelegram } from "react-icons/fa";
 import { FaSquareXTwitter, FaSquareInstagram } from "react-icons/fa6";
 import { AiFillBug } from "react-icons/ai";
 import { MdEmail } from "react-icons/md";
+
+import axios from 'axios';
 
 import AboutUsGif from "../../MediaFiles/AboutUsGif.gif";
 import Rajiv from "../../MediaFiles/Rajiv.jpg";
@@ -90,43 +94,43 @@ const testimonials = [
     content: "My code works, but I don’t know why it’s showing a 404 error.",
     accounts: [
       {
-        url: "https://github.com/tushar",
+        url: "https://github.com/tushargandhi77",
         label: "Github Account",
         type: "gray",
         icon: <FaGithub />,
       },
       {
-        url: "https://dev.to/razzivdecoder",
+        url: "https://github.com/tushargandhi77",
         label: "Dev Account",
         type: "gray",
         icon: <FaDev />,
       },
       {
-        url: "https://x.com/razzivofficial",
+        url: "https://github.com/tushargandhi77",
         label: "X Account",
         type: "X",
         icon: <FaSquareXTwitter />,
       },
       {
-        url: "https://www.instagram.com/razzivofficial/",
+        url: "https://www.instagram.com/tushar_gandhi_7/",
         label: "Instagram",
         type: "pink",
         icon: <FaSquareInstagram />,
       },
       {
-        url: "https://www.linkedin.com/in/razzivofficial/",
+        url: "https://www.linkedin.com/in/tushar-gandhi-209883272",
         label: "LinkedIn Account",
         type: "linkedin",
         icon: <FaLinkedin />,
       },
       {
-        url: "mailto:razzivofficial@gmail.com",
+        url: "mailto:gandhitushar418@gmail.com",
         label: "Gmail Account",
         type: "gray",
         icon: <MdEmail />,
       },
       {
-        url: "https://t.me/razzivofficial",
+        url: "https://t.me/tushargandhi77",
         label: "Telegram Account",
         type: "blue",
         icon: <FaTelegram />,
@@ -199,6 +203,56 @@ const Testimonials = () => {
   const bgColor = isDark ? "gray.700" : "white";
   const bugButtonBgColor = isDark ? "red.600" : "red.500";
   const bugButtonHoverColor = isDark ? "red.500" : "red.300";
+
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    description: '',
+  });
+  const toast = useToast();
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+    if (
+      id === 'email' ||
+      id === 'description'
+    ) {
+      const isEmailValid = isValidEmail(id === 'email' ? value : formData.email);
+      const isDescriptionValid = (id === 'description' ? value : formData.description).length <= 300;
+      setIsButtonDisabled(!isEmailValid || !isDescriptionValid);
+    }
+  };
+
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('https://readmemaker-backend.vercel.app/feed/feedpost', formData);
+      toast({
+        title: 'Message Sent',
+        description: 'Your feedback has been successfully submitted.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      // Clear the form after successful submission
+      setFormData({ name: '', email: '', description: '' });
+      setIsButtonDisabled(true);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'There was an issue submitting your feedback. Please try again later.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <>
@@ -454,6 +508,8 @@ const Testimonials = () => {
                 placeholder="Your good name"
                 rounded="md"
                 borderColor="gray.300"
+                value={formData.name}
+                onChange={handleChange}
               />
             </FormControl>
             <FormControl id="email" isRequired>
@@ -463,17 +519,21 @@ const Testimonials = () => {
                 placeholder="Eg: md@md.com"
                 rounded="md"
                 borderColor="gray.300"
+                value={formData.email}
+                onChange={handleChange}
               />
             </FormControl>
           </Stack>
-          <FormControl id="message" isRequired>
+          <FormControl id="description" isRequired>
             <FormLabel>How can we help you?</FormLabel>
             <Textarea
               size="lg"
               h="12vh"
-              placeholder="Enter your message"
+              placeholder="Enter your message upto 300 characters"
               rounded="md"
               borderColor="gray.300"
+              value={formData.description}
+              onChange={handleChange}
             />
           </FormControl>
           <Button
@@ -482,6 +542,8 @@ const Testimonials = () => {
             _hover={{ bg: "blue.400" }}
             rounded="md"
             w="full"
+            onClick={handleSubmit}
+            isDisabled={isButtonDisabled}
           >
             Send Message
           </Button>

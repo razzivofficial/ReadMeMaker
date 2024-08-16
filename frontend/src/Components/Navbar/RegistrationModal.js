@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -19,7 +19,7 @@ import {
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
-import { CheckCircleIcon } from "@chakra-ui/icons"; // Import Chakra UI icon
+import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
 const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
   const [credentials, setCredentials] = useState({
@@ -29,6 +29,9 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
   });
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
+
+  const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
+  const isPasswordValid = passwordRegex.test(credentials.password);
 
   const handleRegistration = async (e) => {
     e.preventDefault();
@@ -155,6 +158,25 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
               bg={useColorModeValue("white", "gray.700")}
               color={useColorModeValue("black", "white")}
             />
+            {credentials.password && (
+              <Text
+                mt={2}
+                color={isPasswordValid ? "green.500" : "red.500"}
+                fontSize="sm"
+              >
+                {isPasswordValid ? (
+                  <>
+                    Password is Strong <CheckCircleIcon color="green.500" />
+                  </>
+                ) : (
+                  <>
+                    Password must be at least 8 characters long, contain at least
+                    one number, and one special character
+                    <WarningIcon color="red.500" ml={2} />
+                  </>
+                )}
+              </Text>
+            )}
           </FormControl>
           <Flex direction="column" align="center" my={5}>
             <Button
@@ -193,7 +215,7 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
             colorScheme="blue"
             mr={3}
             onClick={handleRegistration}
-            isDisabled={isUsernameAvailable === false}
+            isDisabled={isUsernameAvailable === false || !isPasswordValid}
           >
             Sign Up
           </Button>
