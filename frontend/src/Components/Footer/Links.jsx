@@ -8,7 +8,8 @@ const ExternalFooterLink = (props) => {
     <ChakraLink
       _focus={{ outline: "none", boxShadow: "none" }}
       href={href}
-      target={isExternal ? "_blank" : "_self"}
+      // target={isExternal ? "_blank" : "_self"}
+      target="_self"
       fontWeight={500}
       color="gray.500"
       _hover={{ color: "gray.600", textDecoration: "none" }}
