@@ -35,7 +35,7 @@ import { MdTimeline } from "react-icons/md";
 import { BsBook, BsGlobe2 } from "react-icons/bs";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import { CheckCircleIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon,WarningIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import {
   Modal,
@@ -84,6 +84,7 @@ const dropdownLinks = [
 ];
 
 function Navbar() {
+
   const inputBg = useColorModeValue("white", "gray.700");
   const inputColor = useColorModeValue("black", "white");
   const location = useLocation();
@@ -339,7 +340,8 @@ function Navbar() {
   //     setEmail(storedEmail);
   //   }
   // }, []);
-
+  const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
+  const isPasswordValid = passwordRegex.test(credentials.password);
   const handleLogout = () => {
     toast.success("Logout successful");
     localStorage.removeItem("authToken");
@@ -436,10 +438,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                    // boxShadow={useColorModeValue(
-                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                    // )}
+                  // boxShadow={useColorModeValue(
+                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                  // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -627,7 +629,28 @@ function Navbar() {
                     value={credentials.password}
                     onChange={onchange}
                     required
+                    bg={inputBg}
+                    color={inputColor}
                   />
+                  {credentials.password && (
+                    <Text
+                      mt={2}
+                      color={isPasswordValid ? "green.500" : "red.500"}
+                      fontSize="sm"
+                    >
+                      {isPasswordValid ? (
+                        <>
+                          Password is strong <CheckCircleIcon color="green.500" />
+                        </>
+                      ) : (
+                        <>
+                          Password must be at least 8 characters long, contain at least one
+                          number, and one special character
+                          <WarningIcon color="red.500" ml={2} />
+                        </>
+                      )}
+                    </Text>
+                  )}
                 </FormControl>
               </>
             ) : (
@@ -772,7 +795,7 @@ function Navbar() {
           <ModalFooter>
             {changeMode ? (
               <>
-                <Button colorScheme="blue" mr={3} onClick={handleregistration}>
+                <Button colorScheme="blue" mr={3} onClick={handleregistration} isDisabled={isUsernameAvailable === false || !isPasswordValid}>
                   Sign up
                 </Button>
               </>
