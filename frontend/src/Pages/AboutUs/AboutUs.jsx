@@ -20,87 +20,165 @@ import {
   Heading,
   Center,
 } from "@chakra-ui/react";
-import { FaGithub, FaDev, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaDev, FaLinkedin, FaTelegram } from "react-icons/fa";
+import { FaSquareXTwitter, FaSquareInstagram } from "react-icons/fa6";
 import { AiFillBug } from "react-icons/ai";
+import { MdEmail } from "react-icons/md";
 
 import AboutUsGif from "../../MediaFiles/AboutUsGif.gif";
-import Rajiv from "../../MediaFiles/avatar1.jpg";
-import Tushar from "../../MediaFiles/avatar2.jpg";
+import Rajiv from "../../MediaFiles/Rajiv.jpg";
+import Tushar from "../../MediaFiles/Tushar.jpg";
 
 // Testimonials data
 const testimonials = [
   {
     name: "Rajiv Lochan Dash",
     position: "Frontend Funster",
-    company: "",
+    company: "Appreciating life {Jobless}",
     image: Rajiv,
     content: "The frontend developer who still Googles 'How to center a div'.",
     accounts: [
       {
-        url: "https://github.com/RajivLochanDash",
+        url: "https://github.com/razzivofficial",
         label: "Github Account",
         type: "gray",
         icon: <FaGithub />,
       },
       {
-        url: "https://twitter.com/RajivLochanDash",
-        label: "Twitter Account",
-        type: "twitter",
-        icon: <FaTwitter />,
-      },
-      {
-        url: "https://dev.to/RajivLochanDash",
+        url: "https://dev.to/razzivdecoder",
         label: "Dev Account",
         type: "gray",
         icon: <FaDev />,
       },
       {
-        url: "https://linkedin.com/in/RajivLochanDash",
+        url: "https://x.com/razzivofficial",
+        label: "X Account",
+        type: "X",
+        icon: <FaSquareXTwitter />,
+      },
+      {
+        url: "https://www.instagram.com/razzivofficial/",
+        label: "Instagram",
+        type: "pink",
+        icon: <FaSquareInstagram />,
+      },
+      {
+        url: "https://www.linkedin.com/in/razzivofficial/",
         label: "LinkedIn Account",
         type: "linkedin",
         icon: <FaLinkedin />,
+      },
+      {
+        url: "mailto:razzivofficial@gmail.com",
+        label: "Gmail Account",
+        type: "gray",
+        icon: <MdEmail />,
+      },
+      {
+        url: "https://t.me/razzivofficial",
+        label: "Telegram Account",
+        type: "blue",
+        icon: <FaTelegram />,
       },
     ],
   },
   {
     name: "Tushar Gandhi",
     position: "Backend Maestro",
-    company: "",
+    company: "Funemployed {Unemployed}",
     image: Tushar,
     content: "My code works, but I don’t know why it’s showing a 404 error.",
     accounts: [
       {
-        url: "https://github.com/TusharGandhi",
+        url: "https://github.com/tushar",
         label: "Github Account",
         type: "gray",
         icon: <FaGithub />,
       },
       {
-        url: "https://twitter.com/TusharGandhi",
-        label: "Twitter Account",
-        type: "twitter",
-        icon: <FaTwitter />,
-      },
-      {
-        url: "https://dev.to/TusharGandhi",
+        url: "https://dev.to/razzivdecoder",
         label: "Dev Account",
         type: "gray",
         icon: <FaDev />,
       },
       {
-        url: "https://linkedin.com/in/TusharGandhi",
+        url: "https://x.com/razzivofficial",
+        label: "X Account",
+        type: "X",
+        icon: <FaSquareXTwitter />,
+      },
+      {
+        url: "https://www.instagram.com/razzivofficial/",
+        label: "Instagram",
+        type: "pink",
+        icon: <FaSquareInstagram />,
+      },
+      {
+        url: "https://www.linkedin.com/in/razzivofficial/",
         label: "LinkedIn Account",
         type: "linkedin",
         icon: <FaLinkedin />,
+      },
+      {
+        url: "mailto:razzivofficial@gmail.com",
+        label: "Gmail Account",
+        type: "gray",
+        icon: <MdEmail />,
+      },
+      {
+        url: "https://t.me/razzivofficial",
+        label: "Telegram Account",
+        type: "blue",
+        icon: <FaTelegram />,
       },
     ],
   },
 ];
 
+const companyAccounts = [
+  {
+    url: "https://github.com/razzivofficial/ReadMeMaker",
+    label: "Github Account",
+    type: "gray",
+    icon: <FaGithub />,
+  },
+  {
+    url: "https://t.me/readmemaker",
+    label: "Telegram Account",
+    type: "blue",
+    icon: <FaTelegram />,
+  },
+  {
+    url: "https://x.com/readmemaker",
+    label: "X Account",
+    type: "X",
+    icon: <FaSquareXTwitter />,
+  },
+  {
+    url: "https://www.instagram.com/readmemaker/",
+    label: "Instagram",
+    type: "pink",
+    icon: <FaSquareInstagram />,
+  },
+  // {
+  //   url: "https://www.linkedin.com/in/razzivofficial/",
+  //   label: "LinkedIn Account",
+  //   type: "linkedin",
+  //   icon: <FaLinkedin />,
+  // },
+  {
+    url: "mailto:readmemaker.work@gmail.com",
+    label: "Gmail Account",
+    type: "gray",
+    icon: <MdEmail />,
+  },
+];
+
 const iconProps = {
   variant: "ghost",
-  size: "lg",
+  size: "lg", // Use a predefined size as a base
   isRound: true,
+  style: { fontSize: "2rem" }, // Adjust this value to change the icon size
 };
 
 const MotionContainer = motion(Container);
@@ -117,7 +195,7 @@ const Testimonials = () => {
   const isDark = colorMode === "dark";
 
   const textColor = isDark ? "gray.100" : "gray.700";
-  const headingColor = isDark ? "teal.300" : "teal.600";
+  const headingColor = isDark ? "blue.300" : "blue.600";
   const bgColor = isDark ? "gray.700" : "white";
   const bugButtonBgColor = isDark ? "red.600" : "red.500";
   const bugButtonHoverColor = isDark ? "red.500" : "red.300";
@@ -207,10 +285,11 @@ const Testimonials = () => {
                 align="center"
                 direction={"row"}
               >
-                {testimonials[0].accounts.map((account, idx) => (
+                {companyAccounts.map((account, idx) => (
                   <IconButton
                     key={idx}
                     as="a"
+                    target="_blank"
                     href={account.url}
                     aria-label={account.label}
                     icon={account.icon}
@@ -219,6 +298,7 @@ const Testimonials = () => {
                     size={iconProps.size}
                     isRound={iconProps.isRound}
                     m={1}
+                    style={{ fontSize: "2.5rem" }} // Adjust size here
                   />
                 ))}
               </MotionFlex>
@@ -276,7 +356,7 @@ const Testimonials = () => {
             mb={4}
             color={headingColor}
           >
-            Developed by
+            Meet the Majdurs
           </chakra.h3>
         </MotionFlex>
 
@@ -309,7 +389,10 @@ const Testimonials = () => {
                 {testimonial.name}
               </Text>
               <Text fontSize="sm" color="gray.500">
-                {testimonial.position}, {testimonial.company}
+                {testimonial.position}
+              </Text>
+              <Text fontSize="sm" color="red.400">
+                {testimonial.company}
               </Text>
               <Text fontSize="md" color={textColor}>
                 {testimonial.content}
@@ -320,6 +403,7 @@ const Testimonials = () => {
                   <IconButton
                     key={idx}
                     as="a"
+                    target="_blank"
                     href={account.url}
                     aria-label={account.label}
                     icon={account.icon}
@@ -328,6 +412,7 @@ const Testimonials = () => {
                     size={iconProps.size}
                     isRound={iconProps.isRound}
                     m={1}
+                    style={{ fontSize: "2rem" }} // Adjust size here
                   />
                 ))}
               </MotionFlex>
@@ -347,9 +432,11 @@ const Testimonials = () => {
         variants={fadeInUp}
       >
         <MotionFlex align="center" justify="center" direction="column" mb={4}>
-          <Heading fontSize="3xl" mb={4} color="teal.600">
-            Contact Us
-          </Heading>
+          <section id="contact-us">
+            <Heading fontSize="3xl" mb={4} color="teal.600">
+              Contact Us
+            </Heading>
+          </section>
         </MotionFlex>
         <VStack
           as="form"

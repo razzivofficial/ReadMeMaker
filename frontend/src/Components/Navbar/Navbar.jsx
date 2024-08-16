@@ -68,17 +68,17 @@ const navLinks = [
 const dropdownLinks = [
   {
     name: "Trending Projects",
-    to: "/projectsreadmemaker",
+    to: "/templatecompo",
     icon: MdTimeline,
   },
   {
     name: "Join Community",
-    to: "/commreadmemaker",
+    to: "https://t.me/readmemaker",
     icon: BsGlobe2,
   },
   {
     name: "Open Source",
-    to: "/opensourcereadmemaker",
+    to: "https://github.com/razzivofficial/ReadMeMaker",
     icon: BsBook,
   },
 ];
@@ -99,7 +99,6 @@ function Navbar() {
     avatar8,
   ];
   const [selectedAvatar, setSelectedAvatar] = useState("");
-
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   useEffect(() => {
     // Close the navbar menu when location changes (for mobile view)
@@ -298,11 +297,9 @@ function Navbar() {
     // console.log(json);
     if (json.message !== "success") {
       toast.error("Registration failed: " + json.error);
-    }
-    else if (json.error) {
-      toast.error(json.error)
-    }
-    else {
+    } else if (json.error) {
+      toast.error(json.error);
+    } else {
       toast.success("Registration successful");
       // localStorage.setItem("name", credentials.name);
       onClose();
@@ -334,8 +331,6 @@ function Navbar() {
     }
   };
 
-
-
   // const [email, setEmail] = useState('');
 
   // useEffect(() => {
@@ -351,10 +346,7 @@ function Navbar() {
     navigate("/");
   };
 
-
-
   const hashedmail = encodeEmail(email);
-
 
   return (
     <Box
@@ -444,10 +436,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                  // boxShadow={useColorModeValue(
-                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                  // )}
+                    // boxShadow={useColorModeValue(
+                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                    // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -595,10 +587,14 @@ function Navbar() {
                   />
                   {isCheckingUsername && <Spinner size="sm" mt={2} />}
                   {isUsernameAvailable !== null && (
-                    <Text mt={2} color={isUsernameAvailable ? "green.500" : "red.500"}>
+                    <Text
+                      mt={2}
+                      color={isUsernameAvailable ? "green.500" : "red.500"}
+                    >
                       {isUsernameAvailable ? (
                         <>
-                          Username is available <CheckCircleIcon color="green.500" />
+                          Username is available{" "}
+                          <CheckCircleIcon color="green.500" />
                         </>
                       ) : (
                         "Username is taken"
@@ -761,7 +757,7 @@ function Navbar() {
                 >
                   Not yet Registered?
                   <Button
-                    color={"red.400"}
+                    color={colorMode === "dark" ? "white" : "gray.700"}
                     _hover={{ color: "red.700" }}
                     variant="none"
                     onClick={() => setChangeMode(!changeMode)}
@@ -863,20 +859,35 @@ function NavLink({ name, to, onClose }) {
 }
 
 function MenuLink({ name, to, icon, onClose }) {
+  const navigate = useNavigate();
+  const isLoggedIn = () => !!localStorage.getItem("authToken");
+  const handleClick = () => {
+    if (name === "Trending Projects") {
+      if (isLoggedIn()) {
+        navigate("/templatecompo");
+      } else {
+        toast.info("You need to log in to view trending projects.");
+        // navigate("/login");
+      }
+    } else {
+      navigate(to);
+    }
+    onClose();
+  };
+
   return (
-    <Link as={Navlink} to={to} onClick={onClose}>
-      <MenuItem
-        _hover={{
-          color: "blue.400",
-          bg: useColorModeValue("gray.200", "gray.700"),
-        }}
-      >
-        <HStack>
-          <Icon as={icon} size={18} color="blue.400" />
-          <Text>{name}</Text>
-        </HStack>
-      </MenuItem>
-    </Link>
+    <MenuItem
+      onClick={handleClick}
+      _hover={{
+        color: "blue.400",
+        bg: useColorModeValue("gray.200", "gray.700"),
+      }}
+    >
+      <HStack>
+        <Icon as={icon} size={18} color="blue.400" />
+        <Text>{name}</Text>
+      </HStack>
+    </MenuItem>
   );
 }
 

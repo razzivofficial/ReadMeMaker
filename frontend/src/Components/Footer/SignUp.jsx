@@ -1,3 +1,4 @@
+/* Email page page */
 import { useState, React } from "react";
 import { Heading, Text } from "@chakra-ui/react";
 

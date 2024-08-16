@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logoImg from "../../MediaFiles/logo.png";
 import { Link as Navlink } from "react-router-dom";
 import {
@@ -25,16 +25,15 @@ import {
   InternalFooterLink,
   ExternalSocialLink,
 } from "./Links";
-
-import {
-  FaGithub,
-  FaDev,
-  FaLinkedin,
-  FaQuora,
-  FaTwitter,
-} from "react-icons/fa";
+import CoffeePage from "../CoffeePage/CoffeePage";
+import { MdEmail } from "react-icons/md";
+import { FaGithub, FaTelegram } from "react-icons/fa";
+import { FaSquareXTwitter, FaSquareInstagram } from "react-icons/fa6";
 
 const Footer = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+      const openModal = () => setIsModalOpen(true);
+      const closeModal = () => setIsModalOpen(false);
   return (
     <Container maxW="6xl" p={{ base: 5, md: 10 }} mt={8}>
       <SimpleGrid
@@ -46,11 +45,7 @@ const Footer = () => {
         pt="20px"
       >
         <Link as={Navlink} to={"/"} display={{ base: "none", md: "block" }}>
-          <Image
-            w="30%"
-            src={logoImg}
-            alt="ReadMeMaker"
-          />
+          <Image w="30%" src={logoImg} alt="ReadMeMaker" />
         </Link>
         <Box d={["block", "block", "none", "none"]} mb="30px" mx={5}>
           <FooterSignup />
@@ -59,13 +54,23 @@ const Footer = () => {
           <SimpleGrid columns={[1, 1, 2, 2]}>
             <Stack mb={["10px", "10px", 0, 0]}>
               <Text as="span">
-                <ExternalFooterLink href="#" text="Contact us" />
+                <ExternalFooterLink href="#contact-us" text="Contact us" />
+              </Text>
+              {/* <Text as="span">
+                <ExternalFooterLink onClick={openModal} text="Contribute" />
+                <CoffeePage isOpen={isModalOpen} onClose={closeModal} />
+              </Text> */}
+              <Text as="span">
+                <ExternalFooterLink
+                  href="https://github.com/razzivofficial/ReadMeMaker"
+                  text="Contribute"
+                />
               </Text>
               <Text as="span">
-                <ExternalFooterLink href="#" text="Contribute" />
-              </Text>
-              <Text as="span">
-                <InternalFooterLink href="#" text="Open source projects" />
+                <InternalFooterLink
+                  href="https://github.com/razzivofficial/ReadMeMaker"
+                  text="Open source projects"
+                />
               </Text>
             </Stack>
             <Stack>
@@ -96,38 +101,38 @@ const Footer = () => {
                         >
                           <ExternalSocialLink
                             // href={siteConfig.author.github}
-                            href="#"
+                            href="https://github.com/razzivofficial/ReadMeMaker"
                             icon={<FaGithub />}
                             type="gray"
                             label="Github Account"
                           />
                           <ExternalSocialLink
-                            // href={siteConfig.author.dev}
-                            href="#"
-                            icon={<FaDev />}
+                            // href={siteConfig.author.telegram}
+                            href="https://t.me/readmemaker"
+                            icon={<FaTelegram />}
                             type="gray"
-                            label="Dev Account"
-                          />
-                          <ExternalSocialLink
-                            // href={siteConfig.author.linkedin}
-                            href="#"
-                            icon={<FaLinkedin />}
-                            type="linkedin"
-                            label="LinkedIn Account"
+                            label="Github Account"
                           />
                           <ExternalSocialLink
                             // href={siteConfig.author.twitter}
-                            href="#"
-                            icon={<FaTwitter />}
-                            type="twitter"
-                            label="Twitter Account"
+                            href="https://x.com/readmemaker"
+                            icon={<FaSquareXTwitter />}
+                            type="X"
+                            label="X Account"
                           />
                           <ExternalSocialLink
-                            // href={siteConfig.author.quora}
-                            href="#"
-                            icon={<FaQuora />}
-                            type="red"
-                            label="Quora Account"
+                            // href={siteConfig.author.insta}
+                            href="https://www.instagram.com/readmemaker/"
+                            icon={<FaSquareInstagram />}
+                            type="pink"
+                            label="Instagram Account"
+                          />
+                          <ExternalSocialLink
+                            // href={siteConfig.author.gmail}
+                            href="mailto:readmemaker.work@gmail.com"
+                            icon={<MdEmail />}
+                            type="gray"
+                            label="Gmail Account"
                           />
                         </Stack>
                       </PopoverBody>
@@ -136,11 +141,11 @@ const Footer = () => {
                 </Popover>
               </Text>
               <Text as="span">
-                <ExternalFooterLink href="#" text="Get Me A Coffie" />
+                <ExternalFooterLink href="/" text="Get Me A Coffie" />
               </Text>
               <Text as="span">
                 <ExternalFooterLink
-                  href="#"
+                  href="/documentation"
                   isExternal={false}
                   text="Documentation"
                 />
@@ -153,7 +158,7 @@ const Footer = () => {
               _focus={{ boxShadow: "none", outline: "none" }}
               target="_blank"
               //   href={siteConfig.author.github}
-              href="#"
+              href="https://github.com/razzivofficial/ReadMeMaker"
               fontWeight={600}
               color="gray.400"
               bgClip="text"
@@ -162,7 +167,7 @@ const Footer = () => {
                 bgGradient: "linear(to-r, red.500, yellow.500)",
               }}
             >
-              Razziv
+              Razziv X Tushar
             </ChakraLink>{" "}
           </Text>
         </Box>
