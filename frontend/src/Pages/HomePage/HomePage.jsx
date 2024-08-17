@@ -25,7 +25,34 @@ export default function HomePage() {
           name="keywords"
           content="readme, markdown, readmemaker, create readme, readme templates, markdown templates"
         />
+
+        {/* Structured Data using JSON-LD */}
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "url": "https://readmemaker.com",
+              "name": "ReadMeMaker",
+              "description": "Easily create professional README files with our tool. Perfect for developers who want to document their projects effortlessly.",
+              "publisher": {
+                "@type": "Organization",
+                "name": "ReadMeMaker Inc.",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://readmemaker.com/logo.png"
+                }
+              },
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://readmemaker.com/search?query={search_term_string}",
+                "query-input": "required name=search_term_string"
+              }
+            }
+          `}
+        </script>
       </Helmet>
+
       {isLoading ? (
         <Loader />
       ) : (
