@@ -304,7 +304,28 @@ function Navbar() {
       toast.error(json.error);
     } else {
       toast.success("Registration successful");
-      // localStorage.setItem("name", credentials.name);
+      const reslog = await fetch(
+        "https://readmemaker-backend.vercel.app/users/loginuser",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        }
+      );
+      const js = await reslog.json();
+      if(js.success) {
+      localStorage.setItem("userEmail", credentials.email);
+      localStorage.setItem("authToken", json.authToken);
+      localStorage.setItem("userId", json.userId);
+      if (window.location.pathname === "/editor") {
+        window.location.reload();
+      }
+      }
       onClose();
     }
   };
@@ -315,24 +336,39 @@ function Navbar() {
     }
   };
 
-  const checkUsernameAvailability = async (username) => {
-    if (username.length > 0) {
-      setIsCheckingUsername(true);
-      try {
-        const response = await fetch(
-          `https://readmemaker-backend.vercel.app/users/checkusername/${username}`
-        );
-        const json = await response.json();
-        setIsUsernameAvailable(json.available);
-      } catch (error) {
-        setIsUsernameAvailable(null);
-        toast.error("Error checking username availability.");
-      }
-      setIsCheckingUsername(false);
-    } else {
+const isValidUsername = (username) => {
+  // Define your username format rules here
+  // Example: username should be 3-20 characters long and contain only letters, numbers, and underscores
+  const usernameRegex = /^[a-zA-Z0-9_]{1,20}$/;
+  return usernameRegex.test(username);
+};
+
+const checkUsernameAvailability = async (username) => {
+  if (username.length > 0) {
+    // Check if the username format is valid
+    if (!isValidUsername(username)) {
       setIsUsernameAvailable(null);
+      toast.error("Invalid username format.");
+      return;
     }
-  };
+
+    setIsCheckingUsername(true);
+    try {
+      const response = await fetch(
+        `https://readmemaker-backend.vercel.app/users/checkusername/${username}`
+      );
+      const json = await response.json();
+      setIsUsernameAvailable(json.available);
+    } catch (error) {
+      setIsUsernameAvailable(null);
+      toast.error("Error checking username availability.");
+    }
+    setIsCheckingUsername(false);
+  } else {
+    setIsUsernameAvailable(null);
+  }
+};
+
 
   // const [email, setEmail] = useState('');
 
