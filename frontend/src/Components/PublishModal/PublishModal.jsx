@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
+
 import {
   Modal,
   ModalOverlay,
@@ -23,8 +24,8 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
-
-const PublishModal = ({ isOpen, onClose, markdownContent }) => {
+const PublishModal = ({ isOpen, onClose, markdownContent , setValue}) => {
+  const navigate = useNavigate();
   const email = localStorage.getItem("userEmail");
   const [type, setType] = useState("component");
   const [username, setUsername] = useState("");
@@ -137,6 +138,10 @@ const PublishModal = ({ isOpen, onClose, markdownContent }) => {
         );
         if (res.ok) {
           toast.success("Edit successfully");
+          setValue("*LOGIN TO USE DIRECT TEMPLATES*")
+          navigate("/editor", {
+            state: { markdown: null }, // Or you can just omit the markdown key
+          });
         } else {
           toast.error("Failed to Edit");
         }
@@ -170,6 +175,10 @@ const PublishModal = ({ isOpen, onClose, markdownContent }) => {
 
         if (response.ok) {
           toast.success("Published successfully");
+          setValue("*LOGIN TO USE DIRECT TEMPLATES*")
+          navigate("/editor", {
+            state: { markdown: null }, // Or you can just omit the markdown key
+          });
         } 
         else if(username === undefined) {
           toast.error("Please add username to publish from profile");
