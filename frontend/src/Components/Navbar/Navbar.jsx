@@ -3,6 +3,8 @@ import { Link as Navlink, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { encodeEmail } from "../../utils/emailUtils";
+// require('dotenv').config();
+
 import {
   Box,
   Flex,
@@ -302,7 +304,28 @@ function Navbar() {
       toast.error(json.error);
     } else {
       toast.success("Registration successful");
-      // localStorage.setItem("name", credentials.name);
+      const reslog = await fetch(
+        "https://readmemaker-backend.vercel.app/users/loginuser",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        }
+      );
+      const js = await reslog.json();
+      if(js.success) {
+      localStorage.setItem("userEmail", credentials.email);
+      localStorage.setItem("authToken", json.authToken);
+      localStorage.setItem("userId", json.userId);
+      if (window.location.pathname === "/editor") {
+        window.location.reload();
+      }
+      }
       onClose();
     }
   };
