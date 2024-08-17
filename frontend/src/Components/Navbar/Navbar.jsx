@@ -3,6 +3,8 @@ import { Link as Navlink, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { encodeEmail } from "../../utils/emailUtils";
+// require('dotenv').config();
+
 import {
   Box,
   Flex,
