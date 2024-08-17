@@ -311,6 +311,7 @@ export default function ElementAdder() {
                   isOpen={isModalOpen}
                   onClose={() => setIsModalOpen(false)}
                   markdownContent={value}
+                  setValue={setValue}
                 />
               </div>
             </div>
