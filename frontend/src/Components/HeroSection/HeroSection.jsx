@@ -97,9 +97,12 @@ const HeroSection = () => {
       mt={{ base: 12, md: 18 }}
     >
       <Stack direction="column" spacing={6} alignItems="center">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          {" "}
-          {/* Ensure no underline on the Link */}
+        <a
+          href="https://t.me/readmemaker"
+          style={{ textDecoration: "none" }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Box
             mt={10}
             py={2}
@@ -116,7 +119,8 @@ const HeroSection = () => {
               <Text>Join the Community!</Text>
             </Stack>
           </Box>
-        </Link>
+        </a>
+
         <chakra.h1
           fontSize={{ base: "xl", sm: "3xl" }}
           fontWeight="bold"
