@@ -58,6 +58,28 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
         toast.error(json.error);
       } else {
         toast.success("Registration successful");
+        const reslog = await fetch(
+          "https://readmemaker-backend.vercel.app/users/loginuser",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
+          }
+        );
+        const js = await reslog.json();
+        if (js.success) {
+          localStorage.setItem("userEmail", credentials.email);
+          localStorage.setItem("authToken", json.authToken);
+          localStorage.setItem("userId", json.userId);
+          if (window.location.pathname === "/editor") {
+            window.location.reload();
+          }
+        }
         onClose();
       }
     } catch (error) {
