@@ -18,12 +18,10 @@ export default function HomePage() {
   return (
     <>
       <Helmet>
-        <title>
-          ReadMeMaker - Create Professional README Files | Best README Generator
-        </title>
+        <title>ReadMeMaker - Create Professional README Files</title>
         <meta
           name="description"
-          content="Easily create professional README files with our tool. Perfect for developers who want to document their projects effortlessly."
+          content="ReadMeMaker is the ultimate tool for generating professional README files. Easily create, compile, and share your README documentation."
         />
         <meta
           name="keywords"
