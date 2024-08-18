@@ -14,7 +14,7 @@ const ErrorPage = () => {
       px={4}
     >
       <Heading as="h1" fontSize="4xl" mb={4} fontWeight="bold" textShadow="2px 2px 4px rgba(0,0,0,0.4)">
-        Oops! Something went wrong... But hey, it's a feature!
+        Oops! Something went wrong... But hey, it's a feature 404!
       </Heading>
       <Heading as="h2" fontSize="2xl" mb={8} fontWeight="semibold">
         Developer bahut gareeb hai, isi liye yahan
