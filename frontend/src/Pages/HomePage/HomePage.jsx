@@ -8,15 +8,19 @@ export default function HomePage() {
 
   useEffect(() => {
     // Simulate data loading with a delay
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
     }, 200);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <>
       <Helmet>
-        <title>ReadMeMaker - Best README Crafter</title>
+        <title>
+          ReadMeMaker - Create Professional README Files | Best README Generator
+        </title>
         <meta
           name="description"
           content="Easily create professional README files with our tool. Perfect for developers who want to document their projects effortlessly."
