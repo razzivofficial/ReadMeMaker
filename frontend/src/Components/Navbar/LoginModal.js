@@ -117,6 +117,7 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
               username: generateUsername(user.displayName),
               email: user.email,
               password: process.env.REACT_APP_PASS, // Default password
+              isgoogle: true,
             }),
           }
         );
@@ -128,7 +129,7 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
   
           // Automatically log the user in after registration
           const loginResponse = await fetch(
-            `${API_URL}/users/loginuser`,
+            `${API_URL}/users/loginusergoogle`,
             {
               method: "POST",
               headers: {
@@ -159,7 +160,7 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
       } else {
         // If the user already exists, log them in
         const loginResponse = await fetch(
-          `${API_URL}/users/loginuser`,
+          `${API_URL}/users/loginusergoogle`,
           {
             method: "POST",
             headers: {

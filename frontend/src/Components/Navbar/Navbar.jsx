@@ -227,7 +227,7 @@ function Navbar() {
     });
     const json = await response.json();
     if (!json.success) {
-      toast.error("Enter valid credentials");
+      toast.error("Enter valid credentials:"+json.error);
     } else {
       toast.success("Login successful");
       onClose();
@@ -390,6 +390,7 @@ function Navbar() {
               username: generateUsername(user.displayName),
               email: user.email,
               password: process.env.REACT_APP_PASS, // Default password
+              isgoogle: true,
             }),
           }
         );
@@ -400,7 +401,7 @@ function Navbar() {
           toast.success("Registration successful");
 
           // Automatically log the user in after registration
-          const loginResponse = await fetch(`${API_URL}/users/loginuser`, {
+          const loginResponse = await fetch(`${API_URL}/users/loginusergoogle`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -428,7 +429,7 @@ function Navbar() {
         }
       } else {
         // If the user already exists, log them in
-        const loginResponse = await fetch(`${API_URL}/users/loginuser`, {
+        const loginResponse = await fetch(`${API_URL}/users/loginusergoogle`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

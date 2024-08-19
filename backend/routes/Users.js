@@ -4,6 +4,7 @@ const router = express.Router()
 const userdetails = require('../controller/Users.controller')
 
 router.post('/createuser',userdetails.createuser)
+router.post('/loginusergoogle',userdetails.loginusergoogle)
 router.post('/loginuser',userdetails.loginuser)
 router.get('/getNameByEmail/:email', userdetails.getNameByEmail);
 router.put('/updatePassword', userdetails.updatePassword);

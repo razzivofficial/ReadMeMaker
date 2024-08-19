@@ -124,6 +124,45 @@ const loginuser = async (req, res) => {
     }
 };
 
+const loginusergoogle = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const error = validationResult(req);
+        if (!error.isEmpty()) {
+            return res.status(400).json({ error: error.array() });
+        }
+
+        if (!validateEmail(email)) {
+            return res.status(400).json({ error: "Email is not valid" });
+        }
+
+        const userdata = await User.findOne({ email });
+        if (!userdata) {
+            return res.status(400).json({ error: "User not found" });
+        }
+        
+
+        const isMatch = await bcrypt.compare(password, userdata.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: "Password is incorrect" });
+        }
+
+        const data = {
+            user: {
+                id: userdata.id
+            }
+        };
+
+        const token = jwt.sign(data, jwtSecret, { expiresIn: 3600 });
+
+        // Return the user ID along with the auth token
+        return res.json({ success: true, authToken: token, userId: userdata.id });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
 
 const getNameByEmail = async (req, res) => {
     try {
@@ -393,5 +432,6 @@ module.exports = {
     followUser,
     removeFollowedUser,
     getFollowedUsers,
-    uniqueusername
+    uniqueusername,
+    loginusergoogle
 };
