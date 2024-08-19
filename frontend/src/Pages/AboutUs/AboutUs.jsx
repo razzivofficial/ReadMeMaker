@@ -197,6 +197,7 @@ const fadeInUp = {
 const Testimonials = () => {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
+  const API_URL = process.env.REACT_APP_BACKEND_API;
 
   const textColor = isDark ? "gray.100" : "gray.700";
   const headingColor = isDark ? "blue.300" : "blue.600";
@@ -232,7 +233,7 @@ const Testimonials = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://readmemaker-backend.vercel.app/feed/feedpost', formData);
+      const response = await axios.post(`${API_URL}/feed/feedpost`, formData);
       toast({
         title: 'Message Sent',
         description: 'Your feedback has been successfully submitted.',

@@ -24,11 +24,12 @@ const EditDescriptionModal = ({
 }) => {
   const [newDescription, setNewDescription] = useState(description);
   const toast = useToast();
+  const API_URL = process.env.REACT_APP_BACKEND_API;
 
   const handleSave = async () => {
     try {
       const response = await fetch(
-        `https://readmemaker-backend.vercel.app/users/updateDescription/${email}`,
+        `${API_URL}/users/updateDescription/${email}`,
         {
           method: "POST",
           headers: {

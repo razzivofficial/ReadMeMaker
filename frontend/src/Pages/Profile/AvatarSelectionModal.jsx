@@ -26,6 +26,7 @@ import avatar8 from "../../MediaFiles/avatar8.jpg";
 const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const toast = useToast();
+  const API_URL = process.env.REACT_APP_BACKEND_API;
 
   const avatars = [
     avatar1,
@@ -58,7 +59,7 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
 
     try {
       const response = await fetch(
-        "https://readmemaker-backend.vercel.app/users/updateavatar",
+        `${API_URL}/users/updateavatar`,
         {
           method: "POST",
           headers: {
@@ -92,7 +93,7 @@ const AvatarSelectionModal = ({ isOpen, onClose, onSelectAvatar }) => {
       }
 
     const eidtorAvatar = await fetch(
-      "https://readmemaker-backend.vercel.app/editor/updateavatar",
+      `${API_URL}/editor/updateavatar`,
       {
         method: "PUT",
           headers: {

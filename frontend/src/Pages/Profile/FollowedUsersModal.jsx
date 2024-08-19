@@ -34,12 +34,13 @@ const FollowedUsersModal = ({ userId, isOpen, onClose }) => {
   const [hasMore, setHasMore] = useState(true);
   const usersPerPage = 20; // Number of users to load per page
   const { colorMode } = useColorMode();
+  const API_URL = process.env.REACT_APP_BACKEND_API;
 
   useEffect(() => {
     const fetchFollowedUsers = async () => {
       try {
         const response = await fetch(
-          `https://readmemaker-backend.vercel.app/users/getfollowed/${userId}`
+          `${API_URL}/users/getfollowed/${userId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch followed users");

@@ -3,8 +3,7 @@ import { Link as Navlink, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { encodeEmail } from "../../utils/emailUtils";
-// require('dotenv').config();
-
+import { signInWithGoogle } from "../../firebase.js"
 import {
   Box,
   Flex,
@@ -37,7 +36,7 @@ import { MdTimeline } from "react-icons/md";
 import { BsBook, BsGlobe2 } from "react-icons/bs";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import { CheckCircleIcon,WarningIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import {
   Modal,
@@ -86,6 +85,7 @@ const dropdownLinks = [
 ];
 
 function Navbar() {
+  const API_URL = process.env.REACT_APP_BACKEND_API;
 
   const inputBg = useColorModeValue("white", "gray.700");
   const inputColor = useColorModeValue("black", "white");
@@ -129,7 +129,7 @@ function Navbar() {
       try {
         // console.log(email);
         const response = await fetch(
-          "https://readmemaker-backend.vercel.app/users/getavatar",
+          `${API_URL}/users/getavatar`,
           {
             method: "POST",
             headers: {
@@ -198,7 +198,7 @@ function Navbar() {
     if (email) {
       axios
         .get(
-          `https://readmemaker-backend.vercel.app/users/getNameByEmail/${email}`
+          `${API_URL}/users/getNameByEmail/${email}`
         )
         .then((response) => {
           setName(response.data.name);
@@ -221,7 +221,7 @@ function Navbar() {
     setloginCredentials({ email: "", password: "" });
 
     const response = await fetch(
-      "https://readmemaker-backend.vercel.app/users/loginuser",
+      `${API_URL}/users/loginuser`,
       {
         method: "POST",
         headers: {
@@ -234,7 +234,6 @@ function Navbar() {
       }
     );
     const json = await response.json();
-    // console.log(json)
     if (!json.success) {
       toast.error("Enter valid credentials");
     } else {
@@ -251,7 +250,7 @@ function Navbar() {
       if (email) {
         axios
           .get(
-            `https://readmemaker-backend.vercel.app/users/getNameByEmail/${email}`
+            `${API_URL}/users/getNameByEmail/${email}`
           )
           .then((response) => {
             setName(response.data.name);
@@ -262,6 +261,8 @@ function Navbar() {
       }
     }
   };
+
+  
 
   const handleChange = (event) => {
     setloginCredentials({
@@ -282,51 +283,65 @@ function Navbar() {
   const handleregistration = async (e) => {
     e.preventDefault();
     setcredentials({ username: "", email: "", password: "" });
-    const response = await fetch(
-      "https://readmemaker-backend.vercel.app/users/createuser",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: credentials.username,
-          email: credentials.email,
-          password: credentials.password,
-        }),
-      }
-    );
-    const json = await response.json();
-    // console.log(json);
-    if (json.message !== "success") {
-      toast.error("Registration failed: " + json.error);
-    } else if (json.error) {
-      toast.error(json.error);
-    } else {
-      toast.success("Registration successful");
-      const reslog = await fetch(
-        "https://readmemaker-backend.vercel.app/users/loginuser",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password,
-          }),
+    try {
+
+      const result = await signInWithGoogle();
+      const user = result.user;
+
+      if (user.email === credentials.email) {
+        const response = await fetch(
+          `${API_URL}/users/createuser`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: credentials.username,
+              email: credentials.email,
+              password: credentials.password,
+            }),
+          }
+        );
+        const json = await response.json();
+        if (json.message !== "success") {
+          toast.error("Registration failed: " + json.error);
+        } else if (json.error) {
+          toast.error(json.error);
+        } else {
+          toast.success("Registration successful");
+          const reslog = await fetch(
+            `${API_URL}/users/loginuser`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: credentials.email,
+                password: credentials.password,
+              }),
+            }
+          );
+          const js = await reslog.json();
+          if (js.success) {
+            localStorage.setItem("userEmail", credentials.email);
+            localStorage.setItem("authToken", js.authToken);
+            localStorage.setItem("userId", js.userId);
+            if (window.location.pathname === "/editor") {
+              window.location.reload();
+            }
+          }
+          onClose();
         }
-      );
-      const js = await reslog.json();
-      if(js.success) {
-      localStorage.setItem("userEmail", credentials.email);
-      localStorage.setItem("authToken", json.authToken);
-      localStorage.setItem("userId", json.userId);
-      if (window.location.pathname === "/editor") {
-        window.location.reload();
       }
+      else {
+        toast.error("Registration Failed try with same gmail");
+        onClose()
       }
-      onClose();
+    }
+    catch (error) {
+      console.error("An error occurred while registering!", error);
     }
   };
   const onchange = (event) => {
@@ -336,39 +351,141 @@ function Navbar() {
     }
   };
 
-const isValidUsername = (username) => {
-  // Define your username format rules here
-  // Example: username should be 3-20 characters long and contain only letters, numbers, and underscores
-  const usernameRegex = /^[a-zA-Z0-9_]{1,20}$/;
-  return usernameRegex.test(username);
-};
+  const isValidUsername = (username) => {
+    // Define your username format rules here
+    // Example: username should be 3-20 characters long and contain only letters, numbers, and underscores
+    const usernameRegex = /^[a-zA-Z0-9_]{1,20}$/;
+    return usernameRegex.test(username);
+  };
 
-const checkUsernameAvailability = async (username) => {
-  if (username.length > 0) {
-    // Check if the username format is valid
-    if (!isValidUsername(username)) {
+  const checkUsernameAvailability = async (username) => {
+    if (username.length > 0) {
+      // Check if the username format is valid
+      if (!isValidUsername(username)) {
+        setIsUsernameAvailable(null);
+        toast.error("Invalid username format.");
+        return;
+      }
+
+      setIsCheckingUsername(true);
+      try {
+        const response = await fetch(
+          `${API_URL}/users/checkusername/${username}`
+        );
+        const json = await response.json();
+        setIsUsernameAvailable(json.available);
+      } catch (error) {
+        setIsUsernameAvailable(null);
+        toast.error("Error checking username availability.");
+      }
+      setIsCheckingUsername(false);
+    } else {
       setIsUsernameAvailable(null);
-      toast.error("Invalid username format.");
-      return;
     }
-
-    setIsCheckingUsername(true);
+  };
+  const generateUsername = (name) => {
+    return name.toLowerCase().replace(/\s+/g, '') + Date.now();
+  };
+  const handleGoogleSignIn = async () => {
     try {
-      const response = await fetch(
-        `https://readmemaker-backend.vercel.app/users/checkusername/${username}`
+      const result = await signInWithGoogle();
+      const user = result.user;
+      // console.log(user)
+      // Check if the user already exists in MongoDB
+      const checkUserResponse = await fetch(
+        `${API_URL}/users/getdetailbyemail/${user.email}`
       );
-      const json = await response.json();
-      setIsUsernameAvailable(json.available);
-    } catch (error) {
-      setIsUsernameAvailable(null);
-      toast.error("Error checking username availability.");
-    }
-    setIsCheckingUsername(false);
-  } else {
-    setIsUsernameAvailable(null);
-  }
-};
+      const checkUserJson = await checkUserResponse.json();
+      // console.log(checkUserJson)
+      if (checkUserJson.error === "User not found") {
+        // If the user does not exist, register the user
+        // console.log("Register start ")
+        const registrationResponse = await fetch(
+          `${API_URL}/users/createuser`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: generateUsername(user.displayName),
+              email: user.email,
+              password: process.env.REACT_APP_PASS, // Default password
+            }),
+          }
+        );
 
+        const registrationJson = await registrationResponse.json();
+
+        if (registrationJson.message === "success") {
+          toast.success("Registration successful");
+
+          // Automatically log the user in after registration
+          const loginResponse = await fetch(
+            `${API_URL}/users/loginuser`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: user.email,
+                password: process.env.REACT_APP_PASS, // Use the same default password for login
+              }),
+            }
+          );
+
+          const loginJson = await loginResponse.json();
+          if (loginJson.success) {
+            localStorage.setItem("userEmail", user.email);
+            localStorage.setItem("authToken", loginJson.authToken);
+            localStorage.setItem("userId", loginJson.userId);
+
+            toast.success("Logged in with Google");
+            if (window.location.pathname === "/editor") {
+              window.location.reload();
+            }
+            onClose();
+          }
+        } else {
+          toast.error("Registration failed: " + registrationJson.error);
+        }
+      } else {
+        // If the user already exists, log them in
+        const loginResponse = await fetch(
+          `${API_URL}/users/loginuser`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: user.email,
+              password: process.env.REACT_APP_PASS, // Default password
+            }),
+          }
+        );
+
+        const loginJson = await loginResponse.json();
+
+        if (loginJson.success) {
+          localStorage.setItem("userEmail", user.email);
+          localStorage.setItem("authToken", loginJson.authToken);
+          localStorage.setItem("userId", loginJson.userId);
+
+          toast.success("Logged in with Google");
+          if (window.location.pathname === "/editor") {
+            window.location.reload();
+          }
+          onClose();
+        } else {
+          toast.error("Login failed: " + loginJson.error);
+        }
+      }
+    } catch (error) {
+      toast.error("Google sign-in failed. Please try again.");
+    }
+  };
 
   // const [email, setEmail] = useState('');
 
@@ -383,6 +500,8 @@ const checkUsernameAvailability = async (username) => {
   const handleLogout = () => {
     toast.success("Logout successful");
     localStorage.removeItem("authToken");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userId");
     navigate("/");
   };
 
@@ -743,23 +862,28 @@ const checkUsernameAvailability = async (username) => {
               {!changeMode ? (
                 <>
                   <Button
-                    textAlign="center"
-                    justify="center"
+                    mt={4}
                     leftIcon={<FcGoogle />}
+                    size="md"
+                    width="full"
+                    variant="outline"
+                    onClick={handleGoogleSignIn}
                   >
-                    Log in with Google
+                    Continue with Google
                   </Button>
                 </>
               ) : (
                 <>
                   <Flex alignItems={"center"} justify={"center"} mt={"5"}>
                     <Button
-                      textAlign="center"
-                      justify="center"
+                      mt={4}
                       leftIcon={<FcGoogle />}
+                      size="md"
+                      width="full"
+                      variant="outline"
+                      onClick={handleGoogleSignIn}
                     >
-                      {/* {" "} */}
-                      Sign up using Google
+                      Continue with Google
                     </Button>
                   </Flex>
                 </>

@@ -61,8 +61,9 @@ const generateUniqueUsername = (name, email) => {
 
 const checkAndGenerateUsername = async (email, username, name) => {
   try {
+    const API_URL = process.env.REACT_APP_BACKEND_API;
     const response = await fetch(
-      `https://readmemaker-backend.vercel.app/users/checkUsername/${username}`,
+      `${API_URL}/users/checkUsername/${username}`,
       { method: "GET" }
     );
 
@@ -100,6 +101,7 @@ const ProfilePage = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const cancelRef = useRef();
   const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
+  const API_URL = process.env.REACT_APP_BACKEND_API;
 
   const {
     isOpen: isFollowedUsersModalOpen,
@@ -142,7 +144,7 @@ const ProfilePage = () => {
 
       try {
         const response = await fetch(
-          "https://readmemaker-backend.vercel.app/users/getavatar",
+          `${API_URL}/users/getavatar`,
           {
             method: "POST",
             headers: {
@@ -217,7 +219,7 @@ const ProfilePage = () => {
     if (email) {
       axios
         .get(
-          `https://readmemaker-backend.vercel.app/users/getdetailbyemail/${email}`
+          `${API_URL}/users/getdetailbyemail/${email}`
         )
         .then((response) => {
           setFollowedId(response.data._id);
@@ -244,7 +246,7 @@ const ProfilePage = () => {
     if (newPassword === retypePassword) {
       try {
         const response = await fetch(
-          "https://readmemaker-backend.vercel.app/users/updatePassword",
+          `${API_URL}/users/updatePassword`,
           {
             method: "PUT",
             headers: {
@@ -289,7 +291,7 @@ const ProfilePage = () => {
 
       try {
         const response = await fetch(
-          `https://readmemaker-backend.vercel.app/users/updateUsername/${email}`,
+          `${API_URL}/users/updateUsername/${email}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -308,7 +310,7 @@ const ProfilePage = () => {
 
         // Handle the second fetch call for updating the username in the Editor model
         const editorResponse = await fetch(
-          `https://readmemaker-backend.vercel.app/editor/updateusername`,
+          `${API_URL}/editor/updateusername`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -329,7 +331,7 @@ const ProfilePage = () => {
     if (field === "name") {
       try {
         const response = await fetch(
-          `https://readmemaker-backend.vercel.app/users/updatename/${email}`,
+          `${API_URL}/users/updatename/${email}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -353,7 +355,7 @@ const ProfilePage = () => {
   const handleDeleteAccount = async () => {
     try {
       const response = await fetch(
-        `https://readmemaker-backend.vercel.app/users/deleteaccount/${email}`,
+        `${API_URL}/users/deleteaccount/${email}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -384,7 +386,7 @@ const ProfilePage = () => {
     const checkFollowStatus = async () => {
       try {
         const response = await fetch(
-          `https://readmemaker-backend.vercel.app/users/getfollowed/${userId}`
+          `${API_URL}/users/getfollowed/${userId}`
         );
         const followedUsers = await response.json();
         const isFollowing = followedUsers.some(
@@ -402,8 +404,8 @@ const ProfilePage = () => {
   const handleFollowToggle = async () => {
     try {
       const url = isFollowed
-        ? `https://readmemaker-backend.vercel.app/users/removefollow/${userId}/${followedUserId}`
-        : `https://readmemaker-backend.vercel.app/users/follow/${userId}/${followedUserId}`;
+        ? `${API_URL}/users/removefollow/${userId}/${followedUserId}`
+        : `${API_URL}/users/follow/${userId}/${followedUserId}`;
       await fetch(url, { method: "PUT" });
 
       setIsFollowed(!isFollowed);
