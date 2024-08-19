@@ -91,7 +91,9 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
       [event.target.id]: event.target.value,
     });
   };
-
+  const generateUsername = (name) => {
+    return name.toLowerCase().replace(/\s+/g, '') + Date.now();
+  };
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithGoogle();
@@ -113,9 +115,9 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              username: user.displayName,
+              username: generateUsername(user.displayName),
               email: user.email,
-              password: "password@123", // Default password
+              password: process.env.REACT_APP_PASS, // Default password
             }),
           }
         );
@@ -135,7 +137,7 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
               },
               body: JSON.stringify({
                 email: user.email,
-                password: "password@123", // Use the same default password for login
+                password: process.env.REACT_APP_PASS, // Use the same default password for login
               }),
             }
           );
@@ -166,7 +168,7 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
             },
             body: JSON.stringify({
               email: user.email,
-              password: "password@123", // Default password
+              password: process.env.REACT_APP_PASS, // Default password
             }),
           }
         );

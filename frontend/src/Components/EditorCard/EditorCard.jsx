@@ -103,6 +103,7 @@ const MarkdownPreviewCard = ({
   useEffect(() => {
     const checkVoteStatus = async () => {
       try {
+
         const response = await fetch(
           `${API_URL}/editor/checkvotestatus?userId=${userId}&editorId=${id}`
         );
@@ -121,6 +122,7 @@ const MarkdownPreviewCard = ({
 
   const handleUpvote = async () => {
     try {
+      console.log(userId,id)
       const response = await fetch(
         `${API_URL}/editor/upvoteeditor`,
         {
@@ -131,7 +133,6 @@ const MarkdownPreviewCard = ({
           body: JSON.stringify({ userId, editorId: id }),
         }
       );
-
       const result = await response.json();
       if (response.ok) {
         if (result.message === "Upvote removed") {
@@ -163,6 +164,8 @@ const MarkdownPreviewCard = ({
       );
 
       const result = await response.json();
+
+      console.log(response.message)
       if (response.ok) {
         if (result.message === "Downvote removed") {
           setDownvoteClicked(false);

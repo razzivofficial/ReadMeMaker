@@ -383,7 +383,9 @@ function Navbar() {
       setIsUsernameAvailable(null);
     }
   };
-
+  const generateUsername = (name) => {
+    return name.toLowerCase().replace(/\s+/g, '') + Date.now();
+  };
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithGoogle();
@@ -406,9 +408,9 @@ function Navbar() {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              username: user.displayName,
+              username: generateUsername(user.displayName),
               email: user.email,
-              password: "password@123", // Default password
+              password: process.env.REACT_APP_PASS, // Default password
             }),
           }
         );
@@ -428,7 +430,7 @@ function Navbar() {
               },
               body: JSON.stringify({
                 email: user.email,
-                password: "password@123", // Use the same default password for login
+                password: process.env.REACT_APP_PASS, // Use the same default password for login
               }),
             }
           );
@@ -459,7 +461,7 @@ function Navbar() {
             },
             body: JSON.stringify({
               email: user.email,
-              password: "password@123", // Default password
+              password: process.env.REACT_APP_PASS, // Default password
             }),
           }
         );
@@ -498,6 +500,8 @@ function Navbar() {
   const handleLogout = () => {
     toast.success("Logout successful");
     localStorage.removeItem("authToken");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userId");
     navigate("/");
   };
 
