@@ -20,8 +20,10 @@ import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
+import { signInWithGoogle } from "../../firebase.js"
 
 const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
+  const API_URL = process.env.REACT_APP_BACKEND_API;
   const [credentials, setCredentials] = useState({
     username: "",
     email: "",
@@ -33,12 +35,115 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
   const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
   const isPasswordValid = passwordRegex.test(credentials.password);
 
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithGoogle();
+      const user = result.user;
+      const checkUserResponse = await fetch(
+        `${API_URL}/users/getdetailbyemail/${user.email}`
+      );
+      const checkUserJson = await checkUserResponse.json();
+      if (checkUserJson.error === "User not found") {
+        // If the user does not exist, register the user
+        const registrationResponse = await fetch(
+          `${API_URL}/users/createuser`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: user.displayName,
+              email: user.email,
+              password: "password@123", // Default password
+            }),
+          }
+        );
+  
+        const registrationJson = await registrationResponse.json();
+        console.log(registrationJson)
+        if (registrationJson.message === "success") {
+          toast.success("Registration successful");
+  
+          const loginResponse = await fetch(
+            `${API_URL}/users/loginuser`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: user.email,
+                password: "password@123", // Use the same default password for login
+              }),
+            }
+          );
+  
+          const loginJson = await loginResponse.json();
+          if (loginJson.success) {
+            localStorage.setItem("userEmail", user.email);
+            localStorage.setItem("authToken", loginJson.authToken);
+            localStorage.setItem("userId", loginJson.userId);
+  
+            toast.success("Logged in with Google");
+            if (window.location.pathname === "/editor") {
+              window.location.reload();
+            }
+            onClose();
+          }
+        } else {
+          toast.error("Registration failed: " + registrationJson.error);
+        }
+      } else {
+        // If the user already exists, log them in
+        const loginResponse = await fetch(
+          `${API_URL}/users/loginuser`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: user.email,
+              password: "password@123", // Default password
+            }),
+          }
+        );
+  
+        const loginJson = await loginResponse.json();
+  
+        if (loginJson.success) {
+          localStorage.setItem("userEmail", user.email);
+          localStorage.setItem("authToken", loginJson.authToken);
+          localStorage.setItem("userId", loginJson.userId);
+  
+          toast.success("Logged in with Google");
+          if (window.location.pathname === "/editor") {
+            window.location.reload();
+          }
+          onClose();
+        } else {
+          toast.error("Login failed: " + loginJson.error);
+        }
+      }
+    } catch (error) {
+      toast.error("Google sign-in failed. Please try again.");
+    }
+  };
+  
+
   const handleRegistration = async (e) => {
     e.preventDefault();
     setCredentials({ username: "", email: "", password: "" });
     try {
+
+      const result  = await signInWithGoogle();
+      const user = result.user;
+
+      if(user.email === credentials.email){
+
       const response = await fetch(
-        "https://readmemaker-backend.vercel.app/users/createuser",
+        `${API_URL}/users/createuser`,
         {
           method: "POST",
           headers: {
@@ -52,6 +157,7 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
         }
       );
       const json = await response.json();
+      console.log(json);
       if (json.message !== "success") {
         toast.error("Registration failed: " + json.error);
       } else if (json.error) {
@@ -59,7 +165,7 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
       } else {
         toast.success("Registration successful");
         const reslog = await fetch(
-          "https://readmemaker-backend.vercel.app/users/loginuser",
+          `${API_URL}/users/loginuser`,
           {
             method: "POST",
             headers: {
@@ -74,14 +180,20 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
         const js = await reslog.json();
         if (js.success) {
           localStorage.setItem("userEmail", credentials.email);
-          localStorage.setItem("authToken", json.authToken);
-          localStorage.setItem("userId", json.userId);
+          localStorage.setItem("authToken", js.authToken);
+          localStorage.setItem("userId", js.userId);
           if (window.location.pathname === "/editor") {
             window.location.reload();
           }
         }
         onClose();
       }
+    }
+    else{
+      // console.log("registration Failed")
+      toast.error("registration failed try with same gmail");
+      onClose()
+    }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
     }
@@ -100,7 +212,7 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
       setIsCheckingUsername(true);
       try {
         const response = await fetch(
-          `https://readmemaker-backend.vercel.app/users/checkusername/${username}`
+          `${API_URL}/users/checkusername/${username}`
         );
         const json = await response.json();
         setIsUsernameAvailable(json.available);
@@ -200,48 +312,67 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
               </Text>
             )}
           </FormControl>
-          <Flex direction="column" align="center" my={5}>
-            <Button
-              mt={4}
-              textAlign="center"
-              justify="center"
-              leftIcon={<FcGoogle />}
-            >
-              Sign up using Google
-            </Button>
-            <Button
-              mt={4}
-              textAlign="center"
-              justify="center"
-              leftIcon={<AiFillGithub />}
-            >
-              Log in with Github
-            </Button>
+          <Button
+            mt={4}
+            colorScheme="blue"
+            size="md"
+            width="full"
+            onClick={handleRegistration}
+            isDisabled={
+              !credentials.username ||
+              !credentials.email ||
+              !credentials.password ||
+              !isUsernameAvailable ||
+              !isPasswordValid
+            }
+          >
+            Register
+          </Button>
+          <Flex mt={4} justifyContent="center" alignItems="center">
+            <Text fontSize="md">Or</Text>
           </Flex>
-          <Flex justify="center" alignItems="center">
-            <Text py={3} color={textColor} textAlign="center">
-              Already Registered?{" "}
-              <Button
-                color="red.400"
-                _hover={{ color: "red.700" }}
-                variant="link"
-                onClick={() => setChangeMode(false)}
-              >
-                Log In
-              </Button>
+          <Button
+            mt={4}
+            leftIcon={<FcGoogle />}
+            size="md"
+            width="full"
+            variant="outline"
+            onClick={handleGoogleSignIn}
+          >
+            Continue with Google
+          </Button>
+          <Button
+            mt={4}
+            leftIcon={<AiFillGithub />}
+            size="md"
+            width="full"
+            variant="outline"
+          >
+            Continue with GitHub
+          </Button>
+          <Flex mt={4} justifyContent="center" alignItems="center">
+            <Text fontSize="md" mr={1}>
+              Already have an account?
             </Text>
+            <Button
+              colorScheme={buttonColor}
+              variant="link"
+              size="sm"
+              onClick={() => setChangeMode()}
+            >
+              Log In
+            </Button>
           </Flex>
         </ModalBody>
         <ModalFooter>
           <Button
-            colorScheme="blue"
+            colorScheme={buttonColor}
             mr={3}
-            onClick={handleRegistration}
-            isDisabled={isUsernameAvailable === false || !isPasswordValid}
+            onClick={onClose}
+            _hover={{ bg: buttonHoverColor }}
           >
-            Sign Up
+            Close
           </Button>
-          <Button onClick={onClose}>Cancel</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

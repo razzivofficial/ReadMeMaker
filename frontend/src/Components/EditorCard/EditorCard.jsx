@@ -59,6 +59,7 @@ const MarkdownPreviewCard = ({
   const bg = useColorModeValue("white", "#2f3244");
   const markdownBg = useColorModeValue("#f5f5f5", "#1e1e1e");
   const textColor = useColorModeValue("black", "white");
+  const API_URL = process.env.REACT_APP_BACKEND_API;
 
   const processedMarkdown = replaceHeightWithWidth(markdown);
 
@@ -103,7 +104,7 @@ const MarkdownPreviewCard = ({
     const checkVoteStatus = async () => {
       try {
         const response = await fetch(
-          `https://readmemaker-backend.vercel.app/editor/checkvotestatus?userId=${userId}&editorId=${id}`
+          `${API_URL}/editor/checkvotestatus?userId=${userId}&editorId=${id}`
         );
         const result = await response.json();
         setUpvoteClicked(result.hasUpvoted);
@@ -121,7 +122,7 @@ const MarkdownPreviewCard = ({
   const handleUpvote = async () => {
     try {
       const response = await fetch(
-        `https://readmemaker-backend.vercel.app/editor/upvoteeditor`,
+        `${API_URL}/editor/upvoteeditor`,
         {
           method: "PATCH",
           headers: {
@@ -151,7 +152,7 @@ const MarkdownPreviewCard = ({
   const handleDownvote = async () => {
     try {
       const response = await fetch(
-        `https://readmemaker-backend.vercel.app/editor/downvoteeditor`,
+        `${API_URL}/editor/downvoteeditor`,
         {
           method: "PATCH",
           headers: {
@@ -367,6 +368,7 @@ const MarkdownPreviewCard = ({
 
 const EditorCard = () => {
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
+  const API_URL = process.env.REACT_APP_BACKEND_API;
   const [selected, setSelected] = useState("templates");
   const [isLoading, setIsLoading] = useState(false);
   const [templates, setTemplates] = useState([]);
@@ -377,7 +379,7 @@ const EditorCard = () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          "https://readmemaker-backend.vercel.app/editor/getalleditor"
+          `${API_URL}/editor/getalleditor`
         );
         const data = await response.json();
         if (data.editors) {

@@ -25,6 +25,7 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 const PublishModal = ({ isOpen, onClose, markdownContent , setValue}) => {
+  const API_URL = process.env.REACT_APP_BACKEND_API;
   const navigate = useNavigate();
   const email = localStorage.getItem("userEmail");
   const [type, setType] = useState("component");
@@ -58,7 +59,7 @@ const PublishModal = ({ isOpen, onClose, markdownContent , setValue}) => {
     if (email) {
       axios
         .get(
-          `https://readmemaker-backend.vercel.app/users/getdetailbyemail/${email}`
+          `${API_URL}/users/getdetailbyemail/${email}`
         )
         .then((response) => {
           setUsername(response.data.username);
@@ -127,7 +128,7 @@ const PublishModal = ({ isOpen, onClose, markdownContent , setValue}) => {
         setDescription("");
         setTags([]);
         const res = await fetch(
-          `https://readmemaker-backend.vercel.app/editor/updateeditor/${projectId}`,
+          `${API_URL}/editor/updateeditor/${projectId}`,
           {
             method: "POST",
             headers: {
@@ -163,7 +164,7 @@ const PublishModal = ({ isOpen, onClose, markdownContent , setValue}) => {
         setTags([]);
 
         const response = await fetch(
-          "https://readmemaker-backend.vercel.app/editor/addeditor",
+          `${API_URL}/editor/addeditor`,
           {
             method: "POST",
             headers: {

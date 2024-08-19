@@ -37,12 +37,13 @@ const MyProjectsSection = ({ email }) => {
   const { isOpen, onOpen, onClose } = useDisclosure(); 
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
+  const API_URL = process.env.REACT_APP_BACKEND_API;
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const response = await fetch(
-          `https://readmemaker-backend.vercel.app/editor/geteditorbyemail/${email}`
+          `${API_URL}/editor/geteditorbyemail/${email}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -76,7 +77,7 @@ const MyProjectsSection = ({ email }) => {
       try {
         for (const project of projects) {
           const response = await fetch(
-            `https://readmemaker-backend.vercel.app/editor/checkvotestatus?userId=${userId}&editorId=${project._id}`
+            `${API_URL}/editor/checkvotestatus?userId=${userId}&editorId=${project._id}`
           );
           const result = await response.json();
           setVoteStatus((prevState) => ({
@@ -120,7 +121,7 @@ const MyProjectsSection = ({ email }) => {
   const handleUpvote = async (projectId) => {
     try {
       const response = await fetch(
-        `https://readmemaker-backend.vercel.app/editor/upvoteeditor`,
+        `${API_URL}/editor/upvoteeditor`,
         {
           method: "PATCH",
           headers: {
@@ -163,7 +164,7 @@ const MyProjectsSection = ({ email }) => {
   const handleDownvote = async (projectId) => {
     try {
       const response = await fetch(
-        `https://readmemaker-backend.vercel.app/editor/downvoteeditor`,
+        `${API_URL}/editor/downvoteeditor`,
         {
           method: "PATCH",
           headers: {
@@ -226,7 +227,7 @@ const MyProjectsSection = ({ email }) => {
   const handleDelete = async (projectId) => {
     try {
       const response = await fetch(
-        `https://readmemaker-backend.vercel.app/editor/deleteeditor/${projectId}`,
+        `${API_URL}/editor/deleteeditor/${projectId}`,
         {
           method: "DELETE",
         }
