@@ -18,7 +18,6 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
-import { AiFillGithub } from "react-icons/ai";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import { signInWithGoogle } from "../../firebase.js"
 
@@ -349,15 +348,6 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
             onClick={handleGoogleSignIn}
           >
             Continue with Google
-          </Button>
-          <Button
-            mt={4}
-            leftIcon={<AiFillGithub />}
-            size="md"
-            width="full"
-            variant="outline"
-          >
-            Continue with GitHub
           </Button>
           <Flex mt={4} justifyContent="center" alignItems="center">
             <Text fontSize="md" mr={1}>

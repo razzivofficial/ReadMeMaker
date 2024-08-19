@@ -20,7 +20,6 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { AiFillGithub } from "react-icons/ai";
 import { signInWithGoogle } from "../../firebase.js"
 const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
   const API_URL = process.env.REACT_APP_BACKEND_API;
@@ -261,14 +260,14 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
           >
             Continue with Google
           </Button>
-            <Button
+            {/* <Button
               mt={4}
               textAlign="center"
               justify="center"
               leftIcon={<AiFillGithub />}
             >
               Log in with Github
-            </Button>
+            </Button> */}
           </Flex>
           <Flex direction="column" align="center">
             <Text
