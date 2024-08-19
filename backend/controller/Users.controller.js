@@ -99,6 +99,10 @@ const loginuser = async (req, res) => {
         if (!userdata) {
             return res.status(400).json({ error: "User not found" });
         }
+        
+        if (userdata.isgoogle) {
+            return res.status(400).json({ error: "This email is registered using Google. Please login using Google." });
+        }
 
         const isMatch = await bcrypt.compare(password, userdata.password);
         if (!isMatch) {
