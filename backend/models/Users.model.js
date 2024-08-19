@@ -39,7 +39,11 @@ const userSchema = mongoose.Schema({
     followedIds: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'  // Reference to the User model
-    }]
+    }],
+    isgoogle:{
+        type: Boolean,
+        default:false,
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);
