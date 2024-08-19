@@ -3,7 +3,7 @@ import { Link as Navlink, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { encodeEmail } from "../../utils/emailUtils";
-import { signInWithGoogle } from "../../firebase.js"
+import { signInWithGoogle } from "../../firebase.js";
 import {
   Box,
   Flex,
@@ -128,16 +128,13 @@ function Navbar() {
 
       try {
         // console.log(email);
-        const response = await fetch(
-          `${API_URL}/users/getavatar`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email }),
-          }
-        );
+        const response = await fetch(`${API_URL}/users/getavatar`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
 
         const data = await response.json();
         if (response.ok) {
@@ -197,9 +194,7 @@ function Navbar() {
     const email = localStorage.getItem("userEmail");
     if (email) {
       axios
-        .get(
-          `${API_URL}/users/getNameByEmail/${email}`
-        )
+        .get(`${API_URL}/users/getNameByEmail/${email}`)
         .then((response) => {
           setName(response.data.name);
         })
@@ -220,19 +215,16 @@ function Navbar() {
     e.preventDefault();
     setloginCredentials({ email: "", password: "" });
 
-    const response = await fetch(
-      `${API_URL}/users/loginuser`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: logincredentials.email,
-          password: logincredentials.password,
-        }),
-      }
-    );
+    const response = await fetch(`${API_URL}/users/loginuser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: logincredentials.email,
+        password: logincredentials.password,
+      }),
+    });
     const json = await response.json();
     if (!json.success) {
       toast.error("Enter valid credentials");
@@ -249,9 +241,7 @@ function Navbar() {
       const email = localStorage.getItem("userEmail");
       if (email) {
         axios
-          .get(
-            `${API_URL}/users/getNameByEmail/${email}`
-          )
+          .get(`${API_URL}/users/getNameByEmail/${email}`)
           .then((response) => {
             setName(response.data.name);
           })
@@ -261,8 +251,6 @@ function Navbar() {
       }
     }
   };
-
-  
 
   const handleChange = (event) => {
     setloginCredentials({
@@ -284,25 +272,21 @@ function Navbar() {
     e.preventDefault();
     setcredentials({ username: "", email: "", password: "" });
     try {
-
       const result = await signInWithGoogle();
       const user = result.user;
 
       if (user.email === credentials.email) {
-        const response = await fetch(
-          `${API_URL}/users/createuser`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username: credentials.username,
-              email: credentials.email,
-              password: credentials.password,
-            }),
-          }
-        );
+        const response = await fetch(`${API_URL}/users/createuser`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: credentials.username,
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        });
         const json = await response.json();
         if (json.message !== "success") {
           toast.error("Registration failed: " + json.error);
@@ -310,19 +294,16 @@ function Navbar() {
           toast.error(json.error);
         } else {
           toast.success("Registration successful");
-          const reslog = await fetch(
-            `${API_URL}/users/loginuser`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                email: credentials.email,
-                password: credentials.password,
-              }),
-            }
-          );
+          const reslog = await fetch(`${API_URL}/users/loginuser`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
+          });
           const js = await reslog.json();
           if (js.success) {
             localStorage.setItem("userEmail", credentials.email);
@@ -334,13 +315,11 @@ function Navbar() {
           }
           onClose();
         }
-      }
-      else {
+      } else {
         toast.error("Registration Failed try with same gmail");
-        onClose()
+        onClose();
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error("An error occurred while registering!", error);
     }
   };
@@ -384,7 +363,7 @@ function Navbar() {
     }
   };
   const generateUsername = (name) => {
-    return name.toLowerCase().replace(/\s+/g, '') + Date.now();
+    return name.toLowerCase().replace(/\s+/g, "") + Date.now();
   };
   const handleGoogleSignIn = async () => {
     try {
@@ -421,19 +400,16 @@ function Navbar() {
           toast.success("Registration successful");
 
           // Automatically log the user in after registration
-          const loginResponse = await fetch(
-            `${API_URL}/users/loginuser`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                email: user.email,
-                password: process.env.REACT_APP_PASS, // Use the same default password for login
-              }),
-            }
-          );
+          const loginResponse = await fetch(`${API_URL}/users/loginuser`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: user.email,
+              password: process.env.REACT_APP_PASS, // Use the same default password for login
+            }),
+          });
 
           const loginJson = await loginResponse.json();
           if (loginJson.success) {
@@ -452,19 +428,16 @@ function Navbar() {
         }
       } else {
         // If the user already exists, log them in
-        const loginResponse = await fetch(
-          `${API_URL}/users/loginuser`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: user.email,
-              password: process.env.REACT_APP_PASS, // Default password
-            }),
-          }
-        );
+        const loginResponse = await fetch(`${API_URL}/users/loginuser`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user.email,
+            password: process.env.REACT_APP_PASS, // Default password
+          }),
+        });
 
         const loginJson = await loginResponse.json();
 
@@ -595,10 +568,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                  // boxShadow={useColorModeValue(
-                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                  // )}
+                    // boxShadow={useColorModeValue(
+                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                    // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -797,12 +770,13 @@ function Navbar() {
                     >
                       {isPasswordValid ? (
                         <>
-                          Password is strong <CheckCircleIcon color="green.500" />
+                          Password is strong{" "}
+                          <CheckCircleIcon color="green.500" />
                         </>
                       ) : (
                         <>
-                          Password must be at least 8 characters long, contain at least one
-                          number, and one special character
+                          Password must be at least 8 characters long, contain
+                          at least one number, and one special character
                           <WarningIcon color="red.500" ml={2} />
                         </>
                       )}
@@ -843,7 +817,7 @@ function Navbar() {
               </>
             ) : (
               <>
-                <Text
+                {/* <Text
                   py={"4"}
                   color={colorMode === "dark" ? "white" : "gray.700"}
                   textAlign="center"
@@ -854,67 +828,37 @@ function Navbar() {
                   justify="center"
                 >
                   Forgot password?
-                </Text>
+                </Text> */}
               </>
             )}
 
-            <Flex alignItems={"center"} justify={"center"} my={"2"}>
-              {!changeMode ? (
-                <>
-                  <Button
-                    mt={4}
-                    leftIcon={<FcGoogle />}
-                    size="md"
-                    width="full"
-                    variant="outline"
-                    onClick={handleGoogleSignIn}
-                  >
-                    Continue with Google
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Flex alignItems={"center"} justify={"center"} mt={"5"}>
-                    <Button
-                      mt={4}
-                      leftIcon={<FcGoogle />}
-                      size="md"
-                      width="full"
-                      variant="outline"
-                      onClick={handleGoogleSignIn}
-                    >
-                      Continue with Google
-                    </Button>
-                  </Flex>
-                </>
-              )}
-            </Flex>
-            <Flex alignItems={"center"} justify={"center"} my={"2"}>
-              {!changeMode ? (
-                <>
-                  <Button
-                    textAlign="center"
-                    justify="center"
-                    leftIcon={<AiFillGithub />}
-                  >
-                    Log in with Github
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Flex alignItems={"center"} justify={"center"} mt={"5"}>
-                    <Button
-                      textAlign="center"
-                      justify="center"
-                      leftIcon={<AiFillGithub />}
-                    >
-                      {/* {" "} */}
-                      Sign up using Github
-                    </Button>
-                  </Flex>
-                </>
-              )}
-            </Flex>
+            {!changeMode ? (
+              <Flex alignItems={"center"} justify={"center"} my={"2"}>
+                <Button
+                  mt={4}
+                  leftIcon={<FcGoogle />}
+                  size="md"
+                  width="full"
+                  variant="outline"
+                  onClick={handleGoogleSignIn}
+                >
+                  Continue with Google
+                </Button>
+              </Flex>
+            ) : (
+              <Flex alignItems={"center"} justify={"center"} my={"2"}>
+                <Button
+                  mt={4}
+                  leftIcon={<FcGoogle />}
+                  size="md"
+                  width="full"
+                  variant="outline"
+                  onClick={handleGoogleSignIn}
+                >
+                  Continue with Google
+                </Button>
+              </Flex>
+            )}
             <Flex justify={"center"} alignItems={"center"}>
               {changeMode ? (
                 <Text
@@ -957,7 +901,12 @@ function Navbar() {
           <ModalFooter>
             {changeMode ? (
               <>
-                <Button colorScheme="blue" mr={3} onClick={handleregistration} isDisabled={isUsernameAvailable === false || !isPasswordValid}>
+                <Button
+                  colorScheme="blue"
+                  mr={3}
+                  onClick={handleregistration}
+                  isDisabled={isUsernameAvailable === false || !isPasswordValid}
+                >
                   Sign up
                 </Button>
               </>
