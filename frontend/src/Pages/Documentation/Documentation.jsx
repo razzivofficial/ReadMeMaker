@@ -117,7 +117,7 @@ const documentation = [
       {
         title: "Key Features",
         content:
-          "ReadMeMaker is loaded with features to make your README creation process smoother than butter on a hot paratha:\n- **Customizable Components**: Choose from a variety of ready-made sections.\n- **Templates from the Community**: Access designs from other users for that extra bit of inspiration.\n- **Seamless Integration**: Your README, your way, with easy customization and clean formatting.",
+          "ReadMeMaker is loaded with features to make your README creation process smoother than butter on a hot paratha: \n- Customizable Components: Choose from a variety of ready-made sections. \n- Templates from the Community: Access designs from other users for that extra bit of inspiration. \n- Seamless Integration: Your README, your way, with easy customization and clean formatting.",
         image: "https://via.placeholder.com/600x200",
       },
     ],
