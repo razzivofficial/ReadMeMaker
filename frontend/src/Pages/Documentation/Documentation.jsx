@@ -117,7 +117,7 @@ const documentation = [
       {
         title: "Key Features",
         content:
-          "ReadMeMaker offers features designed to simplify README creation:",
+          "ReadMeMaker is loaded with features to make your README creation process smoother than butter on a hot paratha:\n- **Customizable Components**: Choose from a variety of ready-made sections.\n- **Templates from the Community**: Access designs from other users for that extra bit of inspiration.\n- **Seamless Integration**: Your README, your way, with easy customization and clean formatting.",
         image: "https://via.placeholder.com/600x200",
       },
     ],
@@ -242,7 +242,7 @@ const documentation = [
         content:
           "Clone your forked repository to your local machine using Git. This allows you to work on your changes locally.",
         image: "https://via.placeholder.com/600x200",
-        code: "git clone https://github.com/your-username/readmemaker.git",
+        code: "git clone https://github.com/razzivofficial/ReadMeMaker.git",
       },
       {
         title: "Set Up Your Environment",
