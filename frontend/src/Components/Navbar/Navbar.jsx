@@ -996,16 +996,22 @@ function NavLink({ name, to, onClose }) {
 function MenuLink({ name, to, icon, onClose }) {
   const navigate = useNavigate();
   const isLoggedIn = () => !!localStorage.getItem("authToken");
+
   const handleClick = () => {
-    if (name === "Trending Projects") {
-      if (isLoggedIn()) {
-        navigate("/templatecompo");
-      } else {
-        toast.info("You need to log in to view trending projects.");
-        // navigate("/login");
-      }
+    const isExternal = to.startsWith("http");
+
+    if (isExternal) {
+      window.open(to, "_blank");
     } else {
-      navigate(to);
+      if (name === "Trending Projects") {
+        if (isLoggedIn()) {
+          navigate(to);
+        } else {
+          toast.info("You need to log in to view trending projects.");
+        }
+      } else {
+        navigate(to);
+      }
     }
     onClose();
   };
