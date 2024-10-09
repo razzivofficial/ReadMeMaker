@@ -20,203 +20,155 @@ import {
 import Sidebar from "../../Components/Sidebar/Sidebar";
 
 const documentation = [
-  // {
-  //   title: "Introduction",
-  //   content:
-  //     "Welcome to the documentation! This section will help you get started with our API.",
-  //   code: `
-  //     const greet = () => {
-  //       console.log("Hello, World!");
-  //     }
-  //     greet();
-  //   `,
-  //   image: "https://via.placeholder.com/600x200",
-  //   list: ["Getting Started", "Installation", "Basic Usage"],
-  //   subtopics: [
-  //     {
-  //       title: "Overview",
-  //       content: "This is the overview of the Introduction.",
-  //       code: `
-  //         console.log("Overview of Introduction");
-  //       `,
-  //       image: "https://via.placeholder.com/600x200",
-  //     },
-  //     {
-  //       title: "Setup",
-  //       content: "This is the setup guide for the Introduction.",
-  //       code: `
-  //         console.log("Setup guide for Introduction");
-  //       `,
-  //       image: "https://via.placeholder.com/600x200",
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: "Authentication",
-  //   content:
-  //     "To use our API, you need to authenticate yourself. Use the API key provided to you.",
-  //   code: `
-  //     const apiKey = "your-api-key";
-  //     fetch("https://api.example.com/data", {
-  //       headers: {
-  //         "Authorization": \`Bearer \${apiKey}\`
-  //       }
-  //     });
-  //   `,
-  //   image: "https://via.placeholder.com/600x200",
-  //   subtopics: [
-  //     {
-  //       title: "API Key",
-  //       content: "Information about API Keys.",
-  //       code: `
-  //         const apiKey = "your-api-key";
-  //       `,
-  //       image: "https://via.placeholder.com/600x200",
-  //     },
-  //     {
-  //       title: "OAuth",
-  //       content: "Information about OAuth authentication.",
-  //       code: `
-  //         console.log("OAuth authentication");
-  //       `,
-  //       image: "https://via.placeholder.com/600x200",
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: "Endpoints",
-  //   content: "Here are the available endpoints:",
-  //   table: {
-  //     headers: ["Endpoint", "Description"],
-  //     rows: [
-  //       ["/api/v1/users", "Get all users"],
-  //       ["/api/v1/users/:id", "Get user by ID"],
-  //       ["/api/v1/users", "Create new user"],
-  //     ],
-  //   },
-  // },
-
   {
     title: "Introduction",
     content:
-      "Namaste! Welcome to ReadMeMaker – your ultimate tool for crafting README files that sparkle on GitHub. Whether you're just starting out or you're a seasoned coder, our tool helps you create the perfect README in no time.",
+      "Namaste! Welcome to ReadMeMaker – where your README dreams come true! Whether you're a code newbie trying to impress your first GitHub crush or a grizzled dev wizard who lives in the terminal, our tool helps you create README files that scream professionalism with a dash of swagger.",
     list: ["What is ReadMeMaker?", "Why use ReadMeMaker?", "Key Features"],
     subtopics: [
       {
         title: "What is ReadMeMaker?",
         content:
-          "Think of ReadMeMaker as your README file’s best friend! It’s a web tool that helps you create GitHub README files with ease. Just pick your components and let us handle the rest.",
-        image: "https://via.placeholder.com/600x200",
+          "Imagine this: You're about to showcase the world's best code, but oh no, your README is as empty as your fridge on a Sunday night. Enter ReadMeMaker – your trusty sidekick to create README files that don't just inform but *dazzle*. Click a few buttons, and voila – a masterpiece of self-documentation!",
+        image: "https://unsplash.com/photos/qzU_t7Hk-40",
       },
       {
         title: "Why use ReadMeMaker?",
         content:
-          "A great README is like a warm cup of chai – comforting and impressive. ReadMeMaker makes your README informative and eye-catching, ensuring your project stands out in the GitHub crowd.",
-        image: "https://via.placeholder.com/600x200",
+          "Let’s face it – writing a great README is harder than solving a Rubik’s Cube blindfolded. But guess what? ReadMeMaker makes it easier than ordering chai and samosas online. Plus, a killer README makes your project shine like freshly polished code!",
+        image: "https://unsplash.com/photos/rCOWMC8qf8A",
       },
       {
         title: "Key Features",
         content:
-          "ReadMeMaker is loaded with features to make your README creation process smoother than butter on a hot paratha: \n- Customizable Components: Choose from a variety of ready-made sections. \n- Templates from the Community: Access designs from other users for that extra bit of inspiration. \n- Seamless Integration: Your README, your way, with easy customization and clean formatting.",
-        image: "https://via.placeholder.com/600x200",
+          "ReadMeMaker is the Swiss Army Knife of README files: \n- Customizable Components: Mix and match like a coding salad.\n- Community Templates: Need inspiration? Borrow from the ReadMe legends out there.\n- Seamless Integration: Your README, your rules – in Markdown or HTML. Heck, write it in poetry form if you want!",
+        image: "https://unsplash.com/photos/mSi1HBnKoFE",
       },
     ],
   },
   {
     title: "Getting Started",
-    content: "Ready to jump in? Here’s how to get started with ReadMeMaker:",
-    list: ["Installation", "Creating Your First README"],
+    content: "Ready to make README magic? Here's how you dive in:",
+    list: ["Installation", "Creating Your First README", "Troubleshooting"],
     subtopics: [
       {
         title: "Installation",
         content:
-          "No installation needed! Just head over to our website and start creating – it’s as simple as ordering your favorite snack online.",
-        image: "https://via.placeholder.com/600x200",
+          "Installation? Pfft. You don’t need that here. Just pop over to our website, and you're halfway to README glory.",
+        image: "https://unsplash.com/photos/Ke1CAvE_NFQ",
       },
       {
         title: "Creating Your First README",
         content:
-          "Go to the main page --> Click 'Get Started' --> Select your components --> Download your shiny new README.",
-        image: "https://via.placeholder.com/600x200",
-        code: "console.log('Creating your first README with ReadMeMaker');",
+          "Step into the README dojo: \n- Go to the homepage. \n- Click 'Get Started.' \n- Pick the components you need like a coding buffet. \n- Hit download. Boom! You’re done.",
+        image: "https://unsplash.com/photos/F6-U5fGAOik",
+        code: "console.log('README-making ninjas are born here.');",
+      },
+      {
+        title: "Troubleshooting",
+        content:
+          "Having issues? Don’t worry! Check out our troubleshooting guide. Most problems can be solved by a good ol' restart or clearing your browser cache. If not, we've got FAQs that might help!",
+        image: "https://unsplash.com/photos/m3V1XcY-8xA",
       },
     ],
   },
   {
     title: "Features",
     content:
-      "ReadMeMaker offers features designed to simplify README creation:",
+      "Welcome to the feature playground! Here’s where ReadMeMaker flexes its muscles:",
     list: [
       "Customizable Components",
       "Live Preview",
       "Markdown Support",
       "Export Options",
+      "Version History",
     ],
     subtopics: [
       {
         title: "Customizable Components",
         content:
-          "Start with 36 components. Log in to access pre-designed templates, use components from them, and even publish your own templates.  Less hassle searching through README files.",
-        image: "https://via.placeholder.com/600x200",
+          "Our buffet of 36 (and counting) components is just waiting for you to dig in. From badges to project overviews, mix and match till your README is *chef’s kiss* perfect. Plus, log in to unlock even more templates from the community.",
+        image: "https://unsplash.com/photos/Fq3dyDGOgRo",
       },
       {
         title: "Live Preview",
         content:
-          "See your README live as you build it. Instant feedback to make sure it looks just right.",
-        image: "https://via.placeholder.com/600x200",
+          "Why guess when you can know? Watch your README come to life in real time as you build it. No more 'oops' moments when it’s too late!",
+        image: "https://unsplash.com/photos/WrueFKpTlQs",
       },
       {
         title: "Markdown Support",
         content:
-          "Use Markdown or HTML to format your README. Easy styling with our editor.",
-        image: "https://via.placeholder.com/600x200",
-        code: "# Your Project Title\\n\\n## Description;",
+          "Markdown lovers, rejoice! Craft your README using the finest syntax in the land. Prefer HTML? No judgment here. We support that too, because we’re all about freedom.",
+        image: "https://unsplash.com/photos/Iv8zxGQKCr8",
+        code: "# Best Project Ever\\n\\n## Because It Just Is;",
       },
       {
         title: "Export Options",
-        content: "Export your README by downloading the file itself.",
-        image: "https://via.placeholder.com/600x200",
+        content:
+          "When you're done creating your README work of art, just hit 'Download,' and you’re ready to take on GitHub like a pro. Easy-peasy, code-squeezy.",
+        image: "https://unsplash.com/photos/Tl9mIDhEqg4",
+      },
+      {
+        title: "Version History",
+        content:
+          "Ever wonder what you did last week? Our version history feature keeps track of all your README iterations, so you can roll back if your changes are more 'oops' than 'awesome.'",
+        image: "https://unsplash.com/photos/XmbofK6rLXs",
       },
     ],
   },
   {
     title: "FAQs",
-    content: "Got questions? We’ve got answers!",
+    content: "Curious? Here are some FAQs that'll satisfy your brain cravings:",
     list: [
       "Is ReadMeMaker free?",
       "Can I customize my README?",
       "How do I report bugs?",
+      "What if I forget my password?",
+      "Can I use ReadMeMaker offline?",
     ],
     subtopics: [
       {
         title: "Is ReadMeMaker free?",
         content:
-          "Yes, absolutely! Like a free sample at your favorite store, ReadMeMaker is completely free.",
-        image: "https://via.placeholder.com/600x200",
+          "You bet! ReadMeMaker is as free as WiFi in a café (and way more reliable). No hidden charges, no premium plans – just unlimited README awesomeness.",
+        image: "https://unsplash.com/photos/wvUs06TkSec",
       },
       {
         title: "Can I customize my README?",
         content:
-          "Of course! Customize it as you wish – from minimalistic to elaborate.",
-        image: "https://via.placeholder.com/600x200",
+          "Uh, yeah! Whether you want it minimalist like your wardrobe or detailed like your bug reports, we’ve got you covered. Customization is our middle name.",
+        image: "https://unsplash.com/photos/cckf4TsHAuw",
       },
       {
         title: "How do I report bugs?",
         content:
-          "Found a bug? Report it on our GitHub Issues page. We’re on it!",
-        image: "https://via.placeholder.com/600x200",
+          "If you find a bug (or think you have), don’t panic! Just head over to our GitHub Issues page, and we’ll squish it faster than you can say 'Merge Conflict.'",
+        image: "https://unsplash.com/photos/XfD-fTq-Yn4",
         code: `
           const reportBug = () => { 
             window.open('https://github.com/razzivofficial/ReadMeMaker/issues');
           };
         `,
-      },      
+      },
+      {
+        title: "What if I forget my password?",
+        content:
+          "No sweat! Just click on 'Forgot Password?' on the login page. We'll send you a magical email to help you reset it faster than you can say 'password123.'",
+        image: "https://unsplash.com/photos/1uM4h9t3D80",
+      },
+      {
+        title: "Can I use ReadMeMaker offline?",
+        content:
+          "As of now, ReadMeMaker is a web-based tool. But hey, you can always download your README and work on it offline like the coding hero you are!",
+        image: "https://unsplash.com/photos/IR5QZMeYcCA",
+      },
     ],
   },
   {
     title: "Contributing",
     content:
-      "We welcome contributions to ReadMeMaker! Whether you want to add features, fix bugs, or improve documentation, we value your input. Follow these steps to contribute:",
+      "Got ideas to make ReadMeMaker even more awesome? We love contributions! Here’s how you can join the README revolution:",
     list: [
       "Fork the Repository",
       "Clone Your Fork",
@@ -233,70 +185,69 @@ const documentation = [
       {
         title: "Fork the Repository",
         content:
-          "Start by forking the ReadMeMaker repository on GitHub. This creates a personal copy of the repository where you can make changes without affecting the main project.",
-        image: "https://via.placeholder.com/600x200",
-        code: "Click 'Fork' on the top-right corner of the repository page on GitHub.",
+          "Start by forking ReadMeMaker on GitHub. This gives you your very own copy to play with and make magic happen.",
+        image: "https://unsplash.com/photos/0eE4PAYqj6o",
+        code: "Click 'Fork' on the GitHub repo page – top-right corner!",
       },
       {
         title: "Clone Your Fork",
         content:
-          "Clone your forked repository to your local machine using Git. This allows you to work on your changes locally.",
-        image: "https://via.placeholder.com/600x200",
+          "Next, clone your shiny new fork to your local machine. Now you’re ready to get your hands dirty with some coding fun.",
+        image: "https://unsplash.com/photos/2vvT69t5aqI",
         code: "git clone https://github.com/razzivofficial/ReadMeMaker.git",
       },
       {
         title: "Set Up Your Environment",
         content:
-          "Navigate to the frontend and backend folders and install the necessary dependencies using npm. This ensures you have all the packages needed for development.",
-        image: "https://via.placeholder.com/600x200",
-        code: "cd frontend && npm install \ncd ../backend && npm install",
+          "Run `npm install` in both frontend and backend. This makes sure you’ve got everything you need to rock and roll.",
+        image: "https://unsplash.com/photos/4hbJ-eymZ1o",
+        code: "cd frontend && npm install && cd ../backend && npm install",
       },
       {
         title: "Quick Start",
         content:
-          "Before diving into the world of ReadMeMaker, make sure to spin up the development server so you can see your changes in real-time, that is, if you're running the project locally, don’t forget to use the magic words:",
-        image: "https://via.placeholder.com/600x200",
+          "Fire up your app with `npm start` to see if everything's running smoothly. If not, don’t fret; the README can guide you.",
+        image: "https://unsplash.com/photos/S7Mdo8CBFEE",
         code: "npm start",
       },
       {
         title: "Create a New Branch",
         content:
-          "Create a new branch for your changes. This helps keep your modifications separate from the main codebase and makes it easier to manage multiple features or fixes.",
-        image: "https://via.placeholder.com/600x200",
-        code: "git checkout -b my-feature-branch",
+          "Branch out from the main code base! This keeps your changes organized and easy to manage. Aim for a branch name that describes your feature or fix.",
+        image: "https://unsplash.com/photos/yf8sVeS5dYw",
+        code: "git checkout -b feature-name",
       },
       {
         title: "Make Your Changes",
         content:
-          "Work on your changes in the new branch. Whether you’re adding new features, fixing bugs, or updating documentation, ensure your changes are well-tested and adhere to the project’s coding standards.",
-        image: "https://via.placeholder.com/600x200",
+          "This is where the magic happens! Write your code, create new components, and transform the README experience for everyone.",
+        image: "https://unsplash.com/photos/q1B83N8Eadg",
       },
       {
         title: "Commit Your Changes",
         content:
-          "Once you’ve made your changes, commit them with a clear and descriptive message. This helps explain the purpose of your changes and makes it easier to review.",
-        image: "https://via.placeholder.com/600x200",
-        code: "git add . \ngit commit -m 'Describe your changes here'",
+          "Time to save your work! Keep your commit messages clear and concise – it helps others understand what you did and why.",
+        image: "https://unsplash.com/photos/2I9F0m6DR1I",
+        code: "git commit -m 'Added feature X'",
       },
       {
         title: "Push Changes to Your Fork",
         content:
-          "Push your committed changes to your forked repository on GitHub. This updates your remote repository with the latest changes.",
-        image: "https://via.placeholder.com/600x200",
-        code: "git push origin my-feature-branch",
+          "Once you’re satisfied with your changes, push them back to your fork. This makes them available for review.",
+        image: "https://unsplash.com/photos/j_LJXX0wY90",
+        code: "git push origin feature-name",
       },
       {
         title: "Submit a Pull Request",
         content:
-          "Go to the main ReadMeMaker repository on GitHub and open a pull request from your branch. Provide a clear description of your changes and why they should be merged.",
-        image: "https://via.placeholder.com/600x200",
-        code: "Click 'New Pull Request' on the GitHub page of the main repository and follow the prompts.",
+          "Head over to the original ReadMeMaker repository and submit a pull request. This is your chance to let us know what you’ve created!",
+        image: "https://unsplash.com/photos/FdQm1dE4wsE",
       },
       {
         title: "Review Process",
         content:
-          "Once your pull request is submitted, our team will review it. We may request additional changes or clarifications. After approval, your changes will be merged into the main repository.",
-        image: "https://via.placeholder.com/600x200",
+          "Our team will review your PR faster than you can say 'open source.' If everything looks good, we’ll merge it, and you’ll be officially part of the ReadMeMaker family!",
+        image: "https://unsplash.com/photos/B5C7rr6Dt5g",
       },
     ],
   },
