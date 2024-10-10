@@ -24,6 +24,7 @@ import img2 from "../../MediaFiles/page1.png";
 import img3 from "../../MediaFiles/page2.png";
 import img4 from "../../MediaFiles/page3.png";
 import img5 from "../../MediaFiles/page4.png";
+import img6 from "../../MediaFiles/page5.png";
 
 const documentation = [
   {
@@ -127,7 +128,7 @@ const documentation = [
         title: "Version History",
         content:
           "Ever wonder what you did last week? Our version history feature keeps track of all your README iterations, so you can roll back if your changes are more 'oops' than 'awesome.'",
-        image: "https://unsplash.com/photos/XmbofK6rLXs",
+        image: img6,
         size: "large",
       },
     ],
@@ -161,13 +162,8 @@ const documentation = [
         title: "How do I report bugs?",
         content:
           "If you find a bug (or think you have), don’t panic! Just head over to our GitHub Issues page, and we’ll squish it faster than you can say 'Merge Conflict.'",
-        image: "https://unsplash.com/photos/XfD-fTq-Yn4",
         size: "large",
-        code: `
-          const reportBug = () => { 
-            window.open('https://github.com/razzivofficial/ReadMeMaker/issues');
-          };
-        `,
+        code: "https://github.com/razzivofficial/ReadMeMaker/issues",
       },
       {
         title: "What if I forget my password?",
