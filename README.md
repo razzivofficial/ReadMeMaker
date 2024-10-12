@@ -111,6 +111,12 @@ Make sure you have the following installed:
    Navigate to `http://localhost:3000` in your browser to start using ReadmeMaker.
 
 ## Screenshots
+![image](https://github.com/user-attachments/assets/6db4718c-4c39-4005-8b9a-f47bcdd063b0)
+![image](https://github.com/user-attachments/assets/fbbfe88e-a755-4d2e-80b1-2124bf381a8a)
+![image](https://github.com/user-attachments/assets/c36f82c9-fcce-46fa-84a3-efbad02fe0f7)
+![image](https://github.com/user-attachments/assets/019dba1b-3f87-4f70-96d7-ca0a1f8d6cb8)
+![image](https://github.com/user-attachments/assets/5dc7a030-758b-49f2-bbf3-9ceec3ca4a4d)
+![image](https://github.com/user-attachments/assets/21cbb565-fbe3-4600-b2af-eca79ce7b0ca)
 
 
 
