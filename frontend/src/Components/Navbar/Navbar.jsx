@@ -84,9 +84,10 @@ const dropdownLinks = [
   },
 ];
 
+
 function Navbar() {
   const API_URL = process.env.REACT_APP_BACKEND_API;
-
+  const [isLoading, setIsLoading] = useState(false);
   const inputBg = useColorModeValue("white", "gray.700");
   const inputColor = useColorModeValue("black", "white");
   const location = useLocation();
@@ -214,7 +215,7 @@ function Navbar() {
   const handleloginSubmit = async (e) => {
     e.preventDefault();
     setloginCredentials({ email: "", password: "" });
-
+    setIsLoading(true);
     const response = await fetch(`${API_URL}/users/loginuser`, {
       method: "POST",
       headers: {
@@ -227,10 +228,12 @@ function Navbar() {
     });
     const json = await response.json();
     if (!json.success) {
-      toast.error("Enter valid credentials:"+json.error);
+      toast.error("Enter valid credentials:" + json.error);
+      setIsLoading(false);
     } else {
       toast.success("Login successful");
       onClose();
+      setIsLoading(false);
       localStorage.setItem("userEmail", logincredentials.email);
       localStorage.setItem("authToken", json.authToken);
       localStorage.setItem("userId", json.userId);
@@ -274,7 +277,8 @@ function Navbar() {
     try {
       const result = await signInWithGoogle();
       const user = result.user;
-
+      
+      setIsLoading(true);
       if (user.email === credentials.email) {
         const response = await fetch(`${API_URL}/users/createuser`, {
           method: "POST",
@@ -290,8 +294,10 @@ function Navbar() {
         const json = await response.json();
         if (json.message !== "success") {
           toast.error("Registration failed: " + json.error);
+          setIsLoading(false);
         } else if (json.error) {
           toast.error(json.error);
+          setIsLoading(false);
         } else {
           toast.success("Registration successful");
           const reslog = await fetch(`${API_URL}/users/loginuser`, {
@@ -309,6 +315,7 @@ function Navbar() {
             localStorage.setItem("userEmail", credentials.email);
             localStorage.setItem("authToken", js.authToken);
             localStorage.setItem("userId", js.userId);
+            setIsLoading(false);
             if (window.location.pathname === "/editor") {
               window.location.reload();
             }
@@ -317,10 +324,12 @@ function Navbar() {
         }
       } else {
         toast.error("Registration Failed try with same gmail");
+        setIsLoading(false);
         onClose();
       }
     } catch (error) {
       console.error("An error occurred while registering!", error);
+      setIsLoading(false);
     }
   };
   const onchange = (event) => {
@@ -371,6 +380,7 @@ function Navbar() {
       const user = result.user;
       // console.log(user)
       // Check if the user already exists in MongoDB
+      setIsLoading(true);
       const checkUserResponse = await fetch(
         `${API_URL}/users/getdetailbyemail/${user.email}`
       );
@@ -399,7 +409,7 @@ function Navbar() {
 
         if (registrationJson.message === "success") {
           toast.success("Registration successful");
-
+          // setIsLoading(false);
           // Automatically log the user in after registration
           const loginResponse = await fetch(`${API_URL}/users/loginusergoogle`, {
             method: "POST",
@@ -419,6 +429,7 @@ function Navbar() {
             localStorage.setItem("userId", loginJson.userId);
 
             toast.success("Logged in with Google");
+            setIsLoading(false);
             if (window.location.pathname === "/editor") {
               window.location.reload();
             }
@@ -426,6 +437,7 @@ function Navbar() {
           }
         } else {
           toast.error("Registration failed: " + registrationJson.error);
+          setIsLoading(false);
         }
       } else {
         // If the user already exists, log them in
@@ -451,8 +463,10 @@ function Navbar() {
           if (window.location.pathname === "/editor") {
             window.location.reload();
           }
+          setIsLoading(false);
           onClose();
         } else {
+          setIsLoading(false);
           toast.error("Login failed: " + loginJson.error);
         }
       }
@@ -481,6 +495,10 @@ function Navbar() {
 
   const hashedmail = encodeEmail(email);
 
+  const colorbackgroundcolor = useColorModeValue("gray.300", "white");
+
+
+
   return (
     <Box
       px={4}
@@ -507,16 +525,26 @@ function Navbar() {
         />
         <HStack spacing={4} alignItems="center">
           <Link as={Navlink} to="/" w={{ base: "12rem", md: "14rem" }}>
-            <Image alt="ReadMeMaker Logo" src={logoImg} rounded={50} />
+            <Image
+              alt="ReadMeMaker Logo"
+              src={logoImg}
+              rounded={50}
+              width="92px"
+              height="71px"
+            />
+
           </Link>
-          <Input
-            display={"block"}
-            maxW="30rem"
-            placeholder="Search for Users, Templates, or Components"
-            borderColor={useColorModeValue("gray.300", "white")}
-            borderRadius="5px"
-            d={{ base: "none", md: "block" }}
-          />
+          {localStorage.getItem('authToken') && (
+            <Input
+              display={"block"}
+              maxW="30rem"
+              placeholder="Search for Users, Templates, or Components"
+              borderColor={colorbackgroundcolor}
+              borderRadius="5px"
+              d={{ base: "none", md: "block" }}
+            />
+          )}
+
           <Spacer />
           <IconButton
             aria-label="Color Switcher"
@@ -569,10 +597,10 @@ function Navbar() {
                     //   "rgb(26, 32, 44)"
                     // )}
                     border="none"
-                    // boxShadow={useColorModeValue(
-                    //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
-                    //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
-                    // )}
+                  // boxShadow={useColorModeValue(
+                  //   "2px 4px 6px 2px rgba(160, 174, 192, 0.6)",
+                  //   "2px 4px 6px 2px rgba(9, 17, 28, 0.6)"
+                  // )}
                   >
                     {dropdownLinks.map((link, index) => (
                       <MenuLink
@@ -689,6 +717,13 @@ function Navbar() {
           <ModalCloseButton />
 
           <ModalBody pb={6}>
+            {isLoading && (
+              <Flex justify="center" align="center" py={4}>
+                <Spinner size="lg" />
+              </Flex>
+            )}
+            {!isLoading && (
+              <>
             {!changeMode ? (
               <>
                 <FormControl isRequired>
@@ -897,6 +932,8 @@ function Navbar() {
                 </Text>
               )}
             </Flex>
+            </>
+            )}
           </ModalBody>
 
           <ModalFooter>

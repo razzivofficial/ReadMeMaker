@@ -14,6 +14,7 @@ import {
   Text,
   Flex,
   useColorMode,
+  Spinner,
   useTheme,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
@@ -23,6 +24,7 @@ import { FcGoogle } from "react-icons/fc";
 import { signInWithGoogle } from "../../firebase.js"
 const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
   const API_URL = process.env.REACT_APP_BACKEND_API;
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
   const theme = useTheme();
@@ -35,7 +37,7 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoginCredentials({ email: "", password: "" });
-
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${API_URL}/users/loginuser`,
@@ -54,9 +56,10 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
 
       if (!json.success) {
         toast.error("Enter valid credentials");
+        setIsLoading(false);
       } else {
         toast.success("Login successful");
-
+        setIsLoading(false);
         onSuccess();
         onClose();
         navigate("/editor");
@@ -99,6 +102,7 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
       const user = result.user;
       // console.log(user)
       // Check if the user already exists in MongoDB
+      setIsLoading(true);
       const checkUserResponse = await fetch(
         `${API_URL}/users/getdetailbyemail/${user.email}`
       );
@@ -121,12 +125,12 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
             }),
           }
         );
-  
+
         const registrationJson = await registrationResponse.json();
         console.log(registrationJson)
         if (registrationJson.message === "success") {
           toast.success("Registration successful");
-  
+
           // Automatically log the user in after registration
           const loginResponse = await fetch(
             `${API_URL}/users/loginusergoogle`,
@@ -141,20 +145,23 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
               }),
             }
           );
-  
+
           const loginJson = await loginResponse.json();
           if (loginJson.success) {
             localStorage.setItem("userEmail", user.email);
             localStorage.setItem("authToken", loginJson.authToken);
             localStorage.setItem("userId", loginJson.userId);
-  
+
             toast.success("Logged in with Google");
+            setIsLoading(false);
             if (window.location.pathname === "/editor") {
               window.location.reload();
             }
+
             onClose();
           }
         } else {
+          setIsLoading(false);
           toast.error("Registration failed: " + registrationJson.error);
         }
       } else {
@@ -172,20 +179,22 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
             }),
           }
         );
-  
+
         const loginJson = await loginResponse.json();
-  
+
         if (loginJson.success) {
           localStorage.setItem("userEmail", user.email);
           localStorage.setItem("authToken", loginJson.authToken);
           localStorage.setItem("userId", loginJson.userId);
-  
+
           toast.success("Logged in with Google");
+          setIsLoading(false);
           if (window.location.pathname === "/editor") {
             window.location.reload();
           }
           onClose();
         } else {
+          setIsLoading(false);
           toast.error("Login failed: " + loginJson.error);
         }
       }
@@ -193,75 +202,82 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
       toast.error("Google sign-in failed. Please try again.");
     }
   };
-  
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent
-        bg={colorMode === "dark" ? theme.colors.gray[800] : "white"}
-        borderRadius="md"
-        maxW="md"
-        mx="auto"
-      >
-        <ModalHeader
-          textAlign="center"
-          color={colorMode === "dark" ? "white" : "gray.800"}
-        >
-          Log in to your account
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody pb={6}>
-          <FormControl isRequired mb={4}>
-            <FormLabel color={colorMode === "dark" ? "white" : "gray.600"}>
-              Email
-            </FormLabel>
-            <Input
-              placeholder="Enter your email"
-              id="email"
-              value={loginCredentials.email}
-              onChange={handleChange}
-              required
-              bg={colorMode === "dark" ? "gray.700" : "white"}
-              color={colorMode === "dark" ? "white" : "black"}
-            />
-          </FormControl>
-          <FormControl isRequired mb={4}>
-            <FormLabel color={colorMode === "dark" ? "white" : "gray.600"}>
-              Password
-            </FormLabel>
-            <Input
-              placeholder="Enter your password"
-              type="password"
-              id="password"
-              value={loginCredentials.password}
-              onChange={handleChange}
-              required
-              bg={colorMode === "dark" ? "gray.700" : "white"}
-              color={colorMode === "dark" ? "white" : "black"}
-            />
-          </FormControl>
-          <Text
-            py={2}
-            color={colorMode === "dark" ? "white" : "gray.700"}
-            textAlign="center"
-            cursor="pointer"
-            _hover={{ color: colorMode === "dark" ? "gray.300" : "gray.500" }}
+      {isLoading && (
+        <Flex justify="center" align="center" py={5}>
+          <Spinner size="lg" />
+        </Flex>
+      )}
+      {!isLoading && (
+        <>
+          <ModalOverlay />
+          <ModalContent
+            bg={colorMode === "dark" ? theme.colors.gray[800] : "white"}
+            borderRadius="md"
+            maxW="md"
+            mx="auto"
           >
-            Forgot password?
-          </Text>
-          <Flex direction="column" align="center" my={5}>
-          <Button
-            mt={4}
-            leftIcon={<FcGoogle />}
-            size="md"
-            width="full"
-            variant="outline"
-            onClick={handleGoogleSignIn}
-          >
-            Continue with Google
-          </Button>
-            {/* <Button
+            <ModalHeader
+              textAlign="center"
+              color={colorMode === "dark" ? "white" : "gray.800"}
+            >
+              Log in to your account
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl isRequired mb={4}>
+                <FormLabel color={colorMode === "dark" ? "white" : "gray.600"}>
+                  Email
+                </FormLabel>
+                <Input
+                  placeholder="Enter your email"
+                  id="email"
+                  value={loginCredentials.email}
+                  onChange={handleChange}
+                  required
+                  bg={colorMode === "dark" ? "gray.700" : "white"}
+                  color={colorMode === "dark" ? "white" : "black"}
+                />
+              </FormControl>
+              <FormControl isRequired mb={4}>
+                <FormLabel color={colorMode === "dark" ? "white" : "gray.600"}>
+                  Password
+                </FormLabel>
+                <Input
+                  placeholder="Enter your password"
+                  type="password"
+                  id="password"
+                  value={loginCredentials.password}
+                  onChange={handleChange}
+                  required
+                  bg={colorMode === "dark" ? "gray.700" : "white"}
+                  color={colorMode === "dark" ? "white" : "black"}
+                />
+              </FormControl>
+              <Text
+                py={2}
+                color={colorMode === "dark" ? "white" : "gray.700"}
+                textAlign="center"
+                cursor="pointer"
+                _hover={{ color: colorMode === "dark" ? "gray.300" : "gray.500" }}
+              >
+                Forgot password?
+              </Text>
+              <Flex direction="column" align="center" my={5}>
+                <Button
+                  mt={4}
+                  leftIcon={<FcGoogle />}
+                  size="md"
+                  width="full"
+                  variant="outline"
+                  onClick={handleGoogleSignIn}
+                >
+                  Continue with Google
+                </Button>
+                {/* <Button
               mt={4}
               textAlign="center"
               justify="center"
@@ -269,33 +285,35 @@ const LoginModal = ({ isOpen, onClose, setChangeMode, setName, onSuccess }) => {
             >
               Log in with Github
             </Button> */}
-          </Flex>
-          <Flex direction="column" align="center">
-            <Text
-              py={3}
-              color={colorMode === "dark" ? "white" : "gray.700"}
-              textAlign="center"
-            >
-              Not yet registered?
-              <Button
-                color="red.400"
-                _hover={{ color: "red.700" }}
-                variant="link"
-                onClick={() => setChangeMode(true)}
-                ml={1}
-              >
-                Sign up
+              </Flex>
+              <Flex direction="column" align="center">
+                <Text
+                  py={3}
+                  color={colorMode === "dark" ? "white" : "gray.700"}
+                  textAlign="center"
+                >
+                  Not yet registered?
+                  <Button
+                    color="red.400"
+                    _hover={{ color: "red.700" }}
+                    variant="link"
+                    onClick={() => setChangeMode(true)}
+                    ml={1}
+                  >
+                    Sign up
+                  </Button>
+                </Text>
+              </Flex>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={handleLoginSubmit}>
+                Log In
               </Button>
-            </Text>
-          </Flex>
-        </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleLoginSubmit}>
-            Log In
-          </Button>
-          <Button onClick={onClose}>Cancel</Button>
-        </ModalFooter>
-      </ModalContent>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </>
+      )}
     </Modal>
   );
 };
