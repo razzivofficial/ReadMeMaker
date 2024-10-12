@@ -23,6 +23,7 @@ import { signInWithGoogle } from "../../firebase.js"
 
 const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
   const API_URL = process.env.REACT_APP_BACKEND_API;
+  const [isLoading, setIsLoading] = useState(false);
   const [credentials, setCredentials] = useState({
     username: "",
     email: "",
@@ -43,6 +44,7 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
       const user = result.user;
       // console.log(user)
       // Check if the user already exists in MongoDB
+      setIsLoading(true);
       const checkUserResponse = await fetch(
         `${API_URL}/users/getdetailbyemail/${user.email}`
       );
@@ -61,7 +63,7 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
             body: JSON.stringify({
               username: generateUsername(user.displayName),
               email: user.email,
-              password: process.env.REACT_APP_PASS, 
+              password: process.env.REACT_APP_PASS,
               isgoogle: true,
             }),
           }
@@ -94,12 +96,14 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
             localStorage.setItem("userId", loginJson.userId);
 
             toast.success("Logged in with Google");
+            setIsLoading(false);
             if (window.location.pathname === "/editor") {
               window.location.reload();
             }
             onClose();
           }
         } else {
+          setIsLoading(false);
           toast.error("Registration failed: " + registrationJson.error);
         }
       } else {
@@ -126,11 +130,13 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
           localStorage.setItem("userId", loginJson.userId);
 
           toast.success("Logged in with Google");
+          setIsLoading(false);
           if (window.location.pathname === "/editor") {
             window.location.reload();
           }
           onClose();
         } else {
+          setIsLoading(false);
           toast.error("Login failed: " + loginJson.error);
         }
       }
@@ -148,7 +154,7 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
 
       const result = await signInWithGoogle();
       const user = result.user;
-
+      setIsLoading(true);
       if (user.email === credentials.email) {
 
         const response = await fetch(
@@ -168,10 +174,13 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
         const json = await response.json();
         console.log(json);
         if (json.message !== "success") {
+          setIsLoading(false);
           toast.error("Registration failed: " + json.error);
         } else if (json.error) {
+          setIsLoading(false);
           toast.error(json.error);
         } else {
+          setIsLoading(false);
           toast.success("Registration successful");
           const reslog = await fetch(
             `${API_URL}/users/loginuser`,
@@ -200,6 +209,7 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
       }
       else {
         // console.log("registration Failed")
+        setIsLoading(false);
         toast.error("registration failed try with same gmail");
         onClose()
       }
@@ -235,13 +245,21 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
     }
   };
 
-  const modalContentBg = useColorModeValue("white", "gray.800");
+  const modalContentBg = useColorModeValue("white", "gray.700");
   const textColor = useColorModeValue("gray.700", "gray.200");
   const buttonColor = useColorModeValue("blue", "blue");
   const buttonHoverColor = useColorModeValue("blue.600", "blue.400");
+  const blackwhite = useColorModeValue("black", "white")
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
+      {isLoading && (
+        <Flex justify="center" align="center" py={4}>
+          <Spinner size="lg" />
+        </Flex>
+      )}
+      {!isLoading && (
+    <>
       <ModalOverlay />
       <ModalContent
         bg={modalContentBg}
@@ -261,8 +279,8 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
               value={credentials.username}
               onChange={handleChange}
               required
-              bg={useColorModeValue("white", "gray.700")}
-              color={useColorModeValue("black", "white")}
+              bg={modalContentBg}
+              color={blackwhite}
             />
             {isCheckingUsername && <Spinner size="sm" mt={2} />}
             {isUsernameAvailable !== null && (
@@ -285,8 +303,8 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
               value={credentials.email}
               onChange={handleChange}
               required
-              bg={useColorModeValue("white", "gray.700")}
-              color={useColorModeValue("black", "white")}
+              bg={modalContentBg}
+              color={blackwhite}
             />
           </FormControl>
           <FormControl mt={4} isRequired>
@@ -298,8 +316,8 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
               value={credentials.password}
               onChange={handleChange}
               required
-              bg={useColorModeValue("white", "gray.700")}
-              color={useColorModeValue("black", "white")}
+              bg={modalContentBg}
+              color={blackwhite}
             />
             {credentials.password && (
               <Text
@@ -375,6 +393,8 @@ const RegistrationModal = ({ isOpen, onClose, setChangeMode }) => {
           </Button>
         </ModalFooter>
       </ModalContent>
+      </>
+      )}
     </Modal>
   );
 };

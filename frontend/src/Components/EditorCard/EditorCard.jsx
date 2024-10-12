@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import { encodeEmail } from "../../utils/emailUtils";
 import {
   Box,
@@ -15,6 +15,7 @@ import {
   Center,
   Container,
   useBreakpointValue,
+  Input,
   Button,
   Tag,
 } from "@chakra-ui/react";
@@ -44,6 +45,7 @@ const replaceHeightWithWidth = (inputText) => {
   );
 };
 
+
 const MarkdownPreviewCard = ({
   email,
   id,
@@ -56,6 +58,10 @@ const MarkdownPreviewCard = ({
   description,
   tags,
 }) => {
+
+  
+
+
   const bg = useColorModeValue("white", "#2f3244");
   const markdownBg = useColorModeValue("#f5f5f5", "#1e1e1e");
   const textColor = useColorModeValue("black", "white");
@@ -370,6 +376,9 @@ const MarkdownPreviewCard = ({
 };
 
 const EditorCard = () => {
+  
+
+
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
   const API_URL = process.env.REACT_APP_BACKEND_API;
   const [selected, setSelected] = useState("templates");
@@ -411,6 +420,7 @@ const EditorCard = () => {
       setIsLoading(false);
     }, 100);
   };
+  const[search,setSearch] = useState('')
 
   const dataToDisplay = selected === "templates" ? templates : components;
 
@@ -419,6 +429,21 @@ const EditorCard = () => {
     const totalVotesB = b.upvotes - b.downvotes;
     return totalVotesB - totalVotesA; // Descending order
   });
+
+  const filteredData = sortedData.filter((item) => {
+    // Use optional chaining to safely access `title`, `description`, and `tags`
+    const titleMatch = item.title?.toLowerCase().includes(search.toLowerCase());
+    const descriptionMatch = item.description?.toLowerCase().includes(search.toLowerCase());
+    const tagsMatch = item.tags?.some(tag => tag.toLowerCase().includes(search.toLowerCase())); // Check if any tag matches
+  
+    // Return true if either the title, description, or any tag matches the search query
+    return titleMatch || descriptionMatch || tagsMatch;
+  });
+  
+  
+  // Determine data to display
+  const FinalDataToDisplay = filteredData.length > 0 ? filteredData : sortedData;
+  
 
   return (
     <Container maxW="7xl" p={{ base: 5, md: 10 }}>
@@ -445,6 +470,7 @@ const EditorCard = () => {
             mb={{ base: 4, md: 6 }}
             wrap="wrap"
           >
+            
             <Button
               onClick={() => handleSelection("templates")}
               colorScheme={selected === "templates" ? "blue" : "gray"}
@@ -473,13 +499,22 @@ const EditorCard = () => {
             >
               Components
             </Button>
+
+            <Input
+              placeholder="Search template and Components"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              width={{ base: "60%", md: "30%" }}
+              borderRadius="md"
+              borderColor="gray.200"
+            />
           </HStack>
 
           {isLoading ? (
             <TempCompoLoader />
           ) : (
             <SimpleGrid columns={columns} spacing={4}>
-              {sortedData.map((item, index) => (
+              {FinalDataToDisplay.map((item, index) => (
                 <MarkdownPreviewCard
                   key={index}
                   id={item._id}
