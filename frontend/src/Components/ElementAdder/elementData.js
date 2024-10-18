@@ -3,7 +3,7 @@ const elementData = [
     slno: "1",
     title: "Logo and Title",
     desc: "Unveil your project's superstar! Showcase your dazzling logo and give your project a blockbuster title right at the top. It’s like the red carpet for your README!",
-    code: '## Logo and Title\n\n<div align="center">\n   <img src="https://example.com/logo.png" alt="Project Logo" />\n    <h1>Project Title</h1>\n</div>',
+    code: '## Logo and Title\n\n<div align="center">\n   <img src="	https://readmemaker.com/static/media/logo.95b37b622ac102be3dec.png" width="150px" alt="Project Logo" />\n    <h1>Project Title</h1>\n</div>',
   },
   {
     slno: "2",

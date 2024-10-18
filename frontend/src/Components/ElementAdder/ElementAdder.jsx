@@ -257,14 +257,14 @@ export default function ElementAdder() {
                 <button
                   className={`flex h-8 w-8 items-center justify-center rounded-full ${isElementSelected(index)
                       ? "bg-blue-600 hover:bg-blue-500 text-white"
-                      : "bg-blue-200 hover:bg-blue-300"
+                      : "bg-blue-300 hover:bg-blue-400"
                     }`}
                   onClick={() => toggleAddRemove(index, item.code)}
                 >
                   {isElementSelected(index) ? (
-                    <AiFillCheckCircle className="text-3xl mx-3" />
+                    <AiFillCheckCircle className="text-3xl mx-2" />
                   ) : (
-                    <AiFillPlusCircle className="text-3xl mx-3" />
+                    <AiFillPlusCircle className="text-3xl mx-2" />
                   )}
                 </button>
               </div>
