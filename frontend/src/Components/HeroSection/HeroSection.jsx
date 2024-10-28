@@ -14,7 +14,7 @@ import CoffeePage from "../CoffeePage/CoffeePage";
 
 // Array of arrays, each containing words associated with the initial letters
 const wordsList = [
-  ["SICK", "PICK", "LICK", "DRAG-DROP_INTERFACE"],
+  ["SICK", "PICK", "LICK", "DRAG_DROP_INTERFACE"],
   ["BITS", "FITS", "HITS", "TEMPLATE_CUSTOMIZATION"],
   ["RUDE", "DUDE", "GUDE", "NEW_LIVE_EDITOR"],
 ];
@@ -31,10 +31,10 @@ const HeroSection = () => {
   );
   const [isFinalWordTyped, setIsFinalWordTyped] = useState(false);
 
-  const typingSpeed = 160;
-  const finalWordTypingSpeed = 120; // Speed of typing effect for final words
-  const pauseDuration = 1000; // Duration to pause before moving to next word
-  const finalWordPauseDuration = 1500; // Longer pause before the last word
+  const typingSpeed = 150; // Speed of typing effect for all words
+  const finalWordTypingSpeed = 120; // Speed of typing effect for final line of words
+  const pauseDuration = 300; // Duration to pause before moving to next word
+  const finalWordPauseDuration = 600; // Longer pause before the last word
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -137,7 +137,7 @@ const HeroSection = () => {
                   fontSize={{ base: "2xl", sm: "4xl" }}
                   fontWeight="bold"
                   color={
-                    wordObj.isLast && isFinalWordTyped ? "red.500" : "teal.400"
+                    wordObj.isLast && isFinalWordTyped ? "red.600" : "teal.400"
                   }
                 >
                   '{wordObj.text}'
