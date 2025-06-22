@@ -12,6 +12,8 @@ import { useColorMode, Button, Box, Link } from "@chakra-ui/react";
 import downloadIcon from "../../MediaFiles/downloadIcon.png";
 import PublishModal from "../PublishModal/PublishModal";
 import { useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const help = {
   name: "help",
@@ -39,17 +41,69 @@ export default function ElementAdder() {
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [isChangeMode, setChangeMode] = useState(false);
   const [name, setName] = useState("");
+  const API_URL = process.env.REACT_APP_BACKEND_API;
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("authToken")
   );
 
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSearchGemini = async () => {
+    if (!query.trim()) return;
+
+    setLoading(true);
+
+
+    try {
+      const response = await fetch(`${API_URL}/generate/generate-readme`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: query }),
+      });
+
+      const data = await response.text();
+
+      if (data && response.ok) {
+        setValue('');
+        setValue(data);
+        setQuery('');
+        toast.success("Markdown! Generated", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } else {
+        toast.error("Failed to Generate markdown!", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+    } catch (error) {
+      console.error('Error calling Gemini API:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
 
   // code for onclick adder button 
   const location = useLocation();
   const { projectId, markdown } = location.state || {}; // Extract the markdown state
-  
+
   useEffect(() => {
     if (markdown) {
       setValue(markdown)
@@ -196,8 +250,8 @@ export default function ElementAdder() {
         </div>
         <div
           className={`md:w-1/3 p-2 md:p-4 ${colorMode === "dark"
-              ? "bg-gray-800 border-gray-600"
-              : "bg-slate-50 border-info"
+            ? "bg-gray-800 border-gray-600"
+            : "bg-slate-50 border-info"
             } border rounded-3xl mb-8 md:mb-0`}
         >
           <h4
@@ -209,8 +263,8 @@ export default function ElementAdder() {
           <div className="flex items-center w-full mb-4">
             <input
               className={`border-2 w-full ${colorMode === "dark"
-                  ? "border-gray-600 bg-gray-700 text-white"
-                  : "border-gray-300 bg-white"
+                ? "border-gray-600 bg-gray-700 text-white"
+                : "border-gray-300 bg-white"
                 } h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none`}
               type="search"
               name="search"
@@ -224,14 +278,14 @@ export default function ElementAdder() {
               <div
                 key={item.slno}
                 className={`group flex items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 ${colorMode === "dark"
-                    ? "hover:bg-gray-700 text-white"
-                    : "hover:bg-blue-100"
+                  ? "hover:bg-gray-700 text-white"
+                  : "hover:bg-blue-100"
                   }`}
               >
                 <div
                   className={`flex h-12 w-12 items-center rounded-lg ${colorMode === "dark"
-                      ? "bg-gray-600 text-white"
-                      : "bg-gray-200 text-black"
+                    ? "bg-gray-600 text-white"
+                    : "bg-gray-200 text-black"
                     } group-hover:bg-blue-200`}
                 >
                   <span
@@ -256,8 +310,8 @@ export default function ElementAdder() {
                 <div className="flex-grow"></div>
                 <button
                   className={`flex h-8 w-8 items-center justify-center rounded-full ${isElementSelected(index)
-                      ? "bg-blue-600 hover:bg-blue-500 text-white"
-                      : "bg-blue-300 hover:bg-blue-400"
+                    ? "bg-blue-600 hover:bg-blue-500 text-white"
+                    : "bg-blue-300 hover:bg-blue-400"
                     }`}
                   onClick={() => toggleAddRemove(index, item.code)}
                 >
@@ -274,8 +328,8 @@ export default function ElementAdder() {
         {/* Right Panel - Markdown Editor */}
         <div
           className={`md:w-2/3 p-4 md:p-4 ml-0 md:ml-4 ${colorMode === "dark"
-              ? "bg-gray-800 border-gray-600"
-              : "bg-white border-gray-300"
+            ? "bg-gray-800 border-gray-600"
+            : "bg-white border-gray-300"
             } border rounded-3xl relative`}
         >
           <div className="flex justify-between items-center mb-2 mt-8">
@@ -283,7 +337,7 @@ export default function ElementAdder() {
               <div>
                 {/* The button that opens the modal */}
                 {localStorage.getItem('authToken') && (
-                  
+
                   <Button
                     onClick={() => setIsModalOpen(true)}
                     colorScheme="blue"
@@ -336,7 +390,40 @@ export default function ElementAdder() {
             commands={[commands.codePreview, help]}
           />
         </div>
+
+
+
       </div>
+
+      <div className="mt-9 mb-0 flex justify-center px-4">
+        <div className="relative w-full max-w-[700px]">
+          {/* Gradient border */}
+          <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradientSpin opacity-80 blur-sm"></div>
+
+          {/* Search bar container */}
+          <div
+            className={`relative z-10 flex items-center rounded-xl px-4 py-2 shadow-md space-x-2 ${colorMode === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+              }`}
+          >
+            <input
+              type="text"
+              placeholder="Let AI assist you with your ideas"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className={`flex-1 outline-none text-base bg-transparent ${colorMode === "dark" ? "placeholder-gray-400 text-white" : "placeholder-gray-400 text-gray-900"
+                }`}
+            />
+            <button
+              onClick={handleSearchGemini}
+              className="bg-blue-600 text-white text-sm font-medium px-4 py-1.5 rounded-lg hover:bg-blue-700 disabled:opacity-60 transition"
+              disabled={loading || query.trim() === ""}
+            >
+              {loading ? "Loading..." : "Generate README"}
+            </button>
+          </div>
+        </div>
+      </div>
+
 
       {!isAuthenticated ? (
         <div className="editor-card-container">
@@ -362,8 +449,8 @@ export default function ElementAdder() {
             <Link onClick={goTempCompoPage}>
               <button
                 className={`border hover:scale-95 duration-300 relative group cursor-pointer ${colorMode === "dark"
-                    ? "text-sky-50 bg-sky-700 border-sky-600"
-                    : "text-sky-50 bg-sky-200 border-sky-300"
+                  ? "text-sky-50 bg-sky-700 border-sky-600"
+                  : "text-sky-50 bg-sky-200 border-sky-300"
                   } overflow-hidden h-16 w-64 rounded-md p-2 flex justify-center items-center font-extrabold text-lg font-sans`}
               >
                 <div className="absolute right-32 -top-4 group-hover:top-1 group-hover:right-2 z-10 w-40 h-40 rounded-full group-hover:scale-150 duration-500 bg-sky-900"></div>
