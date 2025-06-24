@@ -332,6 +332,34 @@ export default function ElementAdder() {
             : "bg-white border-gray-300"
             } border rounded-3xl relative`}
         >
+          {/* AI README Generator Search Bar */}
+          <div className="mt-2 mb-0 flex justify-center items-center">
+            <div className="relative w-full max-w-[680px]">
+              {/* Gradient border */}
+              <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradientSpin opacity-80 blur-sm"></div>
+
+              {/* Search bar container */}
+              <div
+                className={`relative z-10 flex items-center rounded-xl px-4 py-2 shadow-md space-x-2 ${colorMode === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
+              >
+                <input
+                  type="text"
+                  placeholder="Let AI assist you with your ideas"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className={`flex-1 outline-none text-base bg-transparent ${colorMode === "dark" ? "placeholder-gray-400 text-white" : "placeholder-gray-400 text-gray-900"}`}
+                />
+                <button
+                  onClick={handleSearchGemini}
+                  className="bg-blue-600 text-white text-sm font-medium px-4 py-1.5 rounded-lg hover:bg-blue-700 disabled:opacity-60 transition"
+                  disabled={loading || query.trim() === ""}
+                >
+                  {loading ? "Loading..." : "Generate README"}
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className="flex justify-between items-center mb-2 mt-8">
             <div className=" PubBtn absolute top-2 right-24">
               <div>
@@ -395,12 +423,12 @@ export default function ElementAdder() {
 
       </div>
 
-      <div className="mt-9 mb-0 flex justify-center px-4">
+      {/* <div className="mt-9 mb-0 flex justify-center px-4">
         <div className="relative w-full max-w-[700px]">
-          {/* Gradient border */}
+          
           <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradientSpin opacity-80 blur-sm"></div>
 
-          {/* Search bar container */}
+          
           <div
             className={`relative z-10 flex items-center rounded-xl px-4 py-2 shadow-md space-x-2 ${colorMode === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-900"
               }`}
@@ -422,7 +450,7 @@ export default function ElementAdder() {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
 
       {!isAuthenticated ? (
