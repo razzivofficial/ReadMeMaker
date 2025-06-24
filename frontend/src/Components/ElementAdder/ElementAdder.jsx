@@ -333,12 +333,11 @@ export default function ElementAdder() {
             } border rounded-3xl relative`}
         >
           {/* AI README Generator Search Bar */}
-          <div className="mt-2 mb-0 flex justify-center items-center">
+          {/* <div className="mt-2 mb-0 flex justify-center items-center">
             <div className="relative w-full max-w-[680px]">
-              {/* Gradient border */}
               <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradientSpin opacity-80 blur-sm"></div>
 
-              {/* Search bar container */}
+              
               <div
                 className={`relative z-10 flex items-center rounded-xl px-4 py-2 shadow-md space-x-2 ${colorMode === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}
               >
@@ -358,7 +357,7 @@ export default function ElementAdder() {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex justify-between items-center mb-2 mt-8">
             <div className=" PubBtn absolute top-2 right-24">
@@ -423,7 +422,7 @@ export default function ElementAdder() {
 
       </div>
 
-      {/* <div className="mt-9 mb-0 flex justify-center px-4">
+      <div className="mt-9 mb-0 flex justify-center px-4">
         <div className="relative w-full max-w-[700px]">
           
           <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradientSpin opacity-80 blur-sm"></div>
@@ -450,7 +449,7 @@ export default function ElementAdder() {
             </button>
           </div>
         </div>
-      </div> */}
+      </div>
 
 
       {!isAuthenticated ? (
